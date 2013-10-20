@@ -1,0 +1,6 @@
+{
+  "content": "try {\n\t$0\n}",
+  "name": "try",
+  "scope": "source.java, source.groovy",
+  "tabTrigger": "tr"
+}

@@ -1,0 +1,6 @@
+{
+  "content": "public void test${1:Name}() throws Exception {\n\t$0\n}",
+  "name": "test",
+  "scope": "source.java",
+  "tabTrigger": "t"
+}

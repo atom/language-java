@@ -1,0 +1,6 @@
+{
+  "content": "private ",
+  "name": "private",
+  "scope": "source.java, source.groovy",
+  "tabTrigger": "pr"
+}

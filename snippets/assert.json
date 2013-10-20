@@ -1,0 +1,6 @@
+{
+  "content": "assert ${1:test}${2/(.+)/(?1: \\: \")/}${2:Failure message}${2/(.+)/(?1:\")/};$0",
+  "name": "assert",
+  "scope": "source.java, source.groovy",
+  "tabTrigger": "as"
+}

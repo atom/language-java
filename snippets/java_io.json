@@ -1,0 +1,6 @@
+{
+  "content": "java.io.",
+  "name": "java.io.",
+  "scope": "source.java",
+  "tabTrigger": "j.i"
+}

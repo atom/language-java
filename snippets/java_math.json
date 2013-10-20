@@ -1,0 +1,6 @@
+{
+  "content": "java.math.",
+  "name": "java.math.",
+  "scope": "source.java",
+  "tabTrigger": "j.m"
+}

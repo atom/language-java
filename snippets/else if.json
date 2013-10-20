@@ -1,0 +1,6 @@
+{
+  "content": "else if ($1) {\n\t$0\n}",
+  "name": "else if",
+  "scope": "source.java, source.groovy",
+  "tabTrigger": "elif"
+}

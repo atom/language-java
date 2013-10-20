@@ -1,0 +1,6 @@
+{
+  "content": "static ",
+  "name": "static",
+  "scope": "source.java, source.groovy",
+  "tabTrigger": "st"
+}

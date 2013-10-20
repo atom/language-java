@@ -1,0 +1,8 @@
+{
+  "name": "Folding (JSP)",
+  "scope": "text.html.jsp",
+  "settings": {
+    "foldingStartMarker": "/\\*\\*|\\{\\s*$",
+    "foldingStopMarker": "\\*\\*/|^\\s*\\}"
+  }
+}

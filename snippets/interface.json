@@ -1,0 +1,6 @@
+{
+  "content": "interface ${1:${TM_FILENAME/(.*?)(\\..+)/$1/}} ${2:extends ${3:Parent} }{\n\t$0\n}",
+  "name": "interface",
+  "scope": "source.java, source.groovy",
+  "tabTrigger": "in"
+}

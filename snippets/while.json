@@ -1,0 +1,6 @@
+{
+  "content": "while ($1) {\n\t$0\n}",
+  "name": "while",
+  "scope": "source.java",
+  "tabTrigger": "wh"
+}

@@ -1,0 +1,6 @@
+{
+  "content": "throw $0",
+  "name": "throw",
+  "scope": "source.java, source.groovy",
+  "tabTrigger": "th"
+}

@@ -1,0 +1,6 @@
+{
+  "content": "System.out.println($1);$0",
+  "name": "println",
+  "scope": "source.java",
+  "tabTrigger": "pl"
+}

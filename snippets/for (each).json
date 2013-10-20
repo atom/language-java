@@ -1,0 +1,6 @@
+{
+  "content": "for ($1 : $2) {\n\t$0\n}",
+  "name": "for (each)",
+  "scope": "source.java",
+  "tabTrigger": "fore"
+}

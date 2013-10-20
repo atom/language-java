@@ -1,0 +1,6 @@
+{
+  "content": "break;\n",
+  "name": "break",
+  "scope": "source.java",
+  "tabTrigger": "br"
+}

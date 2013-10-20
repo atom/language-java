@@ -1,0 +1,8 @@
+{
+  "name": "Symbol List: Methods",
+  "scope": "source.java meta.class.body meta.method.identifier",
+  "settings": {
+    "showInSymbolList": 1,
+    "symbolTransformation": "\n\t\ts/\\s{2,}/ /g;\n\t\ts/.*/  $0/g;\n\t"
+  }
+}

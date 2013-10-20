@@ -1,0 +1,9 @@
+{
+  "name": "Indentation Rules",
+  "scope": "source.java",
+  "settings": {
+    "decreaseIndentPattern": "^(.*\\*/)?\\s*\\}|^\\s*(public|private|protected):\\s*$",
+    "increaseIndentPattern": "^.*\\{(\\}|[^}\"']*)$|^\\s*(public|private|protected):\\s*$",
+    "indentNextLinePattern": "^(?!\\s*@\\w+(\\(|\\s*$)|(.*[};:])?\\s*(//|/\\*.*\\*/\\s*$)).*[^\\s;:{}]\\s*$"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "beforeRunningCommand": "nop",
+  "command": "#!/usr/bin/env bash\n[[ -f \"${TM_SUPPORT_PATH}/lib/bash_init.sh\" ]] && . \"${TM_SUPPORT_PATH}/lib/bash_init.sh\"\n\necho \"<!-- gotAPI.com search widget v2 begin -->\n<body onload=\\\"init();\\\">\n<DIV>\n<STYLE>\n.gaMenu{border:1px solid #505050;background-color:#FAFAFA;padding:0px 5px 0px 5px;}\n.gaHeaderRow{font:bold 8pt Arial;color:#359155;border-top:1px solid #C0C0C0;width:250px;}\n.gaRegularRow,.gaFooterRow{font:8pt Arial;cursor:pointer;}\n.gaSelectedRow{font:8pt Arial;background-color:#c1e0e6;cursor:pointer;}\n</STYLE>\n<SCRIPT><!--\ngaMod='module_java15noui.js';gaTitle='J2SE v1.5 less UI';updateWhenLoaded=false;\nvar gaL=false;function gaInit(){if(gaL)return;gaL=true;var s=document.createElement('script');\ns.type='text/javascript';s.src='http://www.gotapi.com/widgets/compiled/c1_module_java15noui.js.jsz';s.defer='defer';s.defered='yes';\ndocument.getElementById('gaInfo').parentNode.appendChild(s)}function gaSearching(){\ndocument.getElementById('gaWait').style.display='';updateWhenLoaded=true;\ndocument.getElementById('gaInfo').style.display='none'}\n//-->\n</SCRIPT>\n<DIV style='font:bold 10pt Arial'>Quick J2SE v1.5 less UI lookup</DIV>\n<INPUT id=gaSearch size=20 onfocus=\\\"gaInit()\\\" onkeydown=\\\"gaSearching()\\\">\n<DIV id=gaInfo style='font:7pt Arial'>powered by <A href='http://www.gotapi.com' style='padding:0px'>gotAPI.com</A></DIV>\n<DIV id=gaWait style='font:7pt Arial;display:none'>Searching...</DIV>\n</DIV>\n</body>\n<!-- gotAPI.com search widget v2 end -->\"\n\nif [ $TM_CURRENT_WORD ] \nthen\n\techo \"<script>function init() { document.getElementById('gaSearch').value = '$TM_CURRENT_WORD'; document.getElementById('gaSearch').focus(); gaSearching(); }</script>\"\nfi",
+  "input": "none",
+  "inputFormat": "text",
+  "keyEquivalent": "^h",
+  "name": "Documentation For Word",
+  "outputCaret": "afterOutput",
+  "outputFormat": "html",
+  "outputLocation": "newWindow",
+  "scope": "source.java",
+  "semanticClass": "lookup.define.java",
+  "version": 2
+}

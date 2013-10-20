@@ -1,0 +1,17 @@
+{
+  "name": "language-java",
+  "version": "0.0.0",
+  "description": "Java language support in Atom",
+  "engines": {
+    "atom": "*",
+    "node": "*"
+  },
+  "homepage": "https://atom.github.io/language-java",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atom/language-java.git"
+  },
+  "bugs": {
+    "url": "https://github.com/atom/language-java/issues"
+  }
+}

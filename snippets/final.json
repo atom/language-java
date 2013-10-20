@@ -1,0 +1,6 @@
+{
+  "content": "final ",
+  "name": "final",
+  "scope": "source.java, source.groovy",
+  "tabTrigger": "fi"
+}

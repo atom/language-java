@@ -1,0 +1,6 @@
+{
+  "content": "public ",
+  "name": "public",
+  "scope": "source.java, source.groovy",
+  "tabTrigger": "pu"
+}

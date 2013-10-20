@@ -1,0 +1,6 @@
+{
+  "content": "case $1:\n\t$2\n$0",
+  "name": "case",
+  "scope": "source.java, source.groovy",
+  "tabTrigger": "cs"
+}

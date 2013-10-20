@@ -1,0 +1,6 @@
+{
+  "content": "finally {\n\t$0\n}",
+  "name": "finally",
+  "scope": "source.java, source.groovy",
+  "tabTrigger": "fy"
+}
