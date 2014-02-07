@@ -1,9 +1,0 @@
-{
-  "beforeRunningCommand": "nop",
-  "command": "#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby\n\nrequire 'find'\nrequire ENV['TM_SUPPORT_PATH'] + '/lib/textmate'\n\nstackframe = gets\nif stackframe =~ /\\((.+):(.+)\\)$/ \n  file = $1\n  line = $2\n  base = ENV['TM_PROJECT_DIRECTORY'] || ENV['TM_DIRECTORY']\n  filter = TextMate::ProjectFileFilter.new\n  \n  matches = []\n  Find.find(base) do |path|\n    if File.directory? path\n      Find.prune if filter.skip? path\n    elsif File.basename(path) == file\n        matches << path\n    end\n  end\n  \n  matches = matches.reject { |path| filter.skip? path }\n  \n  if matches.empty?\n    puts \"Could not find ‘#{file}’ in project\"\n  else\n    if matches.size == 1\n      TextMate.go_to(:file => matches.first, :line => line)\n    else\n      puts \"Found more than one file named ‘#{file}’\"\n    end\n  end\nelse\n  puts \"Stackframe does not contain a reference to source\"\nend",
-  "fallbackInput": "line",
-  "input": "selection",
-  "keyEquivalent": "^~@\u0003",
-  "name": "Go to Stackframe Source",
-  "output": "showAsTooltip"
-}
