@@ -1,8 +1,0 @@
-{
-  "name": "Folding (Java)",
-  "scope": "source.java",
-  "settings": {
-    "foldingStartMarker": "(\\{\\s*(//.*)?$|^\\s*// \\{\\{\\{)",
-    "foldingStopMarker": "^\\s*(\\}|// \\}\\}\\}$)"
-  }
-}

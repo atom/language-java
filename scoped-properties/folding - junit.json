@@ -1,0 +1,7 @@
+{
+  "text.junit-test-report": {
+    "editor": {
+      "foldEndPattern": "^\\s*(\\}|// \\}\\}\\}$)"
+    }
+  }
+}

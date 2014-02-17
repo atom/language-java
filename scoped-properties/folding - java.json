@@ -1,0 +1,7 @@
+{
+  "source.java": {
+    "editor": {
+      "foldEndPattern": "^\\s*(\\}|// \\}\\}\\}$)"
+    }
+  }
+}

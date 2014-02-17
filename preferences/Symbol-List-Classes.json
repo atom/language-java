@@ -1,7 +1,0 @@
-{
-  "name": "Symbol List: Classes",
-  "scope": "source.java meta.class meta.class.identifier",
-  "settings": {
-    "showInSymbolList": 1
-  }
-}

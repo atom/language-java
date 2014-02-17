@@ -1,8 +1,0 @@
-{
-  "name": "Symbol List: Inner Classes",
-  "scope": "source.java meta.class.body meta.class.identifier",
-  "settings": {
-    "showInSymbolList": 1,
-    "symbolTransformation": "s/.*/  $0/g"
-  }
-}

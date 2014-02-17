@@ -1,8 +1,0 @@
-{
-  "name": "Folding (JUnit)",
-  "scope": "text.junit-test-report",
-  "settings": {
-    "foldingStartMarker": "(\\{\\s*(//.*)?$|^\\s*// \\{\\{\\{)",
-    "foldingStopMarker": "^\\s*(\\}|// \\}\\}\\}$)"
-  }
-}
