@@ -1,5 +1,5 @@
 {
-  "source.java-properties": {
+  ".source.java-properties": {
     "editor": {
       "commentStart": "# "
     }

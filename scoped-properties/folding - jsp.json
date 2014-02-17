@@ -1,5 +1,5 @@
 {
-  "text.html.jsp": {
+  ".text.html.jsp": {
     "editor": {
       "foldEndPattern": "\\*\\*/|^\\s*\\}"
     }

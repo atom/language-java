@@ -1,5 +1,5 @@
 {
-  "source.java": {
+  ".source.java": {
     "editor": {
       "increaseIndentPattern": "^.*\\{(\\}|[^}\"']*)$|^\\s*(public|private|protected):\\s*$",
       "decreaseIndentPattern": "^(.*\\*/)?\\s*\\}|^\\s*(public|private|protected):\\s*$"
