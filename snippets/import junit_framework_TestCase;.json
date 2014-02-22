@@ -1,6 +1,0 @@
-{
-  "content": "import junit.framework.TestCase;\n$0",
-  "name": "import junit.framework.TestCase;",
-  "scope": "source.java",
-  "tabTrigger": "imt"
-}

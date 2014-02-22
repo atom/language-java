@@ -1,6 +1,0 @@
-{
-  "content": "synchronized ",
-  "name": "synchronized",
-  "scope": "source.java, source.groovy",
-  "tabTrigger": "sy"
-}

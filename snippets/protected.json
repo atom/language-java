@@ -1,6 +1,0 @@
-{
-  "content": "protected ",
-  "name": "protected",
-  "scope": "source.java, source.groovy",
-  "tabTrigger": "po"
-}

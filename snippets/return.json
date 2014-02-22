@@ -1,6 +1,0 @@
-{
-  "content": "return ",
-  "name": "return",
-  "scope": "source.java, source.groovy",
-  "tabTrigger": "re"
-}

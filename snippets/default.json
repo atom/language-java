@@ -1,6 +1,0 @@
-{
-  "content": "default:\n\t$0",
-  "name": "default",
-  "scope": "source.java",
-  "tabTrigger": "de"
-}

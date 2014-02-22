@@ -1,6 +1,0 @@
-{
-  "content": "import ",
-  "name": "import",
-  "scope": "source.java, source.groovy",
-  "tabTrigger": "im"
-}

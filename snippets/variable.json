@@ -1,6 +1,0 @@
-{
-  "content": "${1:String} ${2:var}${3: = ${0:null}};",
-  "name": "variable",
-  "scope": "source.java, source.groovy",
-  "tabTrigger": "v"
-}

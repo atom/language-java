@@ -1,6 +1,0 @@
-{
-  "content": "class ${1:${TM_FILENAME/(.*?)(\\..+)/$1/}} ${2:extends ${3:Parent} }${4:implements ${5:Interface} }{\n\t$0\n}",
-  "name": "class",
-  "scope": "source.java, source.groovy",
-  "tabTrigger": "cl"
-}

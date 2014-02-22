@@ -1,6 +1,0 @@
-{
-  "content": "System.out.print($1);$0",
-  "name": "print",
-  "scope": "source.java",
-  "tabTrigger": "p"
-}

@@ -1,6 +1,0 @@
-{
-  "content": "public class ${1:${TM_FILENAME/(.*?)(\\..+)/$1/}} extends ${2:TestCase} {\n\t$0\n}",
-  "name": "test case",
-  "scope": "source.java",
-  "tabTrigger": "tc"
-}

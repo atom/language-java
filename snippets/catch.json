@@ -1,6 +1,0 @@
-{
-  "content": "catch (${1:Exception} ${2:e}) {\n\t$0\n}",
-  "name": "catch",
-  "scope": "source.java, source.groovy",
-  "tabTrigger": "ca"
-}

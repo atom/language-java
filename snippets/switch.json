@@ -1,6 +1,0 @@
-{
-  "content": "switch ($1) {\n\t$0\n}",
-  "name": "switch",
-  "scope": "source.java, source.groovy",
-  "tabTrigger": "sw"
-}

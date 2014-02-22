@@ -1,6 +1,0 @@
-{
-  "content": "static public final String ${1:var} = \"$2\";$0",
-  "name": "constant string",
-  "scope": "source.java",
-  "tabTrigger": "cos"
-}
