@@ -325,6 +325,9 @@
   'code':
     'patterns': [
       {
+        'include': '#annotations'
+      }
+      {
         'include': '#comments'
       }
       {
