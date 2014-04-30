@@ -1,3 +1,5 @@
+'scopeName': 'text.html.jsp'
+'name': 'JavaServer Pages'
 'fileTypes': [
   'jsp'
   'jspf'
@@ -40,8 +42,6 @@
         'include': '#scriptlet'
       }
     ]
-'keyEquivalent': '^~J'
-'name': 'JavaServer Pages'
 'patterns': [
   {
     'include': '#xml_tags'
@@ -890,4 +890,3 @@
             'include': 'source.java'
           }
         ]
-'scopeName': 'text.html.jsp'

@@ -1,10 +1,10 @@
+'scopeName': 'source.java-properties'
+'name': 'Java Properties'
 'fileTypes': [
   'properties'
 ]
 'foldingStartMarker': '^[a-zA-Z0-9.-_]+=.*\\\n'
 'foldingStopMarker': '^(.*(?<!\\)\n)'
-'keyEquivalent': '^~J'
-'name': 'Java Properties'
 'patterns': [
   {
     'begin': '(^[ \\t]+)?(?=#)'
@@ -70,4 +70,3 @@
     ]
   }
 ]
-'scopeName': 'source.java-properties'

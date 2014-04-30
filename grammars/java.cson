@@ -1,9 +1,9 @@
+'scopeName': 'source.java'
+'name': 'Java'
 'fileTypes': [
   'java'
   'bsh'
 ]
-'keyEquivalent': '^~J'
-'name': 'Java'
 'patterns': [
   {
     'captures':
@@ -855,4 +855,3 @@
         ]
       }
     ]
-'scopeName': 'source.java'
