@@ -13,3 +13,10 @@
 '.source.java-properties':
   'editor':
     'commentStart': '# '
+'.text.jsp':
+  'editor':
+    'commentStart': '<%-- '
+    'commentEnd': ' --%>'
+    'foldEndPattern': '^\\s*(</[^>]+>|[/%]>|-->)\\s*$'
+    'increaseIndentPattern': '^\\s*<(([^!/?]|%)(?!.+?([/%]>|</.+?>))|[%!]--\\s*$)'
+    'decreaseIndentPattern': '^\\s*(</[^>]+>|-->|--%>)'
