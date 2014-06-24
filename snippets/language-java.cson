@@ -14,6 +14,9 @@
   'else if':
     'prefix': 'elif'
     'body': 'else if ($1) {\n\t$0\n}'
+  'do while':
+    'prefix': 'dow'
+    'body': 'do {\n\t$1\n} while ($2);$0'
   'else':
     'prefix': 'el'
     'body': 'else {\n\t$0\n}'
