@@ -746,7 +746,7 @@
     'captures':
       '1':
         'name': 'storage.modifier.java'
-    'match': '\\b(public|private|protected|static|final|native|synchronized|abstract|threadsafe|transient)\\b'
+    'match': '\\b(public|private|protected|static|final|native|synchronized|abstract|threadsafe|transient|volatile)\\b'
   'strings':
     'patterns': [
       {
