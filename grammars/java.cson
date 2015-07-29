@@ -427,7 +427,11 @@
         'name': 'constant.language.java'
       }
       {
-        'match': '\\b(this|super)\\b'
+        'match': '\\bthis\\b'
+        'name': 'variable.language.this.java'
+      }
+      {
+        'match': '\\bsuper\\b'
         'name': 'variable.language.java'
       }
       {
