@@ -478,6 +478,9 @@
           }
         ]
       }
+      {
+        'include': '#comments'
+      }
     ]
   'keywords':
     'patterns': [
