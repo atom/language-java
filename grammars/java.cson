@@ -147,7 +147,13 @@
         'patterns': [
           {
             'begin': '\\['
+            'beginCaptures':
+              '0':
+                'name': 'meta.brace.square.java'
             'end': '\\]'
+            'endCaptures':
+              '0':
+                'name': 'meta.brace.square.java'
             'patterns': [
               {
                 'include': '#code'
@@ -178,9 +184,12 @@
           {
             'begin': '\\('
             'beginCaptures':
-              '1':
-                'name': 'storage.type.java'
+              '0':
+                'name': 'meta.brace.round.java'
             'end': '\\)'
+            'endCaptures':
+              '0':
+                'name': 'meta.brace.round.java'
             'patterns': [
               {
                 'include': '#code'
@@ -578,11 +587,16 @@
         'include': '#storage-modifiers'
       }
       {
-        'begin': '(\\w+)\\s*\\('
+        'begin': '(\\w+)\\s*(\\()'
         'beginCaptures':
           '1':
             'name': 'entity.name.function.java'
+          '2':
+            'name': 'punctuation.definition.parameters.begin.java'
         'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.parameters.end.java'
         'name': 'meta.method.identifier.java'
         'patterns': [
           {
@@ -661,7 +675,13 @@
         'patterns': [
           {
             'begin': '\\['
+            'beginCaptures':
+              '0':
+                'name': 'meta.brace.square.java'
             'end': '\\]'
+            'endCaptures':
+              '0':
+                'name': 'meta.brace.square.java'
             'patterns': [
               {
                 'include': '#code'
@@ -728,11 +748,51 @@
       }
     ]
   'parens':
-    'begin': '\\('
-    'end': '\\)'
     'patterns': [
       {
-        'include': '#code'
+        'begin': '\\('
+        'beginCaptures':
+          '0':
+            'name': 'meta.brace.round.java'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'meta.brace.round.java'
+        'patterns': [
+          {
+            'include': '#code'
+          }
+        ]
+      }
+      {
+        'begin': '\\['
+        'beginCaptures':
+          '0':
+            'name': 'meta.brace.square.java'
+        'end': '\\]'
+        'endCaptures':
+          '0':
+            'name': 'meta.brace.square.java'
+        'patterns': [
+          {
+            'include': '#code'
+          }
+        ]
+      }
+      {
+        'begin': '\\{'
+        'beginCaptures':
+          '0':
+            'name': 'meta.brace.curly.java'
+        'end': '\\}'
+        'endCaptures':
+          '0':
+            'name': 'meta.brace.curly.java'
+        'patterns': [
+          {
+            'include': '#code'
+          }
+        ]
       }
     ]
   'primitive-arrays':

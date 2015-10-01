@@ -17,6 +17,31 @@ describe 'Java grammar', ->
 
     expect(tokens[0]).toEqual value: 'this', scopes: ['source.java', 'variable.language.this.java']
 
+  it 'tokenizes braces', ->
+    {tokens} = grammar.tokenizeLine '(3 + 5) + a[b]'
+
+    expect(tokens[0]).toEqual value: '(', scopes: ['source.java', 'meta.brace.round.java']
+    expect(tokens[6]).toEqual value: ')', scopes: ['source.java', 'meta.brace.round.java']
+    expect(tokens[10]).toEqual value: '[', scopes: ['source.java', 'meta.brace.square.java']
+    expect(tokens[12]).toEqual value: ']', scopes: ['source.java', 'meta.brace.square.java']
+
+    {tokens} = grammar.tokenizeLine 'a(b)'
+
+    expect(tokens[1]).toEqual value: '(', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.begin.java']
+    expect(tokens[3]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.end.java']
+
+    lines = grammar.tokenizeLines '''
+      class A
+      {
+        a(b)
+        {
+        }
+      }
+    '''
+
+    expect(lines[2][2]).toEqual value: '(', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.begin.java']
+    expect(lines[2][4]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.end.java']
+
   it 'tokenizes classes', ->
     lines = grammar.tokenizeLines '''
       class Thing {
@@ -45,3 +70,13 @@ describe 'Java grammar', ->
     expect(lines[1][2]).toEqual value: '* Comment about A ', scopes: comment
     expect(lines[1][3]).toEqual value: '*/', scopes: commentDefinition
     expect(lines[2][1]).toEqual value: 'A', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'constant.other.enum.java']
+
+  it 'tokenizes methods', ->
+    lines = grammar.tokenizeLines '''
+      class A
+      {
+        public static void main(String[] args)
+        {
+        }
+      }
+    '''
