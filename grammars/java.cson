@@ -331,6 +331,9 @@
         'include': '#comments'
       }
       {
+        'include': '#enums'
+      }
+      {
         'include': '#class'
       }
       {
@@ -447,34 +450,34 @@
       }
     ]
   'enums':
-    'begin': '^(?=\\s*[A-Z0-9_]+\\s*({|\\(|,))'
-    'end': '(?=;|})'
+    'begin': '^\\s*(enum)\\s+(\\w+)'
+    'beginCaptures':
+      '1':
+        'name': 'storage.modifier.java'
+      '2':
+        'name': 'entity.name.type.enum.java'
+    'end': '}'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.enum.end.java'
+    'name': 'meta.enum.java'
     'patterns': [
       {
-        'begin': '\\w+'
+        'include': '#parens'
+      }
+      {
+        'begin': '{'
         'beginCaptures':
           '0':
-            'name': 'constant.other.enum.java'
-        'end': '(?=,|;|})'
-        'name': 'meta.enum.java'
+            'name': 'punctuation.section.enum.begin.java'
+        'end': '(?=})'
         'patterns': [
           {
-            'include': '#parens'
+            'match': '\\w+'
+            'name': 'constant.other.enum.java'
           }
           {
-            'begin': '{'
-            'beginCaptures':
-              '0':
-                'name': 'punctuation.section.enum.begin.java'
-            'end': '}'
-            'endCaptures':
-              '0':
-                'name': 'punctuation.section.enum.end.java'
-            'patterns': [
-              {
-                'include': '#class-body'
-              }
-            ]
+            'include': '#class-body'
           }
         ]
       }
@@ -625,7 +628,7 @@
           '0':
             'name': 'punctuation.section.method.begin.java'
         'end': '(?=})'
-        'name': 'meta.method.body.java'
+        'contentName': 'meta.method.body.java'
         'patterns': [
           {
             'include': '#code'
