@@ -504,6 +504,10 @@
         'name': 'keyword.operator.java'
       }
       {
+        'match': '(->)'
+        'name': 'keyword.operator.arrow.java'
+      }
+      {
         'match': '(<<|>>>?|~|\\^)'
         'name': 'keyword.operator.bitwise.java'
       }
