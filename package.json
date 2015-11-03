@@ -1,6 +1,6 @@
 {
   "name": "language-java",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "description": "Java language support in Atom",
   "engines": {
     "atom": "*",

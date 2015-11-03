@@ -77,10 +77,10 @@
     'body': 'break;\n'
   'constant string':
     'prefix': 'cos'
-    'body': 'static public final String ${1:var} = "$2";$0'
+    'body': 'public static final String ${1:var} = "$2";$0'
   'constant':
     'prefix': 'co'
-    'body': 'static public final ${1:String} ${2:var} = $3;$0'
+    'body': 'public static final ${1:String} ${2:var} = $3;$0'
   'default':
     'prefix': 'de'
     'body': 'default:\n\t$0'
