@@ -669,24 +669,18 @@
         ]
       }
       {
-        'begin': '\\b((?:[a-z]\\w*\\.)*[A-Z]+\\w*)(?=\\[)'
-        'end': '(?=[^\\]\\s])'
+        'begin': '\\b((?:[a-z]\\w*\\.)*[A-Z]+\\w*)(\\[)'
+        'beginCaptures':
+          '2':
+            'name': 'meta.brace.square.java'
+        'end': '\\]'
+        'endCaptures':
+          '0':
+            'name': 'meta.brace.square.java'
         'name': 'storage.type.object.array.java'
         'patterns': [
           {
-            'begin': '\\['
-            'beginCaptures':
-              '0':
-                'name': 'meta.brace.square.java'
-            'end': '\\]'
-            'endCaptures':
-              '0':
-                'name': 'meta.brace.square.java'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
+            'include': '#code'
           }
         ]
       }
@@ -798,8 +792,13 @@
   'primitive-arrays':
     'patterns': [
       {
-        'match': '\\b(?:void|boolean|byte|char|short|int|float|long|double)(\\[\\])*\\b'
+        'match': '\\b(?:void|boolean|byte|char|short|int|float|long|double)(?:(\\[)|(\\]))*\\b'
         'name': 'storage.type.primitive.array.java'
+        'captures':
+          '1':
+            'name': 'meta.brace.square.java'
+          '2':
+            'name': 'meta.brace.square.java'
       }
     ]
   'primitive-types':
@@ -879,7 +878,23 @@
     'applyEndPatternLast': 1
     'patterns': [
       {
-        'begin': '(?x:(?=\n                        (?:\n                            (?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final) # visibility/modifier\n                                |\n                            (?:def)\n                                |\n                            (?:void|boolean|byte|char|short|int|float|long|double)\n                                |\n                            (?:(?:[a-z]\\w*\\.)*[A-Z]+\\w*) # object type\n                        )\n                        \\s+\n                        (?!private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final|def|void|boolean|byte|char|short|int|float|long|double)\n                        [\\w\\d_<>\\[\\],\\?][\\w\\d_<>\\[\\],\\? \\t]*\n                        (?:=|$)\n                        \n\t\t\t\t\t))'
+        'begin': '''
+          (?x:(?=
+            (?:
+              (?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final) # visibility/modifier
+              |
+              (?:def)
+              |
+              (?:void|boolean|byte|char|short|int|float|long|double)
+              |
+              (?:(?:[a-z]\\w*\\.)*[A-Z]+\\w*) # object type
+            )
+            \\s+
+            (?!private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final|def|void|boolean|byte|char|short|int|float|long|double)
+            [\\w\\d_<>\\[\\],\\?][\\w\\d_<>\\[\\],\\?\\s]*
+            (?:=|$)
+          ))
+        '''
         'end': '(?=;)'
         'name': 'meta.definition.variable.java'
         'patterns': [

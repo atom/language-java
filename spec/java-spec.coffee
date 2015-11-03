@@ -33,14 +33,20 @@ describe 'Java grammar', ->
     lines = grammar.tokenizeLines '''
       class A
       {
-        a(b)
+        public static void main(String[] args)
         {
         }
       }
     '''
 
-    expect(lines[2][2]).toEqual value: '(', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.begin.java']
-    expect(lines[2][4]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.end.java']
+    expect(lines[1][0]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.section.class.begin.java']
+    expect(lines[2][8]).toEqual value: '(', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.begin.java']
+    expect(lines[2][10]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.object.array.java', 'meta.brace.square.java']
+    expect(lines[2][11]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.object.array.java', 'meta.brace.square.java']
+    expect(lines[2][14]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.end.java']
+    expect(lines[3][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'punctuation.section.method.begin.java']
+    expect(lines[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.end.java']
+    expect(lines[5][0]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'punctuation.section.class.end.java']
 
   it 'tokenizes classes', ->
     lines = grammar.tokenizeLines '''
@@ -70,13 +76,3 @@ describe 'Java grammar', ->
     expect(lines[1][2]).toEqual value: '* Comment about A ', scopes: comment
     expect(lines[1][3]).toEqual value: '*/', scopes: commentDefinition
     expect(lines[2][1]).toEqual value: 'A', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'constant.other.enum.java']
-
-  it 'tokenizes methods', ->
-    lines = grammar.tokenizeLines '''
-      class A
-      {
-        public static void main(String[] args)
-        {
-        }
-      }
-    '''
