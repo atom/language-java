@@ -68,3 +68,15 @@ describe 'Java grammar', ->
     expect(lines[2][10]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java']
     expect(lines[3][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.begin.java']
     expect(lines[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.end.java']
+
+  it 'tokenizes arrow operator', ->
+    lines = grammar.tokenizeLines '''
+      (String s1) -> s1.length() - outer.length();
+    '''
+
+    expect(lines[0][1]).toEqual value: 'String', scopes: ['source.java', 'storage.type.java']
+    expect(lines[0][5]).toEqual value: '->', scopes: ['source.java', 'keyword.operator.arrow.java']
+    expect(lines[0][7]).toEqual value: '.', scopes: ['source.java', 'keyword.operator.dereference.java']
+    expect(lines[0][9]).toEqual value: '(', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.begin.java']
+    expect(lines[0][10]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.end.java']
+    expect(lines[0][12]).toEqual value: '-', scopes: ['source.java', 'keyword.operator.arithmetic.java']
