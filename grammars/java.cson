@@ -505,7 +505,7 @@
       }
       {
         'match': '(->)'
-        'name': 'keyword.operator.arrow.java'
+        'name': 'storage.type.function.arrow.java'
       }
       {
         'match': '(<<|>>>?|~|\\^)'
