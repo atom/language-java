@@ -554,7 +554,7 @@
   'lambda-expression':
     'patterns': [
       {
-        'match': '(->)'
+        'match': '->'
         'name': 'storage.type.function.arrow.java'
       }
     ]
