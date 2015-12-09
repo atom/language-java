@@ -296,7 +296,7 @@
           '0':
             'name': 'punctuation.section.class.begin.java'
         'end': '(?=})'
-        'name': 'meta.class.body.java'
+        'contentName': 'meta.class.body.java'
         'patterns': [
           {
             'include': '#class-body'
@@ -471,9 +471,6 @@
         'name': 'punctuation.section.enum.end.java'
     'name': 'meta.enum.java'
     'patterns': [
-      {
-        'include': '#parens'
-      }
       {
         'begin': '{'
         'beginCaptures':
@@ -777,11 +774,11 @@
         ]
       }
       {
-        'begin': '\\{'
+        'begin': '{'
         'beginCaptures':
           '0':
             'name': 'meta.brace.curly.java'
-        'end': '\\}'
+        'end': '}'
         'endCaptures':
           '0':
             'name': 'meta.brace.curly.java'
