@@ -247,6 +247,9 @@
         'include': '#storage-modifiers'
       }
       {
+        'include': '#generics'
+      }
+      {
         'include': '#comments'
       }
       {
@@ -317,6 +320,9 @@
       }
       {
         'include': '#variables'
+      }
+      {
+        'include': '#generics'
       }
       {
         'include': '#methods'
@@ -456,6 +462,45 @@
             'name': 'keyword.operator.dereference.java'
         'match': '(\\.)?\\b([A-Z][A-Z0-9_]+)(?!<|\\.class|\\s*\\w+\\s*=)\\b'
         'name': 'constant.other.java'
+      }
+    ]
+  'generics':
+    'begin': '<'
+    'beginCaptures':
+      '0':
+        'name': 'meta.brace.angle.java'
+    'end': '>'
+    'endCaptures':
+      '0':
+        'name': 'meta.brace.angle.java'
+    'patterns': [
+      {
+        'match': '\\b(extends|super)\\b'
+        'name': 'storage.modifier.$1.java'
+      }
+      {
+        'match': '([a-zA-Z$_][a-zA-Z0-9$_]*)(?=\\s*<)'
+        'captures':
+          '1':
+            'name': 'storage.type.java'
+      }
+      {
+        'match': '[a-zA-Z$_][a-zA-Z0-9$_]*'
+        'name': 'storage.type.generic.java'
+      }
+      {
+        'match': '\\?'
+        'name': 'storage.type.generic.wildcard.java'
+      }
+      {
+        'match': ','
+        'name': 'punctuation.definition.separator.parameters.java'
+      }
+      {
+        'include': '#generics'
+      }
+      {
+        'include': '#comments'
       }
     ]
   'enums':
@@ -605,20 +650,7 @@
         ]
       }
       {
-        'begin': '<'
-        'end': '>'
-        'name': 'storage.type.token.java'
-        'patterns': [
-          {
-            'include': '#object-types'
-          }
-          {
-            'begin': '<'
-            'comment': 'This is just to support <>\'s with no actual type prefix'
-            'end': '>|[^\\w\\s,\\[\\]<]'
-            'name': 'storage.type.generic.java'
-          }
-        ]
+        'include': '#generics'
       }
       {
         'begin': '(?=\\w.*\\s+\\w+\\s*\\()'
@@ -653,20 +685,7 @@
   'object-types':
     'patterns': [
       {
-        'begin': '\\b((?:[a-z]\\w*\\.)*[A-Z]+\\w*)<'
-        'end': '>|[^\\w\\s,\\?<\\[\\]]'
-        'name': 'storage.type.generic.java'
-        'patterns': [
-          {
-            'include': '#object-types'
-          }
-          {
-            'begin': '<'
-            'comment': 'This is just to support <>\'s with no actual type prefix'
-            'end': '>|[^\\w\\s,\\[\\]<]'
-            'name': 'storage.type.generic.java'
-          }
-        ]
+        'include': '#generics'
       }
       {
         'begin': '\\b((?:[a-z]\\w*\\.)*[A-Z]+\\w*)(\\[)'
@@ -695,20 +714,7 @@
   'object-types-inherited':
     'patterns': [
       {
-        'begin': '\\b((?:[a-z]\\w*\\.)*[A-Z]+\\w*)<'
-        'end': '>|[^\\w\\s,<]'
-        'name': 'entity.other.inherited-class.java'
-        'patterns': [
-          {
-            'include': '#object-types'
-          }
-          {
-            'begin': '<'
-            'comment': 'This is just to support <>\'s with no actual type prefix'
-            'end': '>|[^\\w\\s,<]'
-            'name': 'storage.type.generic.java'
-          }
-        ]
+        'include': '#generics'
       }
       {
         'captures':

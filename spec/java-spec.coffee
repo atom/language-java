@@ -31,7 +31,7 @@ describe 'Java grammar', ->
     expect(tokens[3]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.end.java']
 
     lines = grammar.tokenizeLines '''
-      class A
+      class A<String>
       {
         public static void main(String[] args)
         {
@@ -39,6 +39,8 @@ describe 'Java grammar', ->
       }
     '''
 
+    expect(lines[0][3]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.brace.angle.java']
+    expect(lines[0][5]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.brace.angle.java']
     expect(lines[1][0]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'punctuation.section.class.begin.java']
     expect(lines[2][8]).toEqual value: '(', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.begin.java']
     expect(lines[2][10]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.object.array.java', 'meta.brace.square.java']
@@ -99,3 +101,46 @@ describe 'Java grammar', ->
     expect(lines[2][10]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.end.java']
     expect(lines[3][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.begin.java']
     expect(lines[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.end.java']
+
+  it 'tokenizes generics', ->
+    lines = grammar.tokenizeLines '''
+      class A<T, String, Integer>
+      {
+        HashMap<Integer, String> map = new HashMap<>();
+        C(Map<?, ? extends List<?>> m)
+        {
+        }
+      }
+    '''
+
+    expect(lines[0][3]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.brace.angle.java']
+    expect(lines[0][4]).toEqual value: 'T', scopes: ['source.java', 'meta.class.java', 'storage.type.generic.java']
+    expect(lines[0][5]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'punctuation.definition.separator.parameters.java']
+    expect(lines[0][6]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java']
+    expect(lines[0][7]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'storage.type.generic.java']
+    expect(lines[0][8]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'punctuation.definition.separator.parameters.java']
+    expect(lines[0][9]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java']
+    expect(lines[0][10]).toEqual value: 'Integer', scopes: ['source.java', 'meta.class.java', 'storage.type.generic.java']
+    expect(lines[0][11]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.brace.angle.java']
+    expect(lines[2][1]).toEqual value: 'HashMap', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.type.java']
+    expect(lines[2][2]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.brace.angle.java']
+    expect(lines[2][3]).toEqual value: 'Integer', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.type.generic.java']
+    expect(lines[2][4]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.definition.separator.parameters.java']
+    expect(lines[2][6]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.type.generic.java']
+    expect(lines[2][7]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.brace.angle.java']
+    expect(lines[2][13]).toEqual value: 'HashMap', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.type.java']
+    expect(lines[2][14]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.brace.angle.java']
+    expect(lines[2][15]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.brace.angle.java']
+    expect(lines[3][1]).toEqual value: 'C', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[3][3]).toEqual value: 'Map', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.java']
+    expect(lines[3][4]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'meta.brace.angle.java']
+    expect(lines[3][5]).toEqual value: '?', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.generic.wildcard.java']
+    expect(lines[3][6]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.separator.parameters.java']
+    expect(lines[3][8]).toEqual value: '?', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.generic.wildcard.java']
+    expect(lines[3][10]).toEqual value: 'extends', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.modifier.extends.java']
+    expect(lines[3][12]).toEqual value: 'List', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.java']
+    expect(lines[3][13]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'meta.brace.angle.java']
+    expect(lines[3][14]).toEqual value: '?', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.generic.wildcard.java']
+    expect(lines[3][15]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'meta.brace.angle.java']
+    expect(lines[3][16]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'meta.brace.angle.java']
+    expect(lines[3][18]).toEqual value: 'm', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'variable.parameter.java']
