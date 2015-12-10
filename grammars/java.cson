@@ -379,6 +379,9 @@
         'include': '#anonymous-classes-and-new'
       }
       {
+        'include': '#lambda-expression'
+      }
+      {
         'include': '#keywords'
       }
       {
@@ -597,6 +600,13 @@
       {
         'match': ';'
         'name': 'punctuation.terminator.java'
+      }
+    ]
+  'lambda-expression':
+    'patterns': [
+      {
+        'match': '->'
+        'name': 'storage.type.function.arrow.java'
       }
     ]
   'method-call':
