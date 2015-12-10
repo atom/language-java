@@ -497,7 +497,7 @@
       }
       {
         'match': ','
-        'name': 'punctuation.definition.separator.parameters.java'
+        'name': 'punctuation.definition.separator.parameter.java'
       }
       {
         'include': '#generics'
@@ -755,6 +755,10 @@
       {
         'match': '\\w+'
         'name': 'variable.parameter.java'
+      }
+      {
+        'match': ','
+        'name': 'punctuation.definition.separator.parameter.java'
       }
     ]
   'parens':
