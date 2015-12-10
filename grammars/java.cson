@@ -119,7 +119,7 @@
           }
           {
             'match': ','
-            'name': 'punctuation.seperator.property.java'
+            'name': 'punctuation.separator.delimiter.java'
           }
         ]
       }
@@ -227,7 +227,7 @@
         'patterns': [
           {
             'match': ':'
-            'name': 'keyword.operator.assert.expression-seperator.java'
+            'name': 'keyword.operator.assert.expression-separator.java'
           }
           {
             'include': '#code'
@@ -497,7 +497,7 @@
       }
       {
         'match': ','
-        'name': 'punctuation.definition.separator.parameter.java'
+        'name': 'punctuation.separator.delimiter.java'
       }
       {
         'include': '#generics'
@@ -624,7 +624,7 @@
     'patterns': [
       {
         'match': ','
-        'name': 'punctuation.definition.seperator.parameter.java'
+        'name': 'punctuation.separator.delimiter.java'
       }
       {
         'include': '#code'
@@ -758,7 +758,7 @@
       }
       {
         'match': ','
-        'name': 'punctuation.definition.separator.parameter.java'
+        'name': 'punctuation.separator.delimiter.java'
       }
     ]
   'parens':
@@ -788,6 +788,10 @@
           '0':
             'name': 'meta.brace.square.java'
         'patterns': [
+          {
+            'match': ','
+            'name': 'punctuation.separator.delimiter.java'
+          }
           {
             'include': '#code'
           }
