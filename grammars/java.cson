@@ -396,6 +396,10 @@
       {
         'include': '#all-types'
       }
+      {
+        'match': ','
+        'name': 'punctuation.separator.delimiter.java'
+      }
     ]
   'comments':
     'patterns': [
@@ -884,18 +888,6 @@
     'patterns': [
       {
         'include': '#object-types'
-      }
-    ]
-  'values':
-    'patterns': [
-      {
-        'include': '#strings'
-      }
-      {
-        'include': '#object-types'
-      }
-      {
-        'include': '#constants-and-special-vars'
       }
     ]
   'variables':
