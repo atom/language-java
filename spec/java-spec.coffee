@@ -50,6 +50,19 @@ describe 'Java grammar', ->
     expect(lines[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.end.java']
     expect(lines[5][0]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'punctuation.section.class.end.java']
 
+  it 'tokenizes punctuation', ->
+    {tokens} = grammar.tokenizeLine 'int a, b, c;'
+
+    expect(tokens[2]).toEqual value: ',', scopes: ['source.java', 'punctuation.separator.delimiter.java']
+    expect(tokens[4]).toEqual value: ',', scopes: ['source.java', 'punctuation.separator.delimiter.java']
+    expect(tokens[6]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+
+    {tokens} = grammar.tokenizeLine 'a(1, 2, c);'
+
+    expect(tokens[3]).toEqual value: ',', scopes: ['source.java', 'meta.method-call.java', 'punctuation.separator.delimiter.java']
+    expect(tokens[6]).toEqual value: ',', scopes: ['source.java', 'meta.method-call.java', 'punctuation.separator.delimiter.java']
+    expect(tokens[9]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+
   it 'tokenizes classes', ->
     lines = grammar.tokenizeLines '''
       class Thing {
