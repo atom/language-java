@@ -57,11 +57,16 @@ describe 'Java grammar', ->
     expect(tokens[4]).toEqual value: ',', scopes: ['source.java', 'punctuation.separator.delimiter.java']
     expect(tokens[6]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
-    {tokens} = grammar.tokenizeLine 'a(1, 2, c);'
+    {tokens} = grammar.tokenizeLine 'a.b(1, 2, c);'
 
-    expect(tokens[3]).toEqual value: ',', scopes: ['source.java', 'meta.method-call.java', 'punctuation.separator.delimiter.java']
-    expect(tokens[6]).toEqual value: ',', scopes: ['source.java', 'meta.method-call.java', 'punctuation.separator.delimiter.java']
-    expect(tokens[9]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+    expect(tokens[1]).toEqual value: '.', scopes: ['source.java', 'keyword.operator.dereference.java']
+    expect(tokens[5]).toEqual value: ',', scopes: ['source.java', 'meta.method-call.java', 'punctuation.separator.delimiter.java']
+    expect(tokens[8]).toEqual value: ',', scopes: ['source.java', 'meta.method-call.java', 'punctuation.separator.delimiter.java']
+    expect(tokens[11]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+
+    {tokens} = grammar.tokenizeLine 'a . b'
+
+    expect(tokens[1]).toEqual value: '.', scopes: ['source.java', 'keyword.operator.dereference.java']
 
   it 'tokenizes classes', ->
     lines = grammar.tokenizeLines '''
@@ -117,7 +122,7 @@ describe 'Java grammar', ->
 
   it 'tokenizes generics', ->
     lines = grammar.tokenizeLines '''
-      class A<T, String, Integer>
+      class A<T extends A & B, String, Integer>
       {
         HashMap<Integer, String> map = new HashMap<>();
         C(Map<?, ? extends List<?>> m)
@@ -128,13 +133,21 @@ describe 'Java grammar', ->
 
     expect(lines[0][3]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.brace.angle.java']
     expect(lines[0][4]).toEqual value: 'T', scopes: ['source.java', 'meta.class.java', 'storage.type.generic.java']
-    expect(lines[0][5]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'punctuation.separator.delimiter.java']
-    expect(lines[0][6]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java']
-    expect(lines[0][7]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'storage.type.generic.java']
-    expect(lines[0][8]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'punctuation.separator.delimiter.java']
+    expect(lines[0][5]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java']
+    expect(lines[0][6]).toEqual value: 'extends', scopes: ['source.java', 'meta.class.java', 'storage.modifier.extends.java']
+    expect(lines[0][7]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java']
+    expect(lines[0][8]).toEqual value: 'A', scopes: ['source.java', 'meta.class.java', 'storage.type.generic.java']
     expect(lines[0][9]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java']
-    expect(lines[0][10]).toEqual value: 'Integer', scopes: ['source.java', 'meta.class.java', 'storage.type.generic.java']
-    expect(lines[0][11]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.brace.angle.java']
+    expect(lines[0][10]).toEqual value: '&', scopes: ['source.java', 'meta.class.java', 'punctuation.separator.types.java']
+    expect(lines[0][11]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java']
+    expect(lines[0][12]).toEqual value: 'B', scopes: ['source.java', 'meta.class.java', 'storage.type.generic.java']
+    expect(lines[0][13]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'punctuation.separator.delimiter.java']
+    expect(lines[0][14]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java']
+    expect(lines[0][15]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'storage.type.generic.java']
+    expect(lines[0][16]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'punctuation.separator.delimiter.java']
+    expect(lines[0][17]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java']
+    expect(lines[0][18]).toEqual value: 'Integer', scopes: ['source.java', 'meta.class.java', 'storage.type.generic.java']
+    expect(lines[0][19]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.brace.angle.java']
     expect(lines[2][1]).toEqual value: 'HashMap', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.type.java']
     expect(lines[2][2]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.brace.angle.java']
     expect(lines[2][3]).toEqual value: 'Integer', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.type.generic.java']

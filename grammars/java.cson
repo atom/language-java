@@ -467,7 +467,7 @@
         'captures':
           '1':
             'name': 'keyword.operator.dereference.java'
-        'match': '(\\.)?\\b([A-Z][A-Z0-9_]+)(?!<|\\.class|\\s*\\w+\\s*=)\\b'
+        'match': '(\\.)?\\s*\\b([A-Z][A-Z0-9_]+)(?!<|\\.\\s*class|\\s*\\w+\\s*=)\\b'
         'name': 'constant.other.java'
       }
     ]
@@ -498,6 +498,10 @@
       {
         'match': '\\?'
         'name': 'storage.type.generic.wildcard.java'
+      }
+      {
+        'match': '&'
+        'name': 'punctuation.separator.types.java'
       }
       {
         'match': ','
@@ -598,7 +602,7 @@
         'name': 'keyword.operator.bitwise.java'
       }
       {
-        'match': '(?<=\\S)\\.(?=\\S)'
+        'match': '\\.'
         'name': 'keyword.operator.dereference.java'
       }
       {
@@ -702,7 +706,7 @@
         'include': '#generics'
       }
       {
-        'begin': '\\b((?:[a-z]\\w*\\.)*[A-Z]+\\w*)(\\[)'
+        'begin': '\\b((?:[a-z]\\w*\\s*\\.\\s*)*[A-Z]+\\w*)(\\[)'
         'beginCaptures':
           '2':
             'name': 'meta.brace.square.java'
@@ -721,7 +725,7 @@
         'captures':
           '1':
             'name': 'keyword.operator.dereference.java'
-        'match': '\\b(?:[a-z]\\w*(\\.))*[A-Z]+\\w*\\b'
+        'match': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b'
         'name': 'storage.type.java'
       }
     ]
@@ -734,7 +738,7 @@
         'captures':
           '1':
             'name': 'keyword.operator.dereference.java'
-        'match': '\\b(?:[a-z]\\w*(\\.))*[A-Z]+\\w*'
+        'match': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*'
         'name': 'entity.other.inherited-class.java'
       }
     ]
@@ -903,7 +907,7 @@
               |
               (?:void|boolean|byte|char|short|int|float|long|double)
               |
-              (?:(?:[a-z]\\w*\\.)*[A-Z]+\\w*) # object type
+              (?:(?:[a-z]\\w*\\s*\\.\\s*)*[A-Z]+\\w*) # object type
             )
             \\s+
             (?!private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final|def|void|boolean|byte|char|short|int|float|long|double)
