@@ -87,9 +87,6 @@
       {
         'include': '#primitive-types'
       }
-      {
-        'include': '#object-types'
-      }
     ]
   'annotations':
     'patterns': [
@@ -383,6 +380,9 @@
       }
       {
         'include': '#keywords'
+      }
+      {
+        'include': '#object-types'
       }
       {
         'include': '#storage-modifiers'
@@ -722,10 +722,27 @@
         ]
       }
       {
+        # Match possible generics first, eg Wow<String> instead of just Wow
+        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b\\s*(?=<)'
+        'beginCaptures':
+          '0':
+            'name': 'storage.type.java'
+          '1':
+            'name': 'keyword.operator.dereference.java'
+        'end': '(?<=>)'
+        'patterns': [
+          {
+            'include': '#generics'
+          }
+        ]
+
+      }
+      {
+        # If the above fails *then* just look for Wow
+        'match': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b'
         'captures':
           '1':
             'name': 'keyword.operator.dereference.java'
-        'match': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b'
         'name': 'storage.type.java'
       }
     ]
