@@ -87,6 +87,9 @@
       {
         'include': '#primitive-types'
       }
+      {
+        'include': '#object-types'
+      }
     ]
   'annotations':
     'patterns': [
@@ -380,9 +383,6 @@
       }
       {
         'include': '#keywords'
-      }
-      {
-        'include': '#object-types'
       }
       {
         'include': '#storage-modifiers'
@@ -843,7 +843,7 @@
   'primitive-arrays':
     'patterns': [
       {
-        'match': '\\b(?:void|boolean|byte|char|short|int|float|long|double)(?:(\\[)|(\\]))*\\b'
+        'match': '\\b(?:void|boolean|byte|char|short|int|float|long|double)(?:(\\[)|(\\]))+\\b'
         'name': 'storage.type.primitive.array.java'
         'captures':
           '1':
