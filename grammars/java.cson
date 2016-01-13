@@ -508,6 +508,9 @@
         'name': 'punctuation.separator.delimiter.java'
       }
       {
+        'include': '#parens'
+      }
+      {
         'include': '#generics'
       }
       {
