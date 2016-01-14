@@ -68,6 +68,10 @@ describe 'Java grammar', ->
 
     expect(tokens[1]).toEqual value: '.', scopes: ['source.java', 'keyword.operator.dereference.java']
 
+    {tokens} = grammar.tokenizeLine 'class A implements B, C'
+
+    expect(tokens[7]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'meta.definition.class.implemented.interfaces.java', 'punctuation.separator.delimiter.java']
+
   it 'tokenizes classes', ->
     lines = grammar.tokenizeLines '''
       class Thing {

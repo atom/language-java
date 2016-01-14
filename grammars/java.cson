@@ -760,6 +760,10 @@
         'match': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*'
         'name': 'entity.other.inherited-class.java'
       }
+      {
+        'match': ','
+        'name': 'punctuation.separator.delimiter.java'
+      }
     ]
   'parameters':
     'patterns': [
