@@ -21,7 +21,7 @@
         'include': '#comments'
       }
       {
-        'match': '\\.{2,}|\\.\\s*(?=;)'
+        'match': '(?<=\\.)\\.|\\.\\s*(?=;)'
         'name': 'invalid.illegal.character_not_allowed_here.java'
       }
       {

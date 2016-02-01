@@ -72,6 +72,48 @@ describe 'Java grammar', ->
 
     expect(tokens[7]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'meta.definition.class.implemented.interfaces.java', 'punctuation.separator.delimiter.java']
 
+  it 'tokenizes the `package` keyword', ->
+    {tokens} = grammar.tokenizeLine 'package java.util.example;'
+
+    expect(tokens[0]).toEqual value: 'package', scopes: ['source.java', 'meta.package.java', 'keyword.other.package.java']
+    expect(tokens[1]).toEqual value: ' ', scopes: ['source.java', 'meta.package.java']
+    expect(tokens[2]).toEqual value: 'java', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java']
+    expect(tokens[3]).toEqual value: '.', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'punctuation.separator.java']
+    expect(tokens[4]).toEqual value: 'util', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java']
+    expect(tokens[7]).toEqual value: ';', scopes: ['source.java', 'meta.package.java', 'punctuation.terminator.java']
+
+    {tokens} = grammar.tokenizeLine 'package java.Hi;'
+
+    expect(tokens[4]).toEqual value: 'H', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'package java.3a;'
+
+    expect(tokens[4]).toEqual value: '3', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'package java.-hi;'
+
+    expect(tokens[4]).toEqual value: '-', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'package java.int;'
+
+    expect(tokens[4]).toEqual value: 'int', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'package java.interesting;'
+
+    expect(tokens[4]).toEqual value: 'interesting', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java']
+
+    {tokens} = grammar.tokenizeLine 'package java..hi;'
+
+    expect(tokens[4]).toEqual value: '.', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'package java. hi;'
+
+    expect(tokens[4]).toEqual value: ' ', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'package java.;'
+
+    expect(tokens[3]).toEqual value: '.', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
+
   it 'tokenizes classes', ->
     lines = grammar.tokenizeLines '''
       class Thing {
