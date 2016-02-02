@@ -78,3 +78,53 @@ describe 'Java grammar', ->
     expect(tokens[9]).toEqual value: '(', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.begin.java']
     expect(tokens[10]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.end.java']
     expect(tokens[12]).toEqual value: '-', scopes: ['source.java', 'keyword.operator.arithmetic.java']
+
+  it 'tokenizes `new` statements', ->
+    {tokens} = grammar.tokenizeLine 'int[] list = new int[10];'
+
+    expect(tokens[8]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
+    expect(tokens[9]).toEqual value: ' ', scopes: ['source.java']
+    expect(tokens[10]).toEqual value: 'int', scopes: ['source.java', 'storage.type.primitive.array.java']
+    expect(tokens[11]).toEqual value: '[', scopes: ['source.java', 'storage.type.primitive.array.java', 'meta.brace.square.java']
+    expect(tokens[12]).toEqual value: '10', scopes: ['source.java', 'storage.type.primitive.array.java', 'constant.numeric.java']
+    expect(tokens[13]).toEqual value: ']', scopes: ['source.java', 'storage.type.primitive.array.java', 'meta.brace.square.java']
+    expect(tokens[14]).toEqual value: ';', scopes: ['source.java', 'puntuation.terminator.java']
+
+    {tokens} = grammar.tokenizeLine 'String[] list = new String[]{"hi", "abc", "etc"};'
+
+    expect(tokens[8]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
+    expect(tokens[10]).toEqual value: 'String', scopes: ['source.java', 'storage.type.object.array.java']
+    expect(tokens[13]).toEqual value: '{', scopes: ['source.java', 'meta.brace.curly.java']
+    expect(tokens[14]).toEqual value: '"', scopes: ['source.java', 'string.quoted.double.java', 'punctuation.definition.string.begin.java']
+    expect(tokens[15]).toEqual value: 'hi', scopes: ['source.java', 'string.quoted.double.java']
+    expect(tokens[16]).toEqual value: '"', scopes: ['source.java', 'string.quoted.double.java', 'punctuation.definition.string.end.java']
+    expect(tokens[17]).toEqual value: ',', scopes: ['source.java', 'punctuation.separator.delimiter.java']
+    expect(tokens[18]).toEqual value: ' ', scopes: ['source.java']
+    expect(tokens[27]).toEqual value: '}', scopes: ['source.java', 'meta.brace.curly.java']
+    expect(tokens[28]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+
+    {tokens} = grammar.tokenizeLine 'Point point = new Point(1, 4);'
+
+    expect(tokens[8]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
+    expect(tokens[10]).toEqual value: 'Point', scopes: ['source.java', 'meta.method-call.java', 'storage.type.java']
+    expect(tokens[11]).toEqual value: '(', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.begin.java']
+    expect(tokens[16]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.end.java']
+    expect(tokens[17]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+
+    lines = grammar.tokenizeLine '''
+      Point point = new Point()
+      {
+        public void something(x)
+        {
+          int y = x;
+        }
+      };
+      '''
+
+    expect(lines[0][8]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
+    expect(lines[0][10]).toEqual value: 'Point', scopes: ['source.java', 'meta.method-call.java', 'storage.type.java']
+    expect(lines[1][0]).toEqual value: '{', scopes: ['source.java', 'meta.inner-class.java', 'punctuation.section.inner-class.begin.java']
+    expect(lines[2][1]).toEqual value: 'public', scopes: ['source.java', 'meta.inner-class.java', 'meta.method.java', 'storage.modifier.java']
+    expect(lines[4][1]).toEqual value: 'int', scopes: ['source.java', 'meta.inner-class.java', 'meta.method.java', 'meta.method.body.java', 'storage.type.primitive.array.java']
+    expect(lines[6][0]).toEqual value: '}', scopes: ['source.java', 'meta.inner-class.java', 'punctuation.section.inner-class.end.java']
+    expect(lines[6][1]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']

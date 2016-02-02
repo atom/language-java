@@ -133,66 +133,41 @@
     'beginCaptures':
       '0':
         'name': 'keyword.control.new.java'
-    'end': '(?<=\\)|\\])(?!\\s*{)|(?<=})|(?=;)'
+    'end': ';'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.terminator.java'
     'patterns': [
       {
-        'begin': '(\\w+)\\s*(?=\\[)'
+        # Taken from `method-call`
+        'begin': '([a-zA-Z_$][a-zA-Z_$0-9]*)\\s*(\\()'
         'beginCaptures':
           '1':
             'name': 'storage.type.java'
-        'end': '(})|(?=\\s*(?:,|;|\\)))'
+          '2':
+            'name': 'punctuation.definition.method-parameters.begin.java'
+        'end': '\\)'
         'endCaptures':
-          '1':
-            'name': 'punctuation.section.block.end.java'
-        'patterns': [
-          {
-            'begin': '\\['
-            'end': '\\]'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
-          }
-          {
-            'begin': '{'
-            'beginCaptures':
-              '0':
-                'name': 'punctuation.section.block.begin.java'
-            'end': '(?=})'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
-          }
-        ]
-      }
-      {
-        'begin': '(?=\\w.*\\()'
-        'end': '(?<=\\))'
-        'patterns': [
-          {
-            'include': '#object-types'
-          }
-          {
-            'begin': '\\('
-            'beginCaptures':
-              '1':
-                'name': 'storage.type.java'
-            'end': '\\)'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
-          }
-        ]
-      }
-      {
-        'begin': '{'
-        'beginCaptures':
           '0':
+            'name': 'punctuation.definition.method-parameters.end.java'
+        'name': 'meta.method-call.java'
+        'patterns': [
+          {
+            'match': ','
+            'name': 'punctuation.definition.seperator.parameter.java'
+          }
+          {
+            'include': '#code'
+          }
+        ]
+      }
+      {
+        'include': '#all-types'
+      }
+      {
+        'begin': '(?<!\\])\\s*({)' # Don't match new int[]{1, 2, 3};
+        'beginCaptures':
+          '1':
             'name': 'punctuation.section.inner-class.begin.java'
         'end': '}'
         'endCaptures':
@@ -204,6 +179,9 @@
             'include': '#class-body'
           }
         ]
+      }
+      {
+        'include': '#parens'
       }
     ]
   'assertions':
@@ -559,7 +537,7 @@
       }
     ]
   'method-call':
-    'begin': '([\\w$]+)(\\()'
+    'begin': '([a-zA-Z_$][a-zA-Z_$0-9]*)\\s*(\\()'
     'beginCaptures':
       '1':
         'name': 'meta.method.java'
