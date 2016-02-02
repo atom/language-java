@@ -845,10 +845,6 @@
             'name': 'meta.brace.square.java'
         'patterns': [
           {
-            'match': ','
-            'name': 'punctuation.separator.delimiter.java'
-          }
-          {
             'include': '#code'
           }
         ]
