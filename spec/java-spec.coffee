@@ -100,6 +100,14 @@ describe 'Java grammar', ->
 
     expect(tokens[4]).toEqual value: '-', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
 
+    {tokens} = grammar.tokenizeLine 'package java._;'
+
+    expect(tokens[4]).toEqual value: '_', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'package java.__;'
+
+    expect(tokens[4]).toEqual value: '__', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java']
+
     {tokens} = grammar.tokenizeLine 'package java.int;'
 
     expect(tokens[4]).toEqual value: 'int', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
@@ -112,13 +120,67 @@ describe 'Java grammar', ->
 
     expect(tokens[4]).toEqual value: '.', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
 
-    {tokens} = grammar.tokenizeLine 'package java. hi;'
-
-    expect(tokens[4]).toEqual value: ' ', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
-
     {tokens} = grammar.tokenizeLine 'package java.;'
 
     expect(tokens[3]).toEqual value: '.', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
+
+  it 'tokenizes the `import` keyword', ->
+    {tokens} = grammar.tokenizeLine 'import java.util.Example;'
+
+    expect(tokens[0]).toEqual value: 'import', scopes: ['source.java', 'meta.import.java', 'keyword.other.import.java']
+    expect(tokens[1]).toEqual value: ' ', scopes: ['source.java', 'meta.import.java']
+    expect(tokens[2]).toEqual value: 'java', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java']
+    expect(tokens[3]).toEqual value: '.', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'punctuation.separator.java']
+    expect(tokens[4]).toEqual value: 'util', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java']
+    expect(tokens[7]).toEqual value: ';', scopes: ['source.java', 'meta.import.java', 'punctuation.terminator.java']
+
+    {tokens} = grammar.tokenizeLine 'import java.util.*;'
+
+    expect(tokens[6]).toEqual value: '*', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'punctuation.wildcard.java']
+
+    {tokens} = grammar.tokenizeLine 'import static java.lang.Math.PI;'
+
+    expect(tokens[2]).toEqual value: 'static', scopes: ['source.java', 'meta.import.java', 'storage.modifier.java']
+
+    {tokens} = grammar.tokenizeLine 'import java.3a;'
+
+    expect(tokens[4]).toEqual value: '3', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'import java.-hi;'
+
+    expect(tokens[4]).toEqual value: '-', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'import java._;'
+
+    expect(tokens[4]).toEqual value: '_', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'import java.__;'
+
+    expect(tokens[4]).toEqual value: '__', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java']
+
+    {tokens} = grammar.tokenizeLine 'import java.**;'
+
+    expect(tokens[5]).toEqual value: '*', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'import java.a*;'
+
+    expect(tokens[5]).toEqual value: '*', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'import java.int;'
+
+    expect(tokens[4]).toEqual value: 'int', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'import java.interesting;'
+
+    expect(tokens[4]).toEqual value: 'interesting', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java']
+
+    {tokens} = grammar.tokenizeLine 'import java..hi;'
+
+    expect(tokens[4]).toEqual value: '.', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'invalid.illegal.character_not_allowed_here.java']
+
+    {tokens} = grammar.tokenizeLine 'import java.;'
+
+    expect(tokens[3]).toEqual value: '.', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'invalid.illegal.character_not_allowed_here.java']
 
   it 'tokenizes classes', ->
     lines = grammar.tokenizeLines '''
@@ -246,3 +308,8 @@ describe 'Java grammar', ->
     expect(tokens[9]).toEqual value: '(', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.begin.java']
     expect(tokens[10]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.end.java']
     expect(tokens[12]).toEqual value: '-', scopes: ['source.java', 'keyword.operator.arithmetic.java']
+
+  it 'tokenizes the `instanceof` operator', ->
+    {tokens} = grammar.tokenizeLine 'instanceof'
+
+    expect(tokens[0]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof.java']

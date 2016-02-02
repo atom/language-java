@@ -6,7 +6,7 @@
 ]
 'patterns': [
   {
-    'begin': '^\\s*(package)\\s*'
+    'begin': '\\b(package)\\b\\s*'
     'beginCaptures':
       '1':
         'name': 'keyword.other.package.java'
@@ -21,16 +21,16 @@
         'include': '#comments'
       }
       {
-        'match': '(?<=\\.)\\.|\\.\\s*(?=;)'
+        'match': '(?<=\\.)\\s*\\.|\\.(?=\\s*;)'
         'name': 'invalid.illegal.character_not_allowed_here.java'
       }
       {
-        'match': '\\s+(?!;)|[A-Z]+|\\b\\d+|-+'
+        'match': '(?<!_)_(?=\\s*(\\.|;))|[A-Z]+|\\b\\d+|-+'
         'name': 'invalid.illegal.character_not_allowed_here.java'
       }
       {
         # http://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html
-        'match': '''(?x)\\b
+        'match': '''(?x)\\b(?<!\\$)
                     (abstract|assert|boolean|break|byte|case|catch|char|class|
                     const|continue|default|do|double|else|enum|extends|final|
                     finally|float|for|goto|if|implements|import|instanceof|int|
@@ -48,60 +48,54 @@
     ]
   }
   {
-    'begin': '(import static)\\b\\s*'
+    'begin': '\\b(import)\\b\\s*\\b(static)?\\b\\s'
     'beginCaptures':
-      '1':
-        'name': 'keyword.other.import.static.java'
-    'captures':
       '1':
         'name': 'keyword.other.import.java'
       '2':
-        'name': 'storage.modifier.import.java'
-      '3':
-        'name': 'punctuation.terminator.java'
-    'contentName': 'storage.modifier.import.java'
-    'end': '\\s*(?:$|(;))'
+        'name': 'storage.modifier.java'
+    'end': '\\s*(;)'
     'endCaptures':
       '1':
         'name': 'punctuation.terminator.java'
     'name': 'meta.import.java'
+    'contentName': 'storage.modifier.import.java'
     'patterns': [
+      {
+        'include': '#comments'
+      }
+      {
+        'match': '(?<=\\.)\\s*\\.|\\.(?=\\s*;)'
+        'name': 'invalid.illegal.character_not_allowed_here.java'
+      }
+      {
+        'match': '(?<!\\.)\\s*\\*'
+        'name': 'invalid.illegal.character_not_allowed_here.java'
+      }
+      {
+        'match': '(?<!_)_(?=\\s*(\\.|;))|\\b\\d+|-+'
+        'name': 'invalid.illegal.character_not_allowed_here.java'
+      }
+      {
+        # http://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html
+        'match': '''(?x)\\b(?<!\\$)
+                    (abstract|assert|boolean|break|byte|case|catch|char|class|
+                    const|continue|default|do|double|else|enum|extends|final|
+                    finally|float|for|goto|if|implements|import|instanceof|int|
+                    interface|long|native|new|package|private|protected|public|
+                    return|short|static|strictfp|super|switch|syncronized|this|
+                    throw|throws|transient|try|void|volatile|while|
+                    true|false|null)\\b
+                  '''
+        'name': 'invalid.illegal.character_not_allowed_here.java'
+      }
       {
         'match': '\\.'
         'name': 'punctuation.separator.java'
       }
       {
-        'match': '\\s'
-        'name': 'invalid.illegal.character_not_allowed_here.java'
-      }
-    ]
-  }
-  {
-    'begin': '(import)\\b\\s*'
-    'beginCaptures':
-      '1':
-        'name': 'keyword.other.import.java'
-    'captures':
-      '1':
-        'name': 'keyword.other.import.java'
-      '2':
-        'name': 'storage.modifier.import.java'
-      '3':
-        'name': 'punctuation.terminator.java'
-    'contentName': 'storage.modifier.import.java'
-    'end': '\\s*(?:$|(;))'
-    'endCaptures':
-      '1':
-        'name': 'punctuation.terminator.java'
-    'name': 'meta.import.java'
-    'patterns': [
-      {
-        'match': '\\.'
-        'name': 'punctuation.separator.java'
-      }
-      {
-        'match': '\\s'
-        'name': 'invalid.illegal.character_not_allowed_here.java'
+        'match': '\\*'
+        'name': 'punctuation.wildcard.java'
       }
     ]
   }
@@ -597,7 +591,7 @@
       }
       {
         'match': '\\b(instanceof)\\b'
-        'name': 'keyword.operator.java'
+        'name': 'keyword.operator.instanceof.java'
       }
       {
         'match': '(<<|>>>?|~|\\^)'
