@@ -740,18 +740,18 @@
         'include': '#generics'
       }
       {
-        'begin': '\\b((?:[a-z]\\w*\\s*\\.\\s*)*[A-Z]+\\w*)(\\[)'
+        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b\\s*(?=\\[)'
         'beginCaptures':
-          '2':
-            'name': 'meta.brace.square.java'
-        'end': '\\]'
-        'endCaptures':
-          '0':
-            'name': 'meta.brace.square.java'
+          '1':
+            'name': 'keyword.operator.dereference.java'
+        'end': '(?!\\s*\\[)'
         'name': 'storage.type.object.array.java'
         'patterns': [
           {
-            'include': '#code'
+            'include': '#comments'
+          }
+          {
+            'include': '#parens'
           }
         ]
       }
