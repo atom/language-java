@@ -806,13 +806,7 @@
         'include': '#annotations'
       }
       {
-        'include': '#primitive-arrays'
-      }
-      {
-        'include': '#primitive-types'
-      }
-      {
-        'include': '#object-types'
+        'include': '#all-types'
       }
       {
         'match': '\\w+'
@@ -878,13 +872,17 @@
   'primitive-arrays':
     'patterns': [
       {
-        'match': '\\b(?:void|boolean|byte|char|short|int|float|long|double)(?:(\\[)|(\\]))+\\b'
+        'begin': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b\\s*(?=\\[)'
+        'end': '(?!\\s*\\[)'
         'name': 'storage.type.primitive.array.java'
-        'captures':
-          '1':
-            'name': 'meta.brace.square.java'
-          '2':
-            'name': 'meta.brace.square.java'
+        'patterns': [
+          {
+            'include': '#comments'
+          }
+          {
+            'include': '#parens'
+          }
+        ]
       }
     ]
   'primitive-types':
