@@ -136,7 +136,7 @@ describe 'Java grammar', ->
 
     {tokens} = grammar.tokenizeLine 'import java.util.*;'
 
-    expect(tokens[6]).toEqual value: '*', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'punctuation.wildcard.java']
+    expect(tokens[6]).toEqual value: '*', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'variable.language.wildcard.java']
 
     {tokens} = grammar.tokenizeLine 'import static java.lang.Math.PI;'
 

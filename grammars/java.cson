@@ -95,7 +95,7 @@
       }
       {
         'match': '\\*'
-        'name': 'punctuation.wildcard.java'
+        'name': 'variable.language.wildcard.java'
       }
     ]
   }
