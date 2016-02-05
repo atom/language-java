@@ -124,11 +124,11 @@
           '1':
             'name': 'storage.type.annotation.java'
           '2':
-            'name': 'punctuation.definition.annotation-arguments.begin.java'
+            'name': 'punctuation.definition.annotation-arguments.begin.bracket.round.java'
         'end': '(\\))'
         'endCaptures':
           '1':
-            'name': 'punctuation.definition.annotation-arguments.end.java'
+            'name': 'punctuation.definition.annotation-arguments.end.bracket.round.java'
         'name': 'meta.declaration.annotation.java'
         'patterns': [
           {
@@ -168,17 +168,17 @@
         'end': '(})|(?=\\s*(?:,|;|\\)))'
         'endCaptures':
           '1':
-            'name': 'punctuation.section.block.end.java'
+            'name': 'punctuation.section.block.end.bracket.curly.java'
         'patterns': [
           {
             'begin': '\\['
             'beginCaptures':
               '0':
-                'name': 'meta.brace.square.java'
+                'name': 'punctuation.bracket.square.java'
             'end': '\\]'
             'endCaptures':
               '0':
-                'name': 'meta.brace.square.java'
+                'name': 'punctuation.bracket.square.java'
             'patterns': [
               {
                 'include': '#code'
@@ -189,7 +189,7 @@
             'begin': '{'
             'beginCaptures':
               '0':
-                'name': 'punctuation.section.block.begin.java'
+                'name': 'punctuation.section.block.begin.bracket.curly.java'
             'end': '(?=})'
             'patterns': [
               {
@@ -210,11 +210,11 @@
             'begin': '\\('
             'beginCaptures':
               '0':
-                'name': 'meta.brace.round.java'
+                'name': 'punctuation.bracket.round.java'
             'end': '\\)'
             'endCaptures':
               '0':
-                'name': 'meta.brace.round.java'
+                'name': 'punctuation.bracket.round.java'
             'patterns': [
               {
                 'include': '#code'
@@ -227,11 +227,11 @@
         'begin': '{'
         'beginCaptures':
           '0':
-            'name': 'punctuation.section.inner-class.begin.java'
+            'name': 'punctuation.section.inner-class.begin.bracket.curly.java'
         'end': '}'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.inner-class.end.java'
+            'name': 'punctuation.section.inner-class.end.bracket.curly.java'
         'name': 'meta.inner-class.java'
         'patterns': [
           {
@@ -265,7 +265,7 @@
     'end': '}'
     'endCaptures':
       '0':
-        'name': 'punctuation.section.class.end.java'
+        'name': 'punctuation.section.class.end.bracket.curly.java'
     'name': 'meta.class.java'
     'patterns': [
       {
@@ -322,7 +322,7 @@
         'begin': '{'
         'beginCaptures':
           '0':
-            'name': 'punctuation.section.class.begin.java'
+            'name': 'punctuation.section.class.begin.bracket.curly.java'
         'end': '(?=})'
         'contentName': 'meta.class.body.java'
         'patterns': [
@@ -380,11 +380,11 @@
         'begin': '{'
         'beginCaptures':
           '0':
-            'name': 'punctuation.section.block.begin.java'
+            'name': 'punctuation.section.block.begin.bracket.curly.java'
         'end': '}'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.block.end.java'
+            'name': 'punctuation.section.block.end.bracket.curly.java'
         'patterns': [
           {
             'include': '#code'
@@ -424,6 +424,14 @@
       {
         'match': ','
         'name': 'punctuation.separator.delimiter.java'
+      }
+      {
+        'match': '\\.'
+        'name': 'punctuation.separator.period.java'
+      }
+      {
+        'match': ';'
+        'name': 'punctuation.terminator.java'
       }
     ]
   'comments':
@@ -489,22 +497,22 @@
         'name': 'constant.numeric.java'
       }
       {
-        'captures':
-          '1':
-            'name': 'keyword.operator.dereference.java'
         'match': '(\\.)?\\s*\\b([A-Z][A-Z0-9_]+)(?!<|\\.\\s*class|\\s*\\w+\\s*=)\\b'
         'name': 'constant.other.java'
+        'captures':
+          '1':
+            'name': 'punctuation.separator.period.java'
       }
     ]
   'generics':
     'begin': '<'
     'beginCaptures':
       '0':
-        'name': 'meta.brace.angle.java'
+        'name': 'punctuation.bracket.angle.java'
     'end': '>'
     'endCaptures':
       '0':
-        'name': 'meta.brace.angle.java'
+        'name': 'punctuation.bracket.angle.java'
     'patterns': [
       {
         'match': '\\b(extends|super)\\b'
@@ -552,14 +560,14 @@
     'end': '}'
     'endCaptures':
       '0':
-        'name': 'punctuation.section.enum.end.java'
+        'name': 'punctuation.section.enum.end.bracket.curly.java'
     'name': 'meta.enum.java'
     'patterns': [
       {
         'begin': '{'
         'beginCaptures':
           '0':
-            'name': 'punctuation.section.enum.begin.java'
+            'name': 'punctuation.section.enum.begin.bracket.curly.java'
         'end': '(?=})'
         'patterns': [
           {
@@ -629,14 +637,6 @@
         'match': '(\\||&)'
         'name': 'keyword.operator.bitwise.java'
       }
-      {
-        'match': '\\.'
-        'name': 'keyword.operator.dereference.java'
-      }
-      {
-        'match': ';'
-        'name': 'punctuation.terminator.java'
-      }
     ]
   'lambda-expression':
     'patterns': [
@@ -651,11 +651,11 @@
       '1':
         'name': 'meta.method.java'
       '2':
-        'name': 'punctuation.definition.method-parameters.begin.java'
+        'name': 'punctuation.definition.method-parameters.begin.bracket.round.java'
     'end': '\\)'
     'endCaptures':
       '0':
-        'name': 'punctuation.definition.method-parameters.end.java'
+        'name': 'punctuation.definition.method-parameters.end.bracket.round.java'
     'name': 'meta.method-call.java'
     'patterns': [
       {
@@ -671,7 +671,7 @@
     'end': '(})|(?=;)'
     'endCaptures':
       '1':
-        'name': 'punctuation.section.method.end.java'
+        'name': 'punctuation.section.method.end.bracket.curly.java'
     'name': 'meta.method.java'
     'patterns': [
       {
@@ -683,11 +683,11 @@
           '1':
             'name': 'entity.name.function.java'
           '2':
-            'name': 'punctuation.definition.parameters.begin.java'
+            'name': 'punctuation.definition.parameters.begin.bracket.round.java'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.definition.parameters.end.java'
+            'name': 'punctuation.definition.parameters.end.bracket.round.java'
         'name': 'meta.method.identifier.java'
         'patterns': [
           {
@@ -715,7 +715,7 @@
         'begin': '{'
         'beginCaptures':
           '0':
-            'name': 'punctuation.section.method.begin.java'
+            'name': 'punctuation.section.method.begin.bracket.curly.java'
         'end': '(?=})'
         'contentName': 'meta.method.body.java'
         'patterns': [
@@ -737,7 +737,7 @@
         'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b\\s*(?=\\[)'
         'beginCaptures':
           '1':
-            'name': 'keyword.operator.dereference.java'
+            'name': 'punctuation.separator.period.java'
         'end': '(?!\\s*\\[)'
         'name': 'storage.type.object.array.java'
         'patterns': [
@@ -756,7 +756,7 @@
           '0':
             'name': 'storage.type.java'
           '1':
-            'name': 'keyword.operator.dereference.java'
+            'name': 'punctuation.separator.period.java'
         'end': '(?<=>)'
         'patterns': [
           {
@@ -769,7 +769,7 @@
         'match': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b'
         'captures':
           '1':
-            'name': 'keyword.operator.dereference.java'
+            'name': 'punctuation.separator.period.java'
         'name': 'storage.type.java'
       }
     ]
@@ -779,11 +779,11 @@
         'include': '#generics'
       }
       {
-        'captures':
-          '1':
-            'name': 'keyword.operator.dereference.java'
         'match': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*'
         'name': 'entity.other.inherited-class.java'
+        'captures':
+          '1':
+            'name': 'punctuation.separator.period.java'
       }
       {
         'match': ','
@@ -817,11 +817,11 @@
         'begin': '\\('
         'beginCaptures':
           '0':
-            'name': 'meta.brace.round.java'
+            'name': 'punctuation.bracket.round.java'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'meta.brace.round.java'
+            'name': 'punctuation.bracket.round.java'
         'patterns': [
           {
             'include': '#code'
@@ -832,11 +832,11 @@
         'begin': '\\['
         'beginCaptures':
           '0':
-            'name': 'meta.brace.square.java'
+            'name': 'punctuation.bracket.square.java'
         'end': '\\]'
         'endCaptures':
           '0':
-            'name': 'meta.brace.square.java'
+            'name': 'punctuation.bracket.square.java'
         'patterns': [
           {
             'include': '#code'
@@ -847,11 +847,11 @@
         'begin': '{'
         'beginCaptures':
           '0':
-            'name': 'meta.brace.curly.java'
+            'name': 'punctuation.bracket.curly.java'
         'end': '}'
         'endCaptures':
           '0':
-            'name': 'meta.brace.curly.java'
+            'name': 'punctuation.bracket.curly.java'
         'patterns': [
           {
             'include': '#code'
