@@ -615,7 +615,7 @@
       }
     ]
   'method-call':
-    'begin': '([a-zA-Z_$][\\w*$]*)\\s*(\\()'
+    'begin': '([a-zA-Z_$][\\w$]*)\\s*(\\()'
     'beginCaptures':
       '1':
         'name': 'meta.method.java'
