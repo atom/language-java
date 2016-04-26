@@ -675,6 +675,9 @@
           {
             'include': '#all-types'
           }
+          {
+            'include': '#parens'
+          }
         ]
       }
       {
