@@ -829,33 +829,14 @@
       }
     ]
   'primitive-arrays':
-    'patterns': [
-      {
-        'begin': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b\\s*(?=\\[)'
-        'end': '(?!\\s*\\[)'
-        'name': 'storage.type.primitive.array.java'
-        'patterns': [
-          {
-            'include': '#comments'
-          }
-          {
-            'include': '#parens'
-          }
-        ]
-      }
-    ]
+    'match': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b\\s*(?=\\[)'
+    'name': 'storage.type.primitive.array.java'
   'primitive-types':
-    'patterns': [
-      {
-        'match': '\\b(?:void|boolean|byte|char|short|int|float|long|double)\\b'
-        'name': 'storage.type.primitive.java'
-      }
-    ]
+    'match': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b'
+    'name': 'storage.type.primitive.java'
   'storage-modifiers':
-    'captures':
-      '1':
-        'name': 'storage.modifier.java'
     'match': '\\b(public|private|protected|static|final|native|synchronized|abstract|threadsafe|transient|volatile)\\b'
+    'name': 'storage.modifier.java'
   'strings':
     'patterns': [
       {
