@@ -662,6 +662,9 @@
           {
             'include': '#parameters'
           }
+          {
+            'include': '#parens'
+          }
         ]
       }
       {
@@ -706,20 +709,8 @@
         'include': '#generics'
       }
       {
-        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b\\s*(?=\\[)'
-        'beginCaptures':
-          '1':
-            'name': 'punctuation.separator.period.java'
-        'end': '(?!\\s*\\[)'
+        'match': '\\b[A-Z]+\\w*\\b\\s*(?=\\[)'
         'name': 'storage.type.object.array.java'
-        'patterns': [
-          {
-            'include': '#comments'
-          }
-          {
-            'include': '#parens'
-          }
-        ]
       }
       {
         # Match possible generics first, eg Wow<String> instead of just Wow
