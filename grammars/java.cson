@@ -158,33 +158,13 @@
     'beginCaptures':
       '0':
         'name': 'keyword.control.new.java'
-    'end': ';'
+    'end': ';|((?<=\\))(?!$))'
     'endCaptures':
       '0':
         'name': 'punctuation.terminator.java'
     'patterns': [
       {
-        # Taken from `method-call`
-        'begin': '([a-zA-Z_$][\\w$]*)\\s*(\\()'
-        'beginCaptures':
-          '1':
-            'name': 'storage.type.java'
-          '2':
-            'name': 'punctuation.definition.method-parameters.begin.bracket.round.java'
-        'end': '\\)'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.definition.method-parameters.end.bracket.round.java'
-        'name': 'meta.method-call.java'
-        'patterns': [
-          {
-            'match': ','
-            'name': 'punctuation.definition.separator.parameter.java'
-          }
-          {
-            'include': '#code'
-          }
-        ]
+        'include': '#method-call'
       }
       {
         'include': '#all-types'
@@ -618,7 +598,7 @@
     'begin': '([a-zA-Z_$][\\w$]*)\\s*(\\()'
     'beginCaptures':
       '1':
-        'name': 'meta.method.java'
+        'name': 'entity.name.function.java'
       '2':
         'name': 'punctuation.definition.method-parameters.begin.bracket.round.java'
     'end': '\\)'

@@ -353,10 +353,15 @@ describe 'Java grammar', ->
     {tokens} = grammar.tokenizeLine 'Point point = new Point(1, 4);'
 
     expect(tokens[4]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
-    expect(tokens[6]).toEqual value: 'Point', scopes: ['source.java', 'meta.method-call.java', 'storage.type.java']
+    expect(tokens[6]).toEqual value: 'Point', scopes: ['source.java', 'meta.method-call.java', 'entity.name.function.java']
     expect(tokens[7]).toEqual value: '(', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.begin.bracket.round.java']
     expect(tokens[12]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.end.bracket.round.java']
     expect(tokens[13]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+
+    {tokens} = grammar.tokenizeLine 'map.put(key, new Value(value));'
+
+    expect(tokens[12]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.end.bracket.round.java']
+    expect(tokens[13]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.method-parameters.end.bracket.round.java']
 
     lines = grammar.tokenizeLines '''
       Point point = new Point()
@@ -369,7 +374,7 @@ describe 'Java grammar', ->
       '''
 
     expect(lines[0][4]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
-    expect(lines[0][6]).toEqual value: 'Point', scopes: ['source.java', 'meta.method-call.java', 'storage.type.java']
+    expect(lines[0][6]).toEqual value: 'Point', scopes: ['source.java', 'meta.method-call.java', 'entity.name.function.java']
     expect(lines[1][0]).toEqual value: '{', scopes: ['source.java', 'meta.inner-class.java', 'punctuation.section.inner-class.begin.bracket.curly.java']
     expect(lines[2][1]).toEqual value: 'public', scopes: ['source.java', 'meta.inner-class.java', 'meta.method.java', 'storage.modifier.java']
     expect(lines[4][1]).toEqual value: 'int', scopes: ['source.java', 'meta.inner-class.java', 'meta.method.java', 'meta.method.body.java', 'storage.type.primitive.java']
