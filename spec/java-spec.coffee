@@ -313,3 +313,15 @@ describe 'Java grammar', ->
     {tokens} = grammar.tokenizeLine 'instanceof'
 
     expect(tokens[0]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof.java']
+
+  it 'tokenizes class fields', ->
+    {tokens} = grammar.tokenizeLine '''
+      class A {
+        private int uninitialized;
+        private int initialized = 12;
+      }
+    '''
+    expect(tokens[10]).toEqual value: 'uninitialized', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'meta.definition.variable.name.java']
+    expect(tokens[17]).toEqual value: 'initialized', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'meta.definition.variable.name.java']
+    expect(tokens[19]).toEqual value: '=', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'keyword.operator.assignment.java']
+    expect(tokens[21]).toEqual value: '12', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'constant.numeric.java']
