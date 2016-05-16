@@ -862,7 +862,7 @@
   'primitive-arrays':
     'patterns': [
       {
-        'begin': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b\\s*(?=\\[)'
+        'begin': '\\b(void|boolean|byte|char|short|int|float|long|double)\\s*(?=\\[)'
         'end': '(?!\\s*\\[)'
         'name': 'storage.type.primitive.array.java'
         'patterns': [
