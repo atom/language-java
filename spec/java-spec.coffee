@@ -325,3 +325,11 @@ describe 'Java grammar', ->
     expect(tokens[17]).toEqual value: 'initialized', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'meta.definition.variable.name.java']
     expect(tokens[19]).toEqual value: '=', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'keyword.operator.assignment.java']
     expect(tokens[21]).toEqual value: '12', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'constant.numeric.java']
+
+  it 'tokenizes primitives', ->
+    {tokens} = grammar.tokenizeLine 'private int plainInt'
+    expect(tokens[2]).toEqual value: 'int', scopes: ['source.java', 'storage.type.primitive.java']
+
+  it 'tokenizes primitive arrays', ->
+    {tokens} = grammar.tokenizeLine 'private int[] intarray'
+    expect(tokens[2]).toEqual value: 'int', scopes: ['source.java', 'storage.type.primitive.array.java']
