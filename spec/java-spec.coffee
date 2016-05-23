@@ -242,6 +242,7 @@ describe 'Java grammar', ->
         CodeMap<String, ? extends ArrayList> codemap;
         C(Map<?, ? extends List<?>> m) {}
         Map<Integer, String> method() {}
+        private Object otherMethod() { return null; }
       }
     '''
 
@@ -298,6 +299,9 @@ describe 'Java grammar', ->
     expect(lines[5][3]).toEqual value: 'Integer', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.generic.java']
     expect(lines[5][7]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'punctuation.bracket.angle.java']
     expect(lines[5][9]).toEqual value: 'method', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[6][1]).toEqual value: 'private', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'storage.modifier.java']
+    expect(lines[6][3]).toEqual value: 'Object', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.java']
+    expect(lines[6][5]).toEqual value: 'otherMethod', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
 
   it 'tokenizes arrow operator', ->
     {tokens} = grammar.tokenizeLine '(String s1) -> s1.length() - outer.length();'
