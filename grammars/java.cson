@@ -966,12 +966,6 @@
           {
             'captures':
               '1':
-                'name': 'constant.variable.java'
-            'match': '([A-Z_0-9]+)\\s+(?=\\=)'
-          }
-          {
-            'captures':
-              '1':
                 'name': 'meta.definition.variable.name.java'
             'match': '(\\w[^\\s,]*)\\s+(?=\\=)'
           }
