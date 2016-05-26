@@ -700,7 +700,7 @@
       }
       {
         'begin': '(?=\\w.*\\s+\\w+\\s*\\()'
-        'end': '(?=\\w+\\s*\\()'
+        'end': '(?=\\s+\\w+\\s*\\()'
         'name': 'meta.method.return-type.java'
         'patterns': [
           {
