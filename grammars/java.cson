@@ -416,6 +416,9 @@
         'include': '#method-call'
       }
       {
+        'include': '#function-call'
+      }
+      {
         'include': '#strings'
       }
       {
@@ -583,6 +586,27 @@
         'include': '#comments'
       }
     ]
+  'function-call':
+    'begin': '([A-Za-z_$][\\w$]*)\\s*(\\()'
+    'beginCaptures':
+      '1':
+        'name': 'entity.name.function.java'
+      '2':
+        'name': 'punctuation.definition.parameters.begin.bracket.round.java'
+    'end': '\\)'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.parameters.end.bracket.round.java'
+    'name': 'meta.function-call.java'
+    'patterns': [
+      {
+        'match': ','
+        'name': 'punctuation.separator.delimiter.java'
+      }
+      {
+        'include': '#code'
+      }
+    ]
   'keywords':
     'patterns': [
       {
@@ -646,16 +670,18 @@
       }
     ]
   'method-call':
-    'begin': '([\\w$]+)(\\()'
+    'begin': '(\\.)\\s*([A-Za-z_$][\\w$]*)\\s*(\\()'
     'beginCaptures':
       '1':
-        'name': 'meta.method.java'
+        'name': 'punctuation.separator.period.java'
       '2':
-        'name': 'punctuation.definition.method-parameters.begin.bracket.round.java'
+        'name': 'entity.name.function.java'
+      '3':
+        'name': 'punctuation.definition.parameters.begin.bracket.round.java'
     'end': '\\)'
     'endCaptures':
       '0':
-        'name': 'punctuation.definition.method-parameters.end.bracket.round.java'
+        'name': 'punctuation.definition.parameters.end.bracket.round.java'
     'name': 'meta.method-call.java'
     'patterns': [
       {
