@@ -4,6 +4,7 @@
     'foldEndPattern': '^\\s*(\\}|// \\}\\}\\}$)'
     'increaseIndentPattern': '^.*\\{(\\}|[^}"\']*)$|^\\s*(public|private|protected):\\s*$'
     'decreaseIndentPattern': '^(.*\\*/)?\\s*\\}|^\\s*(public|private|protected):\\s*$'
+    'nonWordCharacters': '/\\()"\':,.;<>~!@#%^&*|+=[]{}`?-…' # The default except without $
 '.text.html.jsp':
   'editor':
     'foldEndPattern': '\\*\\*/|^\\s*\\}'
