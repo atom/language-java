@@ -370,6 +370,7 @@ describe 'Java grammar', ->
         private int variable1, variable2, variable3;
         private int variable1, variable2 = variable;
         private int variable;// = 3;
+        public String CAPITALVARIABLE;
       }
       '''
 
@@ -408,3 +409,6 @@ describe 'Java grammar', ->
     expect(lines[7][5]).toEqual value: 'variable', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.definition.java']
     expect(lines[7][6]).toEqual value: ';', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.terminator.java']
     expect(lines[7][7]).toEqual value: '//', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.line.double-slash.java', 'punctuation.definition.comment.java']
+
+    expect(lines[8][5]).toEqual value: 'CAPITALVARIABLE', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.definition.java']
+    expect(lines[8][6]).toEqual value: ';', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.terminator.java']
