@@ -419,6 +419,12 @@
         'include': '#function-call'
       }
       {
+        'include': '#objects'
+      }
+      {
+        'include': '#properties'
+      }
+      {
         'include': '#strings'
       }
       {
@@ -809,6 +815,10 @@
         'name': 'punctuation.separator.delimiter.java'
       }
     ]
+  'objects':
+    # obj in obj.prop, obj.methodCall()
+    'match': '[a-zA-Z_$][\\w$]*(?=\\s*\\.\\s*[\\w$]+)'
+    'name': 'variable.other.object.java'
   'parameters':
     'patterns': [
       {
@@ -899,6 +909,36 @@
       {
         'match': '\\b(?:void|boolean|byte|char|short|int|float|long|double)\\b'
         'name': 'storage.type.primitive.java'
+      }
+    ]
+  'properties':
+    'patterns': [
+      {
+        # prop1 in obj.prop1.prop2, func().prop1.prop2
+        'match': '(\\.)\\s*([a-zA-Z_$][\\w$]*)(?=\\s*\\.\\s*[a-zA-Z_$][\\w$]*)'
+        'captures':
+          '1':
+            'name': 'punctuation.separator.period.java'
+          '2':
+            'name': 'variable.other.object.property.java'
+      }
+      {
+        # prop in obj.prop, func().prop
+        'match': '(\\.)\\s*([a-zA-Z_$][\\w$]*)'
+        'captures':
+          '1':
+            'name': 'punctuation.separator.period.java'
+          '2':
+            'name': 'variable.other.property.java'
+      }
+      {
+        # 123illegal in obj.123illegal, func().123illegal
+        'match': '(\\.)\\s*([0-9][\\w$]*)'
+        'captures':
+          '1':
+            'name': 'punctuation.separator.period.java'
+          '2':
+            'name': 'invalid.illegal.identifier.java'
       }
     ]
   'storage-modifiers':
