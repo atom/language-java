@@ -235,6 +235,30 @@ describe 'Java grammar', ->
     expect(lines[3][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.begin.bracket.curly.java']
     expect(lines[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.end.bracket.curly.java']
 
+  it 'tokenizes method-local variables', ->
+    lines = grammar.tokenizeLines '''
+      class A
+      {
+        public void fn()
+        {
+          String someString;
+          String assigned = "Rand al'Thor";
+          int primitive = 5;
+        }
+      }
+    '''
+
+    expect(lines[4][1]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[4][3]).toEqual value: 'someString', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'variable.definition.java']
+
+    expect(lines[5][1]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[5][3]).toEqual value: 'assigned', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'variable.definition.java']
+    expect(lines[5][8]).toEqual value: "Rand al'Thor", scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'string.quoted.double.java']
+
+    expect(lines[6][1]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[6][3]).toEqual value: 'primitive', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'variable.definition.java']
+    expect(lines[6][7]).toEqual value: '5', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'constant.numeric.java']
+
   it 'tokenizes function and method calls', ->
     lines = grammar.tokenizeLines '''
       class A
