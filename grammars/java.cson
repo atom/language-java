@@ -745,6 +745,9 @@
         'contentName': 'meta.method.body.java'
         'patterns': [
           {
+            'include': '#variables'
+          }
+          {
             'include': '#code'
           }
         ]
