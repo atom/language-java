@@ -2,8 +2,8 @@
 'name': 'JavaServer Pages'
 'fileTypes': [
   'jsp'
-  'jspx'
   'jspf'
+  'jspx'
   'tag'
 ]
 'injections':
