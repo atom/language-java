@@ -2,6 +2,7 @@
 'name': 'JavaServer Pages'
 'fileTypes': [
   'jsp'
+  'jspx'
   'jspf'
   'tag'
 ]
