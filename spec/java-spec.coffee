@@ -575,7 +575,7 @@ describe 'Java grammar', ->
     }
     '''
 
-    scopeStack = [ 'source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java' ];
+    scopeStack = [ 'source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java' ]
 
     scopeStack.push 'meta.try.java'
     expect(lines[2][1]).toEqual value: 'try', scopes: scopeStack.concat [ 'keyword.control.try.java' ]
