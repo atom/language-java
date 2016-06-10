@@ -721,8 +721,8 @@
   'keywords':
     'patterns': [
       {
-        'match': '\\b(try|catch|finally|throw)\\b'
-        'name': 'keyword.control.catch-exception.java'
+        'match': '\\bthrow\\b'
+        'name': 'keyword.control.throw.java'
       }
       {
         'match': '\\?|:'
