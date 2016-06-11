@@ -555,6 +555,8 @@
             'beginCaptures':
               '0':
                 'name':'punctuation.section.catch.begin.bracket.curly.java'
+            'end': '(?=})'
+            'contentName': 'meta.catch.body.java'
             'patterns': [
               {
                 'include': '#variables'
@@ -563,8 +565,6 @@
                 'include': '#code'
               }
             ]
-            'end': '(?=})'
-            'contentName': 'meta.catch.body.java'
           }
         ]
       }
