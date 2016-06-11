@@ -1003,22 +1003,24 @@
   'variables':
     'begin': '''
       (?x:(?=
-        (?:
-          (?:void|boolean|byte|char|short|int|float|long|double)
+        (
+          (void|boolean|byte|char|short|int|float|long|double)
           |
-          (?:(?:[a-z]\\w*\\s*\\.\\s*)*[A-Z]+\\w*) # e.g. javax.ws.rs.Response
+          (([a-z]\\w*\\s*\\.\\s*)*[A-Z]+\\w*) # e.g. javax.ws.rs.Response
         )
         \\s*
         [\\w\\d_<>\\[\\],\\?][\\w\\d_<>\\[\\],\\?\\s]*
-        \\s*(?:=|;)
+        \\s*(=|;)
       ))
     '''
+    'end': '(?=;)'
+    'name': 'meta.definition.variable.java'
     'patterns': [
       {
-        'match': '([A-Za-z$_][\\w$]*)(?=(\\[\\])?\\s*(?=;|=|,))'
+        'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])?\\s*(?=;|=|,))'
         'captures':
           '1':
-            'name': 'variable.definition.java'
+            'name': 'variable.other.definition.java'
       }
       {
         'include': '#all-types'
@@ -1039,16 +1041,14 @@
         'include': '#code'
       }
     ]
-    'end': '(?=;)'
-    'name': 'meta.definition.variable.java'
   'member-variables':
-      'begin': '(?=private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final)'
-      'patterns': [
-        {
-          'include': '#storage-modifiers'
-        }
-        {
-          'include': '#variables'
-        }
-      ]
-      'end': '(?=;)'
+    'begin': '(?=private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final)'
+    'end': '(?=;)'
+    'patterns': [
+      {
+        'include': '#storage-modifiers'
+      }
+      {
+        'include': '#variables'
+      }
+    ]
