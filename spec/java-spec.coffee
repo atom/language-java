@@ -575,50 +575,60 @@ describe 'Java grammar', ->
     }
     '''
 
-    scopeStack = [ 'source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java' ]
+    scopeStack = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java']
 
     scopeStack.push 'meta.try.java'
-    expect(lines[2][1]).toEqual value: 'try', scopes: scopeStack.concat [ 'keyword.control.try.java' ]
-    expect(lines[2][3]).toEqual value: '{', scopes: scopeStack.concat [ 'punctuation.section.try.begin.bracket.curly.java' ]
+    expect(lines[2][1]).toEqual value: 'try', scopes: scopeStack.concat ['keyword.control.try.java']
+    expect(lines[2][2]).toEqual value: ' ', scopes: scopeStack
+    expect(lines[2][3]).toEqual value: '{', scopes: scopeStack.concat ['punctuation.section.try.begin.bracket.curly.java']
 
     scopeStack.push 'meta.try.body.java', 'meta.try.java'
-    expect(lines[3][1]).toEqual value: 'try', scopes: scopeStack.concat [ 'keyword.control.try.java' ]
-    expect(lines[3][3]).toEqual value: '{', scopes: scopeStack.concat [ 'punctuation.section.try.begin.bracket.curly.java' ]
+    expect(lines[3][1]).toEqual value: 'try', scopes: scopeStack.concat ['keyword.control.try.java']
+    expect(lines[3][2]).toEqual value: ' ', scopes: scopeStack
+    expect(lines[3][3]).toEqual value: '{', scopes: scopeStack.concat ['punctuation.section.try.begin.bracket.curly.java']
 
     scopeStack.push 'meta.try.body.java'
-    expect(lines[4][1]).toEqual value: 'String', scopes: scopeStack.concat [ 'meta.definition.variable.java', 'storage.type.java' ]
-    expect(lines[4][3]).toEqual value: 'nested', scopes: scopeStack.concat [ 'meta.definition.variable.java', 'variable.definition.java' ]
+    expect(lines[4][1]).toEqual value: 'String', scopes: scopeStack.concat ['meta.definition.variable.java', 'storage.type.java']
+    expect(lines[4][3]).toEqual value: 'nested', scopes: scopeStack.concat ['meta.definition.variable.java', 'variable.definition.java']
 
     scopeStack.pop()
-    expect(lines[5][1]).toEqual value: '}', scopes: scopeStack.concat [ 'punctuation.section.try.end.bracket.curly.java' ]
+    expect(lines[5][1]).toEqual value: '}', scopes: scopeStack.concat ['punctuation.section.try.end.bracket.curly.java']
     scopeStack.pop()
+    expect(lines[5][2]).toEqual value: ' ', scopes: scopeStack
     scopeStack.push 'meta.catch.java'
-    expect(lines[5][3]).toEqual value: 'catch', scopes: scopeStack.concat [ 'keyword.control.catch.java' ]
-    expect(lines[5][5]).toEqual value: '(', scopes: scopeStack.concat [ 'punctuation.definition.parameters.begin.bracket.round.java' ]
+    expect(lines[5][3]).toEqual value: 'catch', scopes: scopeStack.concat ['keyword.control.catch.java']
+    expect(lines[5][4]).toEqual value: ' ', scopes: scopeStack
+    expect(lines[5][5]).toEqual value: '(', scopes: scopeStack.concat ['punctuation.definition.parameters.begin.bracket.round.java' ]
     scopeStack.push 'meta.catch.parameters.java'
-    expect(lines[5][6]).toEqual value: 'Exception', scopes: scopeStack.concat ['storage.type.java' ]
-    expect(lines[5][8]).toEqual value: 'e', scopes: scopeStack.concat [ 'variable.parameter.java' ]
+    expect(lines[5][6]).toEqual value: 'Exception', scopes: scopeStack.concat ['storage.type.java']
+    expect(lines[5][7]).toEqual value: ' ', scopes: scopeStack
+    expect(lines[5][8]).toEqual value: 'e', scopes: scopeStack.concat ['variable.parameter.java']
     scopeStack.pop()
-    expect(lines[5][9]).toEqual value: ')', scopes: scopeStack.concat [ 'punctuation.definition.parameters.end.bracket.round.java' ]
-    expect(lines[5][11]).toEqual value: '{', scopes: scopeStack.concat [ 'punctuation.section.catch.begin.bracket.curly.java' ]
+    expect(lines[5][9]).toEqual value: ')', scopes: scopeStack.concat ['punctuation.definition.parameters.end.bracket.round.java']
+    expect(lines[5][10]).toEqual value: ' ', scopes: scopeStack
+    expect(lines[5][11]).toEqual value: '{', scopes: scopeStack.concat ['punctuation.section.catch.begin.bracket.curly.java']
 
     scopeStack.push 'meta.catch.body.java'
-    expect(lines[6][1]).toEqual value: 'handleNestedException', scopes: scopeStack.concat [ 'meta.function-call.java', 'entity.name.function.java' ]
+    expect(lines[6][1]).toEqual value: 'handleNestedException', scopes: scopeStack.concat ['meta.function-call.java', 'entity.name.function.java']
 
     scopeStack.pop()
-    expect(lines[7][1]).toEqual value: '}', scopes: scopeStack.concat [ 'punctuation.section.catch.end.bracket.curly.java' ]
+    expect(lines[7][1]).toEqual value: '}', scopes: scopeStack.concat ['punctuation.section.catch.end.bracket.curly.java']
 
     scopeStack.pop()
     scopeStack.pop()
-    expect(lines[8][1]).toEqual value: '}', scopes: scopeStack.concat [ 'punctuation.section.try.end.bracket.curly.java' ]
+    expect(lines[8][1]).toEqual value: '}', scopes: scopeStack.concat ['punctuation.section.try.end.bracket.curly.java']
     scopeStack.pop()
+    expect(lines[8][2]).toEqual value: ' ', scopes: scopeStack
     scopeStack.push 'meta.catch.java'
-    expect(lines[8][3]).toEqual value: 'catch', scopes: scopeStack.concat [ 'keyword.control.catch.java' ]
-    expect(lines[8][5]).toEqual value: '(', scopes: scopeStack.concat [ 'punctuation.definition.parameters.begin.bracket.round.java' ]
+    expect(lines[8][3]).toEqual value: 'catch', scopes: scopeStack.concat ['keyword.control.catch.java']
+    expect(lines[8][4]).toEqual value: ' ', scopes: scopeStack
+    expect(lines[8][5]).toEqual value: '(', scopes: scopeStack.concat ['punctuation.definition.parameters.begin.bracket.round.java']
     scopeStack.push 'meta.catch.parameters.java'
     expect(lines[8][6]).toEqual value: 'RuntimeException', scopes: scopeStack.concat ['storage.type.java' ]
-    expect(lines[8][8]).toEqual value: 're', scopes: scopeStack.concat [ 'variable.parameter.java' ]
+    expect(lines[8][7]).toEqual value: ' ', scopes: scopeStack
+    expect(lines[8][8]).toEqual value: 're', scopes: scopeStack.concat ['variable.parameter.java']
     scopeStack.pop()
-    expect(lines[8][9]).toEqual value: ')', scopes: scopeStack.concat [ 'punctuation.definition.parameters.end.bracket.round.java' ]
-    expect(lines[8][11]).toEqual value: '{', scopes: scopeStack.concat [ 'punctuation.section.catch.begin.bracket.curly.java' ]
-    expect(lines[8][12]).toEqual value: '}', scopes: scopeStack.concat [ 'punctuation.section.catch.end.bracket.curly.java' ]
+    expect(lines[8][9]).toEqual value: ')', scopes: scopeStack.concat ['punctuation.definition.parameters.end.bracket.round.java']
+    expect(lines[8][10]).toEqual value: ' ', scopes: scopeStack
+    expect(lines[8][11]).toEqual value: '{', scopes: scopeStack.concat ['punctuation.section.catch.begin.bracket.curly.java']
+    expect(lines[8][12]).toEqual value: '}', scopes: scopeStack.concat ['punctuation.section.catch.end.bracket.curly.java']
