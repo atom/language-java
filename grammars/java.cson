@@ -529,7 +529,7 @@
       }
       # catch block (with "parameters")
       {
-        'begin': '(\\bcatch\\b)\\s*(?=\\([^ ]+\\s*[^)]+\\))'
+        'begin': '\\b(catch)\\b\\s*(?=\\([^\\s]+\\s*[^)]+\\))'
         'beginCaptures':
           '1':
             'name': 'keyword.control.catch.java'
@@ -575,7 +575,7 @@
       }
       # finally block
       {
-        'begin': '(\\bfinally\\b)'
+        'begin': '\\b(finally)\\b'
         'beginCaptures':
           '1':
             'name': 'keyword.control.finally.java'
