@@ -587,7 +587,9 @@ describe 'Java grammar', ->
         /**
          * Use {@link #method(int a)}
          * Use {@link Class#method(int a)}
+         * Use {@link Class#method (int a, int b)}
          * @link #method()
+         * Use {@link Class#method$(int a) label {@link Class#method()}}
          */
         public int test() { return -1; }
       }
@@ -607,4 +609,16 @@ describe 'Java grammar', ->
     expect(lines[4][6]).toEqual value: 'method(int a)', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'variable.parameter.java']
     expect(lines[4][7]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
 
-    expect(lines[5][0]).toEqual value: '   * @link #method()', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[5][4]).toEqual value: 'Class', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'entity.name.type.class.java']
+    expect(lines[5][5]).toEqual value: '#', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[5][6]).toEqual value: 'method (int a, int b)', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'variable.parameter.java']
+
+    expect(lines[6][0]).toEqual value: '   * @link #method()', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+
+    expect(lines[7][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[7][2]).toEqual value: '@link', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[7][3]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[7][4]).toEqual value: 'Class', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'entity.name.type.class.java']
+    expect(lines[7][5]).toEqual value: '#', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[7][6]).toEqual value: 'method$(int a)', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'variable.parameter.java']
+    expect(lines[7][7]).toEqual value: ' label {@link Class#method()}}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']

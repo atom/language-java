@@ -493,7 +493,7 @@
                 'name': 'entity.name.type.class.java'
               '3':
                 'name': 'variable.parameter.java'
-            'match': '\\{(@link)\\s+(\\S+)?#([^\\{\\}]+)\\}'
+            'match': '\\{(@link)\\s+(\\S+)?#([\\w$]+\\s*\\([^\\(\\)]+\\)).*\\}'
           }
           {
             'match': '@(author|deprecated|exception|return|see|serial|since|throws|version)\\b'
