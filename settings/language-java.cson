@@ -17,3 +17,18 @@
 '.source.java-properties':
   'editor':
     'commentStart': '# '
+'.keyword.other.documentation.javadoc.java':
+  'editor':
+    'completions': [
+      'author'
+      'deprecated'
+      'exception'
+      'link'
+      'param'
+      'return'
+      'see'
+      'serial'
+      'since'
+      'throws'
+      'version'
+    ]

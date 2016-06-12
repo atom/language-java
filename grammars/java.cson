@@ -462,6 +462,46 @@
   'comments-inline':
     'patterns': [
       {
+        'begin': '^\\s*/\\*\\*'
+        'captures':
+          '0':
+            'name': 'punctuation.definition.comment.java'
+        'end': '\\*/'
+        'name': 'comment.block.java'
+        'patterns': [
+          {
+            'captures':
+              '1':
+                'name': 'keyword.other.documentation.javadoc.java'
+              '2':
+                'name': 'variable.parameter.java'
+            'match': '(@param)\\s+(\\S+)'
+          }
+          {
+            'captures':
+              '1':
+                'name': 'keyword.other.documentation.javadoc.java'
+              '2':
+                'name': 'entity.name.type.class.java'
+            'match': '(@(?:exception|throws))\\s+(\\S+)'
+          }
+          {
+            'captures':
+              '1':
+                'name': 'keyword.other.documentation.javadoc.java'
+              '2':
+                'name': 'entity.name.type.class.java'
+              '3':
+                'name': 'variable.parameter.java'
+            'match': '\\{(@link)\\s+(\\S+)?#([^\\{\\}]+)\\}'
+          }
+          {
+            'match': '@(author|deprecated|exception|return|see|serial|since|throws|version)\\b'
+            'name': 'keyword.other.documentation.javadoc.java'
+          }
+        ]
+      }
+      {
         'begin': '/\\*'
         'captures':
           '0':
