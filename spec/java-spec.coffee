@@ -537,7 +537,7 @@ describe 'Java grammar', ->
     expect(lines[6][1]).toEqual value: '*/', scopes: ['source.java', 'comment.block.java', 'punctuation.definition.comment.java']
 
     expect(lines[9][0]).toEqual value: '  /**', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'punctuation.definition.comment.java']
-    expect(lines[9][1]).toEqual value : ' ', scopes : ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[9][1]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
     expect(lines[9][2]).toEqual value: '@serial', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
     expect(lines[9][3]).toEqual value: ' reference ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
     expect(lines[9][4]).toEqual value: '*/', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'punctuation.definition.comment.java']
