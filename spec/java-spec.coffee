@@ -196,7 +196,7 @@ describe 'Java grammar', ->
   it 'tokenizes enums', ->
     lines = grammar.tokenizeLines '''
       enum Letters {
-        /** Comment about A */
+        /* Comment about A */
         A,
 
         // Comment about B
@@ -211,7 +211,7 @@ describe 'Java grammar', ->
     expect(lines[0][2]).toEqual value: 'Letters', scopes: ['source.java', 'meta.enum.java', 'entity.name.type.enum.java']
     expect(lines[0][4]).toEqual value: '{', scopes: ['source.java', 'meta.enum.java', 'punctuation.section.enum.begin.bracket.curly.java']
     expect(lines[1][1]).toEqual value: '/*', scopes: commentDefinition
-    expect(lines[1][2]).toEqual value: '* Comment about A ', scopes: comment
+    expect(lines[1][2]).toEqual value: ' Comment about A ', scopes: comment
     expect(lines[1][3]).toEqual value: '*/', scopes: commentDefinition
     expect(lines[2][1]).toEqual value: 'A', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
     expect(lines[6][0]).toEqual value: '}', scopes: ['source.java', 'meta.enum.java', 'punctuation.section.enum.end.bracket.curly.java']
@@ -486,3 +486,125 @@ describe 'Java grammar', ->
 
     expect(lines[8][5]).toEqual value: 'CAPITALVARIABLE', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.definition.java']
     expect(lines[8][6]).toEqual value: ';', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.terminator.java']
+
+  it 'tokenizes single-line javadoc comment', ->
+    lines = grammar.tokenizeLines '''
+      /** [[Test]] interface for single-line comment */
+      class Test
+      {
+        private int variable;
+      }
+      '''
+
+    expect(lines[0][0]).toEqual value: '/**', scopes: ['source.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(lines[0][1]).toEqual value: ' [[Test]] interface for single-line comment ', scopes: ['source.java', 'comment.block.java']
+    expect(lines[0][2]).toEqual value: '*/', scopes: ['source.java', 'comment.block.java', 'punctuation.definition.comment.java']
+
+  it 'tokenizes multi-line basic javadoc comment', ->
+    lines = grammar.tokenizeLines '''
+      /**
+       * @author John Smith
+       * @deprecated description
+       * @see reference
+       * @since version
+       * @version version
+       */
+      class Test
+      {
+        /** @serial reference */
+        private int variable;
+      }
+      '''
+
+    expect(lines[0][0]).toEqual value: '/**', scopes: ['source.java', 'comment.block.java', 'punctuation.definition.comment.java']
+
+    expect(lines[1][1]).toEqual value: '@author', scopes: ['source.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[1][2]).toEqual value: ' John Smith', scopes: ['source.java', 'comment.block.java']
+
+    expect(lines[2][1]).toEqual value: '@deprecated', scopes: ['source.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[2][2]).toEqual value: ' description', scopes: ['source.java', 'comment.block.java']
+
+    expect(lines[3][1]).toEqual value: '@see', scopes: ['source.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[3][2]).toEqual value: ' reference', scopes: ['source.java', 'comment.block.java']
+
+    expect(lines[4][1]).toEqual value: '@since', scopes: ['source.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[4][2]).toEqual value: ' version', scopes: ['source.java', 'comment.block.java']
+
+    expect(lines[5][1]).toEqual value: '@version', scopes: ['source.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[5][2]).toEqual value: ' version', scopes: ['source.java', 'comment.block.java']
+
+    expect(lines[6][0]).toEqual value: ' ', scopes: ['source.java', 'comment.block.java']
+    expect(lines[6][1]).toEqual value: '*/', scopes: ['source.java', 'comment.block.java', 'punctuation.definition.comment.java']
+
+    expect(lines[9][0]).toEqual value: '  /**', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(lines[9][1]).toEqual value : ' ', scopes : ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[9][2]).toEqual value: '@serial', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[9][3]).toEqual value: ' reference ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[9][4]).toEqual value: '*/', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'punctuation.definition.comment.java']
+
+  it 'tokenizes `param` javadoc comment', ->
+    lines = grammar.tokenizeLines '''
+      class Test
+      {
+        /**
+         * Increment number.
+         * @param num value to increment.
+         */
+        public void inc(int num) {
+          num += 1;
+        }
+      }
+      '''
+
+    expect(lines[4][1]).toEqual value: '@param', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[4][3]).toEqual value: 'num', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'variable.parameter.java']
+    expect(lines[4][4]).toEqual value: ' value to increment.', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+
+  it 'tokenizes `exception`/`throws` javadoc comment', ->
+    lines = grammar.tokenizeLines '''
+      class Test
+      {
+        /**
+         * @throws IllegalStateException reason
+         * @exception IllegalStateException reason
+         */
+        public void fail() { throw new IllegalStateException(); }
+      }
+      '''
+
+    expect(lines[3][1]).toEqual value: '@throws', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[3][3]).toEqual value: 'IllegalStateException', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'entity.name.type.class.java']
+    expect(lines[3][4]).toEqual value: ' reason', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+
+    expect(lines[4][1]).toEqual value: '@exception', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[4][3]).toEqual value: 'IllegalStateException', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'entity.name.type.class.java']
+    expect(lines[4][4]).toEqual value: ' reason', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+
+  it 'tokenizes `link` javadoc comment', ->
+    lines = grammar.tokenizeLines '''
+      class Test
+      {
+        /**
+         * Use {@link #method(int a)}
+         * Use {@link Class#method(int a)}
+         * @link #method()
+         */
+        public int test() { return -1; }
+      }
+      '''
+
+    expect(lines[3][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[3][2]).toEqual value: '@link', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[3][3]).toEqual value: ' #', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[3][4]).toEqual value: 'method(int a)', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'variable.parameter.java']
+    expect(lines[3][5]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+
+    expect(lines[4][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[4][2]).toEqual value: '@link', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'keyword.other.documentation.javadoc.java']
+    expect(lines[4][3]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[4][4]).toEqual value: 'Class', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'entity.name.type.class.java']
+    expect(lines[4][5]).toEqual value: '#', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+    expect(lines[4][6]).toEqual value: 'method(int a)', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java', 'variable.parameter.java']
+    expect(lines[4][7]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
+
+    expect(lines[5][0]).toEqual value: '   * @link #method()', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.java']
