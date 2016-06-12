@@ -394,6 +394,9 @@
         'include': '#anonymous-block-and-instance-initializer'
       }
       {
+        'include': '#try-catch-finally'
+      }
+      {
         'include': '#assertions'
       }
       {
@@ -488,6 +491,115 @@
                 'name': 'punctuation.definition.comment.java'
             'end': '\\n'
             'name': 'comment.line.double-slash.java'
+          }
+        ]
+      }
+    ]
+  'try-catch-finally':
+    'patterns': [
+      # try block
+      {
+        'begin': '\\btry\\b'
+        'beginCaptures':
+          '0':
+            'name': 'keyword.control.try.java'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.try.end.bracket.curly.java'
+        'name': 'meta.try.java'
+        'patterns': [
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name':'punctuation.section.try.begin.bracket.curly.java'
+            'end': '(?=})'
+            'contentName': 'meta.try.body.java'
+            'patterns': [
+              {
+                'include': '#variables'
+              }
+              {
+                'include': '#code'
+              }
+            ]
+          }
+        ]
+      }
+      # catch block (with "parameters")
+      {
+        'begin': '\\b(catch)\\b\\s*(?=\\(\\s*[^\\s]+\\s*[^)]+\\))'
+        'beginCaptures':
+          '1':
+            'name': 'keyword.control.catch.java'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.catch.end.bracket.curly.java'
+        'name': 'meta.catch.java'
+        'patterns': [
+          {
+            'begin': '\\('
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.parameters.begin.bracket.round.java'
+            'end': '\\)'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.definition.parameters.end.bracket.round.java'
+            'contentName': 'meta.catch.parameters.java'
+            'patterns': [
+              {
+                'include': '#parameters'
+              }
+            ]
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name':'punctuation.section.catch.begin.bracket.curly.java'
+            'end': '(?=})'
+            'contentName': 'meta.catch.body.java'
+            'patterns': [
+              {
+                'include': '#variables'
+              }
+              {
+                'include': '#code'
+              }
+            ]
+          }
+        ]
+      }
+      # finally block
+      {
+        'begin': '\\bfinally\\b'
+        'beginCaptures':
+          '0':
+            'name': 'keyword.control.finally.java'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.finally.end.bracket.curly.java'
+        'name': 'meta.finally.java'
+        'patterns': [
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name':'punctuation.section.finally.begin.bracket.curly.java'
+            'end': '(?=})'
+            'contentName': 'meta.finally.body.java'
+            'patterns': [
+              {
+                'include': '#variables'
+              }
+              {
+                'include': '#code'
+              }
+            ]
           }
         ]
       }
@@ -614,8 +726,8 @@
   'keywords':
     'patterns': [
       {
-        'match': '\\b(try|catch|finally|throw)\\b'
-        'name': 'keyword.control.catch-exception.java'
+        'match': '\\bthrow\\b'
+        'name': 'keyword.control.throw.java'
       }
       {
         'match': '\\?|:'
