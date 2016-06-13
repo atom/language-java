@@ -507,7 +507,6 @@
         '0':
           'name': 'punctuation.definition.comment.java'
       'name': 'comment.block.javadoc.java'
-      'contentName': 'meta.comment.block.javadoc.java'
       'patterns': [
         {
           'match': '@(author|deprecated|return|see|serial|since|version)\\b'
