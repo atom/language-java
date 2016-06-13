@@ -1118,10 +1118,11 @@
         (
           (void|boolean|byte|char|short|int|float|long|double)
           |
-          (([a-z]\\w*\\s*\\.\\s*)*[A-Z]+\\w*) # e.g. javax.ws.rs.Response
+          ((\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
         )
-        \\s*
-        [\\w\\d_<>\\[\\],\\?][\\w\\d_<>\\[\\],\\?\\s]*
+        ([\\w\\d<>\\[\\],?][\\w\\d_<>\\[\\],?\\s]*)?
+        \\s+
+        [\\w\\d<>\\[\\],?][\\w\\d_<>\\[\\],?\\s]*
         \\s*(=|;)
       ))
     '''
@@ -1129,7 +1130,7 @@
     'name': 'meta.definition.variable.java'
     'patterns': [
       {
-        'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])?\\s*(?=;|=|,))'
+        'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
         'captures':
           '1':
             'name': 'variable.other.definition.java'
