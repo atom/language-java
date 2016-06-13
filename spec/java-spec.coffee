@@ -543,7 +543,7 @@ describe 'Java grammar', ->
 
     scopeStack.push 'meta.catch.body.java'
     expect(lines[7][1]).toEqual value: 'String', scopes: scopeStack.concat ['meta.definition.variable.java', 'storage.type.java']
-    expect(lines[7][3]).toEqual value: 'variable', scopes: scopeStack.concat ['meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[7][3]).toEqual value: 'variable', scopes: scopeStack.concat ['meta.definition.variable.java', 'variable.definition.java']
 
     scopeStack.pop()
     expect(lines[8][1]).toEqual value: '}', scopes: scopeStack.concat ['punctuation.section.catch.end.bracket.curly.java']
@@ -589,7 +589,7 @@ describe 'Java grammar', ->
 
     scopeStack.push 'meta.try.body.java'
     expect(lines[4][1]).toEqual value: 'String', scopes: scopeStack.concat ['meta.definition.variable.java', 'storage.type.java']
-    expect(lines[4][3]).toEqual value: 'nested', scopes: scopeStack.concat ['meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[4][3]).toEqual value: 'nested', scopes: scopeStack.concat ['meta.definition.variable.java', 'variable.definition.java']
 
     scopeStack.pop()
     expect(lines[5][1]).toEqual value: '}', scopes: scopeStack.concat ['punctuation.section.try.end.bracket.curly.java']
