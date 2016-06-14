@@ -1,7 +1,7 @@
 # Java language support in Atom
 [![OS X Build Status](https://travis-ci.org/atom/language-java.svg?branch=master)](https://travis-ci.org/atom/language-java)
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/utoftje56n9u5x4h/branch/master?svg=true)](https://ci.appveyor.com/project/Atom/language-java/branch/master)
-[![Dependency Status](https://david-dm.org/atom/language-java.svg)](https://david-dm.org/atom/language-java) |
+[![Dependency Status](https://david-dm.org/atom/language-java.svg)](https://david-dm.org/atom/language-java)
 
 Add syntax highlighting and snippets to Java/JSP files in Atom.
 
