@@ -1120,10 +1120,10 @@
           |
           ((\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
         )
-        ([\\w\\d<>\\[\\],][\\w\\d<>\\[\\],?\\s]*)?
+        ([\\w<>\\[\\],][\\w<>\\[\\],?\\s]*)?
         \\s+
-        [A-Za-z_$][\\w\\d$]* # At least one identifier after space
-        ([\\w\\d\\[\\],$][\\w\\d\\[\\],\\s]*)?
+        [A-Za-z_$][\\w$]* # At least one identifier after space
+        ([\\w\\[\\],$][\\w\\[\\],\\s]*)? # possibly more generic, primite arrays etc.
         \\s*(=|;)
       ))
     '''
@@ -1131,7 +1131,7 @@
     'name': 'meta.definition.variable.java'
     'patterns': [
       {
-        'match': '([A-Za-z_$][\\w\\d$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
+        'match': '([A-Za-z_$][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
         'captures':
           '1':
             'name': 'variable.other.definition.java'
