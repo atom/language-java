@@ -1122,7 +1122,7 @@
         )
         ([\\w\\d<>\\[\\],][\\w\\d<>\\[\\],?\\s]*)?
         \\s+
-        [\\w\\d$]+ # At least one identifier after space
+        [A-Za-z_$][\\w\\d$]* # At least one identifier after space
         ([\\w\\d\\[\\],$][\\w\\d\\[\\],\\s]*)?
         \\s*(=|;)
       ))
@@ -1131,7 +1131,7 @@
     'name': 'meta.definition.variable.java'
     'patterns': [
       {
-        'match': '([\\w\\d$]{1,})(?=\\s*(\\[\\])*\\s*(;|=|,))'
+        'match': '([A-Za-z_$][\\w\\d$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
         'captures':
           '1':
             'name': 'variable.other.definition.java'
