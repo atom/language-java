@@ -1131,7 +1131,7 @@
     'name': 'meta.definition.variable.java'
     'patterns': [
       {
-        'match': '([A-Za-z_$][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
+        'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
         'captures':
           '1':
             'name': 'variable.other.definition.java'
