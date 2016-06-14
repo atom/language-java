@@ -1123,7 +1123,7 @@
         ([\\w<>\\[\\],][\\w<>\\[\\],?\\s]*)?
         \\s+
         [A-Za-z_$][\\w$]* # At least one identifier after space
-        ([\\w\\[\\],$][\\w\\[\\],\\s]*)? # possibly more generic, primite arrays etc.
+        ([\\w\\[\\],$][\\w\\[\\],\\s]*)? # possibly primitive array or additional identifiers
         \\s*(=|;)
       ))
     '''
