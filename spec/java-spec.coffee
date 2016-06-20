@@ -639,7 +639,7 @@ describe 'Java grammar', ->
       class Test
       {
         private void method() {
-          /** sort of javadoc comment */
+          /** invalid javadoc comment */
           /* inline comment */
           // single-line comment
         }
@@ -647,7 +647,7 @@ describe 'Java grammar', ->
       '''
 
     expect(lines[3][1]).toEqual value: '/*', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'comment.block.java', 'punctuation.definition.comment.java']
-    expect(lines[3][2]).toEqual value: '* sort of javadoc comment ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'comment.block.java']
+    expect(lines[3][2]).toEqual value: '* invalid javadoc comment ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'comment.block.java']
     expect(lines[3][3]).toEqual value: '*/', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'comment.block.java', 'punctuation.definition.comment.java']
 
     expect(lines[4][1]).toEqual value: '/*', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'comment.block.java', 'punctuation.definition.comment.java']
