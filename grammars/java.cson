@@ -989,8 +989,11 @@
   'parameters':
     'patterns': [
       {
-        'match': 'final'
-        'name': 'storage.modifier.java'
+        # `final` keyword must have at least one subsequent space before variable type
+        'match': '(final)\\s+'
+        'captures':
+          '1':
+            'name': 'storage.modifier.java'
       }
       {
         'include': '#annotations'
