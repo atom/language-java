@@ -1170,9 +1170,10 @@
           |
           ((\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
         )
-        ([\\w\\d<>\\[\\],?][\\w\\d_<>\\[\\],?\\s]*)?
+        ([\\w<>\\[\\],][\\w<>\\[\\],?\\s]*)?
         \\s+
-        [\\w\\d<>\\[\\],?][\\w\\d_<>\\[\\],?\\s]*
+        [A-Za-z_$][\\w$]* # At least one identifier after space
+        ([\\w\\[\\],$][\\w\\[\\],\\s]*)? # possibly primitive array or additional identifiers
         \\s*(=|;)
       ))
     '''
