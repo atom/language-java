@@ -236,21 +236,24 @@ describe 'Java grammar', ->
     expect(lines[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.end.bracket.curly.java']
 
   it 'tokenizes `final` in inline method parameter', ->
-    {tokens} = grammar.tokenizeLine 'public int doSomething(int finalScore) { return finalScore; }'
+    {tokens} = grammar.tokenizeLine 'public int doSomething(final int finalScore) { return finalScore; }'
 
-    expect(tokens[7]).toEqual value: ' finalScore', scopes: ['source.java', 'meta.function-call.java']
-    expect(tokens[13]).toEqual value: ' finalScore', scopes: ['source.java']
+    expect(tokens[6]).toEqual value: 'final', scopes: ['source.java', 'meta.function-call.java', 'storage.modifier.java']
+    expect(tokens[9]).toEqual value: ' finalScore', scopes: ['source.java', 'meta.function-call.java']
+    expect(tokens[15]).toEqual value: ' finalScore', scopes: ['source.java']
 
   it 'tokenizes `final` inside class method parameter', ->
     lines = grammar.tokenizeLines '''
       class A
       {
-        public int doSomething(int finalScore) { return finalScore; }
+        public int doSomething(final int finalScore) {
+          return finalScore;
+        }
       }
     '''
 
-    expect(lines[2][9]).toEqual value: 'score', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'variable.parameter.java']
-    expect(lines[2][15]).toEqual value: ' finalScore', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java']
+    expect(lines[2][11]).toEqual value: 'finalScore', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'variable.parameter.java']
+    expect(lines[3][2]).toEqual value: ' finalScore', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java']
 
   it 'tokenizes method-local variables', ->
     lines = grammar.tokenizeLines '''
