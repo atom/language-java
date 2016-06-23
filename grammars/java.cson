@@ -989,10 +989,8 @@
   'parameters':
     'patterns': [
       {
-        'match': '\\b(final)\\b'
-        'captures':
-          '1':
-            'name': 'storage.modifier.java'
+        'match': '\\bfinal\\b'
+        'name': 'storage.modifier.java'
       }
       {
         'include': '#annotations'
