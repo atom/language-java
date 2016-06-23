@@ -246,14 +246,29 @@ describe 'Java grammar', ->
     lines = grammar.tokenizeLines '''
       class A
       {
-        public int doSomething(final int finalScore) {
+        public int doSomething(final int finalScore)
+        {
           return finalScore;
         }
       }
     '''
 
     expect(lines[2][11]).toEqual value: 'finalScore', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'variable.parameter.java']
-    expect(lines[3][2]).toEqual value: ' finalScore', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java']
+    expect(lines[4][2]).toEqual value: ' finalScore', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java']
+
+  it 'tokenizes `final` in class fields', ->
+    lines = grammar.tokenizeLines '''
+      class A
+      {
+        private final int finala = 0;
+        final private int bfinal = 1;
+      }
+    '''
+
+    expect(lines[2][3]).toEqual value: 'final', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.modifier.java']
+    expect(lines[2][7]).toEqual value: 'finala', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[3][1]).toEqual value: 'final', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.modifier.java']
+    expect(lines[3][7]).toEqual value: 'bfinal', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
 
   it 'tokenizes method-local variables', ->
     lines = grammar.tokenizeLines '''

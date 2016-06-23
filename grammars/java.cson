@@ -990,7 +990,7 @@
     'patterns': [
       {
         # `final` keyword must have at least one subsequent space before variable type
-        'match': '(final)\\s+'
+        'match': '\\b(final)\\b'
         'captures':
           '1':
             'name': 'storage.modifier.java'
