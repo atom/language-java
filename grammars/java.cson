@@ -989,7 +989,7 @@
   'parameters':
     'patterns': [
       {
-        'match': 'final'
+        'match': '\\bfinal\\b'
         'name': 'storage.modifier.java'
       }
       {
