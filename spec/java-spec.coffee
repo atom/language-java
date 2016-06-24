@@ -235,25 +235,21 @@ describe 'Java grammar', ->
     expect(lines[3][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.begin.bracket.curly.java']
     expect(lines[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.end.bracket.curly.java']
 
-  it 'tokenizes `final` in inline method parameter', ->
-    {tokens} = grammar.tokenizeLine 'public int doSomething(final int finalScore) { return finalScore; }'
-
-    expect(tokens[6]).toEqual value: 'final', scopes: ['source.java', 'meta.function-call.java', 'storage.modifier.java']
-    expect(tokens[9]).toEqual value: ' finalScore', scopes: ['source.java', 'meta.function-call.java']
-    expect(tokens[15]).toEqual value: ' finalScore', scopes: ['source.java']
-
   it 'tokenizes `final` inside class method parameter', ->
     lines = grammar.tokenizeLines '''
       class A
       {
-        public int doSomething(final int finalScore)
+        public int doSomething(final int finalScore, final int scorefinal)
         {
           return finalScore;
         }
       }
     '''
 
+    expect(lines[2][7]).toEqual value: 'final', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.modifier.java']
     expect(lines[2][11]).toEqual value: 'finalScore', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'variable.parameter.java']
+    expect(lines[2][14]).toEqual value: 'final', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.modifier.java']
+    expect(lines[2][18]).toEqual value: 'scorefinal', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'variable.parameter.java']
     expect(lines[4][2]).toEqual value: ' finalScore', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java']
 
   it 'tokenizes `final` in class fields', ->
