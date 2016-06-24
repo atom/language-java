@@ -235,7 +235,7 @@ describe 'Java grammar', ->
     expect(lines[3][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.begin.bracket.curly.java']
     expect(lines[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.end.bracket.curly.java']
 
-  it 'tokenizes `final` inside class method parameter', ->
+  it 'tokenizes `final` in class method', ->
     lines = grammar.tokenizeLines '''
       class A
       {
