@@ -885,6 +885,9 @@
           {
             'include': '#parameters'
           }
+          {
+            'include': '#comments-inline'
+          }
         ]
       }
       {
