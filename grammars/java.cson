@@ -884,7 +884,7 @@
         'patterns': [
           {
             'include': '#parameters'
-          },
+          }
           {
             'include': '#comments-inline'
           }
