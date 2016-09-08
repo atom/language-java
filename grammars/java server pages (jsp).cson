@@ -92,7 +92,7 @@
     'name': 'meta.embedded.line.el_expression.jsp'
     'patterns': [
       {
-        'include': 'source.java'
+        'include': 'source.java.el'
       }
     ]
   'expression':
