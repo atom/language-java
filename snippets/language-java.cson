@@ -130,6 +130,30 @@
     'prefix': 'wh'
     'body': 'while ($1) {\n\t$0\n}'
 '.text.html.jsp':
+  'scriptlet':
+    'prefix': '%'
+    'body': '<%\n\t$1\n%>'
+  'scriptlet (xml)':
+    'prefix': 'scriptlet'
+    'body': '<jsp:scriptlet>\n\t$1\n</jsp:scriptlet>'
+  'declaration':
+    'prefix': '%!'
+    'body': '<%!\n\t$1\n%>'
+  'declaration (xml)':
+    'prefix': 'declaration'
+    'body': '<jsp:declaration>\n\t$1\n</jsp:declaration>'
+  'expression':
+    'prefix': '%='
+    'body': '<%=\n\t$1\n%>'
+  'expression (xml)':
+    'prefix': 'expression'
+    'body': '<jsp:expression>\n\t$1\n</jsp:expression>'
+  'comment':
+    'prefix': '%--'
+    'body': '<%--\n\t$1\n--%>'
+  'el':
+    'prefix': '$'
+    'body': '\\${$1}'
   'c:out':
     'prefix': 'out'
     'body': '<c:out value="\\${$1}"/>'
