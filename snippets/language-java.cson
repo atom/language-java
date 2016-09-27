@@ -129,3 +129,37 @@
   'while':
     'prefix': 'wh'
     'body': 'while ($1) {\n\t$0\n}'
+'.text.html.jsp':
+  'c:out':
+    'prefix': 'out'
+    'body': '<c:out value="\\${$1}"/>'
+  'c:set':
+    'prefix': 'set'
+    'body': '<c:set var="${1:name}" value="\\${$2}"/>'
+  'c:remove':
+    'prefix': 'rm'
+    'body': '<c:remove var="${1:name}"/>'
+  'c:catch':
+    'prefix': 'catch'
+    'body': '<c:catch var="${1:ex}">\n\t$2\n</c:catch>'
+  'c:if':
+    'prefix': 'if'
+    'body': '<c:if test="\\${${1:true}}">\n\t$0\n</c:if>'
+  'c:choose':
+    'prefix': 'choose'
+    'body': '<c:choose>\n\t<c:when test="\\${${1:true}}">\n\t\t$2\n\t</c:when>$3\n\t<c:otherwise>\n\t\t$4\n\t</c:otherwise>\n<c:choose>'
+  'c:when':
+    'prefix': 'when'
+    'body': '<c:when test="\\${${1:true}}">\n\t$2\n</c:when>'
+  'c:otherwise':
+    'prefix': 'other'
+    'body': '<c:otherwise>\n\t$1\n</c:otherwise>'
+  'c:forEach':
+    'prefix': 'forEach'
+    'body': '<c:forEach var="${1:i}" begin="$2" end="$3">\n\t$4\n</c:forEach>'
+  'c:forEach':
+    'prefix': 'forEachIn'
+    'body': '<c:forEach var="${1:item}" items="$2">\n\t$3\n</c:forEach>'
+  'c:forTokens':
+    'prefix': 'forTokens'
+    'body': '<c:forTokens var="${1:item}" items="$2" delims="${3:,}">\n\t$4\n</c:forTokens>'
