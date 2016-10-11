@@ -50,6 +50,9 @@
   'return':
     'prefix': 're'
     'body': 'return '
+  'serialVersionUID':
+    'prefix': 'se'
+    'body': 'private static final long serialVersionUID = ${1:42}l;$0'
   'static':
     'prefix': 'st'
     'body': 'static '

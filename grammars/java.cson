@@ -100,6 +100,9 @@
     ]
   }
   {
+    'include': '#comments-javadoc'
+  }
+  {
     'include': '#code'
   }
 ]
@@ -284,6 +287,9 @@
   'class-body':
     'patterns': [
       {
+        'include': '#comments-javadoc'
+      }
+      {
         'include': '#comments'
       }
       {
@@ -291,9 +297,6 @@
       }
       {
         'include': '#enums'
-      }
-      {
-        'include': '#variables'
       }
       {
         'include': '#generics'
@@ -305,8 +308,25 @@
         'include': '#annotations'
       }
       {
+        'include': '#member-variables'
+      }
+      {
         'include': '#storage-modifiers'
       }
+      {
+        'include': '#code'
+      }
+    ]
+  'anonymous-block-and-instance-initializer':
+    'begin': '{'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.block.begin.bracket.curly.java'
+    'end': '}'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.block.end.bracket.curly.java'
+    'patterns': [
       {
         'include': '#code'
       }
@@ -326,19 +346,10 @@
         'include': '#class'
       }
       {
-        'begin': '{'
-        'beginCaptures':
-          '0':
-            'name': 'punctuation.section.block.begin.bracket.curly.java'
-        'end': '}'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.block.end.bracket.curly.java'
-        'patterns': [
-          {
-            'include': '#code'
-          }
-        ]
+        'include': '#anonymous-block-and-instance-initializer'
+      }
+      {
+        'include': '#try-catch-finally'
       }
       {
         'include': '#assertions'
@@ -363,6 +374,18 @@
       }
       {
         'include': '#method-call'
+      }
+      {
+        'include': '#function-call'
+      }
+      {
+        'include': '#objects'
+      }
+      {
+        'include': '#properties'
+      }
+      {
+        'include': '#variables'
       }
       {
         'include': '#strings'
@@ -427,6 +450,159 @@
         ]
       }
     ]
+  'comments-javadoc':
+    'patterns': [
+      'begin': '^\\s*/\\*\\*'
+      'beginCaptures':
+        '0':
+          'name': 'punctuation.definition.comment.java'
+      'end': '\\*/'
+      'endCaptures':
+        '0':
+          'name': 'punctuation.definition.comment.java'
+      'name': 'comment.block.javadoc.java'
+      'patterns': [
+        {
+          'match': '@(author|deprecated|return|see|serial|since|version)\\b'
+          'name': 'keyword.other.documentation.javadoc.java'
+        }
+        {
+          'match': '(@param)\\s+(\\S+)'
+          'captures':
+            '1':
+              'name': 'keyword.other.documentation.javadoc.java'
+            '2':
+              'name': 'variable.parameter.java'
+        }
+        {
+          'match': '(@(?:exception|throws))\\s+(\\S+)'
+          'captures':
+            '1':
+              'name': 'keyword.other.documentation.javadoc.java'
+            '2':
+              'name': 'entity.name.type.class.java'
+        }
+        {
+          'match': '{(@link)\\s+(\\S+)?#([\\w$]+\\s*\\([^\\(\\)]*\\)).*}'
+          'captures':
+            '1':
+              'name': 'keyword.other.documentation.javadoc.java'
+            '2':
+              'name': 'entity.name.type.class.java'
+            '3':
+              'name': 'variable.parameter.java'
+        }
+      ]
+    ]
+  'try-catch-finally':
+    'patterns': [
+      # try block
+      {
+        'begin': '\\btry\\b'
+        'beginCaptures':
+          '0':
+            'name': 'keyword.control.try.java'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.try.end.bracket.curly.java'
+        'name': 'meta.try.java'
+        'patterns': [
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name':'punctuation.section.try.begin.bracket.curly.java'
+            'end': '(?=})'
+            'contentName': 'meta.try.body.java'
+            'patterns': [
+              {
+                'include': '#variables'
+              }
+              {
+                'include': '#code'
+              }
+            ]
+          }
+        ]
+      }
+      # catch block (with "parameters")
+      {
+        'begin': '\\b(catch)\\b\\s*(?=\\(\\s*[^\\s]+\\s*[^)]+\\))'
+        'beginCaptures':
+          '1':
+            'name': 'keyword.control.catch.java'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.catch.end.bracket.curly.java'
+        'name': 'meta.catch.java'
+        'patterns': [
+          {
+            'begin': '\\('
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.parameters.begin.bracket.round.java'
+            'end': '\\)'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.definition.parameters.end.bracket.round.java'
+            'contentName': 'meta.catch.parameters.java'
+            'patterns': [
+              {
+                'include': '#parameters'
+              }
+            ]
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name':'punctuation.section.catch.begin.bracket.curly.java'
+            'end': '(?=})'
+            'contentName': 'meta.catch.body.java'
+            'patterns': [
+              {
+                'include': '#variables'
+              }
+              {
+                'include': '#code'
+              }
+            ]
+          }
+        ]
+      }
+      # finally block
+      {
+        'begin': '\\bfinally\\b'
+        'beginCaptures':
+          '0':
+            'name': 'keyword.control.finally.java'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.finally.end.bracket.curly.java'
+        'name': 'meta.finally.java'
+        'patterns': [
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name':'punctuation.section.finally.begin.bracket.curly.java'
+            'end': '(?=})'
+            'contentName': 'meta.finally.body.java'
+            'patterns': [
+              {
+                'include': '#variables'
+              }
+              {
+                'include': '#code'
+              }
+            ]
+          }
+        ]
+      }
+    ]
   'constants-and-special-vars':
     'patterns': [
       {
@@ -444,13 +620,6 @@
       {
         'match': '\\b((0(b|B)[01]+)|(0(x|X)[0-9a-fA-F]+)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)([LlFfUuDd]|UL|ul)?\\b'
         'name': 'constant.numeric.java'
-      }
-      {
-        'match': '(\\.)?\\s*\\b([A-Z][A-Z0-9_]+)(?!<|\\.\\s*class|\\s*\\w+\\s*=)\\b'
-        'name': 'constant.other.java'
-        'captures':
-          '1':
-            'name': 'punctuation.separator.period.java'
       }
     ]
   'generics':
@@ -532,11 +701,32 @@
         'include': '#comments'
       }
     ]
+  'function-call':
+    'begin': '([A-Za-z_$][\\w$]*)\\s*(\\()'
+    'beginCaptures':
+      '1':
+        'name': 'entity.name.function.java'
+      '2':
+        'name': 'punctuation.definition.parameters.begin.bracket.round.java'
+    'end': '\\)'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.parameters.end.bracket.round.java'
+    'name': 'meta.function-call.java'
+    'patterns': [
+      {
+        'match': ','
+        'name': 'punctuation.separator.delimiter.java'
+      }
+      {
+        'include': '#code'
+      }
+    ]
   'keywords':
     'patterns': [
       {
-        'match': '\\b(try|catch|finally|throw)\\b'
-        'name': 'keyword.control.catch-exception.java'
+        'match': '\\bthrow\\b'
+        'name': 'keyword.control.throw.java'
       }
       {
         'match': '\\?|:'
@@ -595,16 +785,18 @@
       }
     ]
   'method-call':
-    'begin': '([a-zA-Z_$][\\w$]*)\\s*(\\()'
+    'begin': '(\\.)\\s*([A-Za-z_$][\\w$]*)\\s*(\\()'
     'beginCaptures':
       '1':
-        'name': 'entity.name.function.java'
+        'name': 'punctuation.separator.period.java'
       '2':
-        'name': 'punctuation.definition.method-parameters.begin.bracket.round.java'
+        'name': 'entity.name.function.java'
+      '3':
+        'name': 'punctuation.definition.parameters.begin.bracket.round.java'
     'end': '\\)'
     'endCaptures':
       '0':
-        'name': 'punctuation.definition.method-parameters.end.bracket.round.java'
+        'name': 'punctuation.definition.parameters.end.bracket.round.java'
     'name': 'meta.method-call.java'
     'patterns': [
       {
@@ -645,6 +837,9 @@
           {
             'include': '#parens'
           }
+          {
+            'include': '#comments-inline'
+          }
         ]
       }
       {
@@ -652,7 +847,7 @@
       }
       {
         'begin': '(?=\\w.*\\s+\\w+\\s*\\()'
-        'end': '(?=\\w+\\s*\\()'
+        'end': '(?=\\s+\\w+\\s*\\()'
         'name': 'meta.method.return-type.java'
         'patterns': [
           {
@@ -733,10 +928,14 @@
         'name': 'punctuation.separator.delimiter.java'
       }
     ]
+  'objects':
+    # obj in obj.prop, obj.methodCall()
+    'match': '[a-zA-Z_$][\\w$]*(?=\\s*\\.\\s*[\\w$]+)'
+    'name': 'variable.other.object.java'
   'parameters':
     'patterns': [
       {
-        'match': 'final'
+        'match': '\\bfinal\\b'
         'name': 'storage.modifier.java'
       }
       {
@@ -808,6 +1007,36 @@
   'primitive-types':
     'match': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b'
     'name': 'storage.type.primitive.java'
+  'properties':
+    'patterns': [
+      {
+        # prop1 in obj.prop1.prop2, func().prop1.prop2
+        'match': '(\\.)\\s*([a-zA-Z_$][\\w$]*)(?=\\s*\\.\\s*[a-zA-Z_$][\\w$]*)'
+        'captures':
+          '1':
+            'name': 'punctuation.separator.period.java'
+          '2':
+            'name': 'variable.other.object.property.java'
+      }
+      {
+        # prop in obj.prop, func().prop
+        'match': '(\\.)\\s*([a-zA-Z_$][\\w$]*)'
+        'captures':
+          '1':
+            'name': 'punctuation.separator.period.java'
+          '2':
+            'name': 'variable.other.property.java'
+      }
+      {
+        # 123illegal in obj.123illegal, func().123illegal
+        'match': '(\\.)\\s*([0-9][\\w$]*)'
+        'captures':
+          '1':
+            'name': 'punctuation.separator.period.java'
+          '2':
+            'name': 'invalid.illegal.identifier.java'
+      }
+    ]
   'storage-modifiers':
     'match': '\\b(public|private|protected|static|final|native|synchronized|abstract|threadsafe|transient|volatile)\\b'
     'name': 'storage.modifier.java'
@@ -861,65 +1090,56 @@
       }
     ]
   'variables':
-    'applyEndPatternLast': 1
+    'begin': '''
+      (?x:(?=
+        (
+          (void|boolean|byte|char|short|int|float|long|double)
+          |
+          ((\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
+        )
+        ([\\w<>\\[\\],][\\w<>\\[\\],?\\s]*)?
+        \\s+
+        [A-Za-z_$][\\w$]* # At least one identifier after space
+        ([\\w\\[\\],$][\\w\\[\\],\\s]*)? # possibly primitive array or additional identifiers
+        \\s*(=|;)
+      ))
+    '''
+    'end': '(?=;)'
+    'name': 'meta.definition.variable.java'
     'patterns': [
       {
-        'begin': '''
-          (?x:(?=
-            (?:
-              (?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final) # visibility/modifier
-              |
-              (?:def)
-              |
-              (?:void|boolean|byte|char|short|int|float|long|double)
-              |
-              (?:(?:[a-z]\\w*\\s*\\.\\s*)*[A-Z]+\\w*) # object type
-            )
-            \\s+
-            (?!private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final|def|void|boolean|byte|char|short|int|float|long|double)
-            [\\w\\d_<>\\[\\],\\?][\\w\\d_<>\\[\\],\\?\\s]*
-            (?:=|$)
-          ))
-        '''
+        'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
+        'captures':
+          '1':
+            'name': 'variable.other.definition.java'
+      }
+      {
+        'include': '#all-types'
+      }
+      {
+        'begin': '='
+        'beginCaptures':
+          '0':
+            'name': 'keyword.operator.assignment.java'
         'end': '(?=;)'
-        'name': 'meta.definition.variable.java'
         'patterns': [
-          {
-            'match': '\\s'
-          }
-          {
-            'captures':
-              '1':
-                'name': 'constant.variable.java'
-            'match': '([A-Z_0-9]+)\\s+(?=\\=)'
-          }
-          {
-            'captures':
-              '1':
-                'name': 'meta.definition.variable.name.java'
-            'match': '(\\w[^\\s,]*)\\s+(?=\\=)'
-          }
-          {
-            'begin': '='
-            'beginCaptures':
-              '0':
-                'name': 'keyword.operator.assignment.java'
-            'end': '(?=;)'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
-          }
-          {
-            'captures':
-              '1':
-                'name': 'meta.definition.variable.name.java'
-            'match': '(\\w[^\\s=]*)(?=\\s*;)'
-          }
           {
             'include': '#code'
           }
         ]
+      }
+      {
+        'include': '#code'
+      }
+    ]
+  'member-variables':
+    'begin': '(?=private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final)'
+    'end': '(?=;)'
+    'patterns': [
+      {
+        'include': '#storage-modifiers'
+      }
+      {
+        'include': '#variables'
       }
     ]

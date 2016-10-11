@@ -3,6 +3,7 @@
 'fileTypes': [
   'jsp'
   'jspf'
+  'jspx'
   'tag'
 ]
 'injections':
