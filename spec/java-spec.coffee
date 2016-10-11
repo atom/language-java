@@ -516,6 +516,14 @@ describe 'Java grammar', ->
     expect(tokens[13]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
 
     lines = grammar.tokenizeLines '''
+      map.put(key,
+        new Value(value)
+      );
+      '''
+
+    expect(lines[2][0]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
+
+    lines = grammar.tokenizeLines '''
       Point point = new Point()
       {
         public void something(x)
