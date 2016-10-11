@@ -161,10 +161,7 @@
     'beginCaptures':
       '0':
         'name': 'keyword.control.new.java'
-    'end': ';|((?<=\\))(?!$))'
-    'endCaptures':
-      '0':
-        'name': 'punctuation.terminator.java'
+    'end': '(?=;)|((?<=\\))(?!$))'
     'patterns': [
       {
         'include': '#function-call'
