@@ -1002,8 +1002,21 @@
       }
     ]
   'primitive-arrays':
-    'match': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b\\s*(?=\\[)'
-    'name': 'storage.type.primitive.array.java'
+    'patterns': [
+      {
+        'begin': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b\\s*(?=\\[)'
+        'end': '(?!\\s*\\[)'
+        'name': 'storage.type.primitive.array.java'
+        'patterns': [
+          {
+            'include': '#comments'
+          }
+          {
+            'include': '#parens'
+          }
+        ]
+      }
+    ]
   'primitive-types':
     'match': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b'
     'name': 'storage.type.primitive.java'
