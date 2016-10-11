@@ -881,7 +881,10 @@
         'include': '#generics'
       }
       {
-        'begin': '\\b[A-Z]+\\w*\\b\\s*(?=\\[)'
+        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b\\s*(?=\\[)'
+        'beginCaptures':
+          '1':
+            'name': 'punctuation.separator.period.java'
         'end': '(?!\\s*\\[)'
         'name': 'storage.type.object.array.java'
         'patterns': [
