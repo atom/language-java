@@ -881,12 +881,13 @@
         'include': '#generics'
       }
       {
-        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b\\s*(?=\\[)'
+        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*([A-Z]+\\w*)\\b\\s*(?=\\[)'
         'beginCaptures':
           '1':
             'name': 'punctuation.separator.period.java'
+          '2':
+            'name': 'storage.type.object.array.java'
         'end': '(?!\\s*\\[)'
-        'name': 'storage.type.object.array.java'
         'patterns': [
           {
             'include': '#comments'
@@ -1014,8 +1015,10 @@
     'patterns': [
       {
         'begin': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b\\s*(?=\\[)'
+        'beginCaptures':
+          '1':
+            'name': 'storage.type.primitive.array.java'
         'end': '(?!\\s*\\[)'
-        'name': 'storage.type.primitive.array.java'
         'patterns': [
           {
             'include': '#comments'
