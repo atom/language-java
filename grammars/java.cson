@@ -884,8 +884,17 @@
         'include': '#generics'
       }
       {
-        'match': '\\b[A-Z]+\\w*\\b\\s*(?=\\[)'
+        'begin': '\\b[A-Z]+\\w*\\b\\s*(?=\\[)'
+        'end': '(?!\\s*\\[)'
         'name': 'storage.type.object.array.java'
+        'patterns': [
+          {
+            'include': '#comments'
+          }
+          {
+            'include': '#parens'
+          }
+        ]
       }
       {
         # Match possible generics first, eg Wow<String> instead of just Wow
