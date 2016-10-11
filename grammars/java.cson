@@ -167,7 +167,7 @@
         'name': 'punctuation.terminator.java'
     'patterns': [
       {
-        'include': '#method-call'
+        'include': '#function-call'
       }
       {
         'include': '#all-types'
