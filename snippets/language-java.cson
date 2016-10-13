@@ -171,7 +171,7 @@
     'body': '<c:if test="\\${${1:true}}">\n\t$0\n</c:if>'
   'c:choose':
     'prefix': 'choose'
-    'body': '<c:choose>\n\t<c:when test="\\${${1:true}}">\n\t\t$2\n\t</c:when>$3\n\t<c:otherwise>\n\t\t$4\n\t</c:otherwise>\n<c:choose>'
+    'body': '<c:choose>\n\t<c:when test="\\${${1:true}}">\n\t\t$2\n\t</c:when>$3\n\t<c:otherwise>\n\t\t$4\n\t</c:otherwise>\n</c:choose>'
   'c:when':
     'prefix': 'when'
     'body': '<c:when test="\\${${1:true}}">\n\t$2\n</c:when>'
