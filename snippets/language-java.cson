@@ -130,60 +130,131 @@
     'prefix': 'wh'
     'body': 'while ($1) {\n\t$0\n}'
 '.text.html.jsp':
-  'scriptlet':
-    'prefix': '%'
-    'body': '<%\n\t$1\n%>'
-  'scriptlet (xml)':
-    'prefix': 'scriptlet'
-    'body': '<jsp:scriptlet>\n\t$1\n</jsp:scriptlet>'
-  'declaration':
-    'prefix': '%!'
-    'body': '<%!\n\t$1\n%>'
-  'declaration (xml)':
-    'prefix': 'declaration'
-    'body': '<jsp:declaration>\n\t$1\n</jsp:declaration>'
-  'expression':
-    'prefix': '%='
-    'body': '<%=\n\t$1\n%>'
-  'expression (xml)':
-    'prefix': 'expression'
-    'body': '<jsp:expression>\n\t$1\n</jsp:expression>'
-  'comment':
-    'prefix': '%--'
-    'body': '<%--\n\t$1\n--%>'
   'el':
     'prefix': '$'
     'body': '\\${$1}'
+  'scriptlet':
+    'prefix': '%'
+    'body': """
+    <%
+    \t$1
+    %>
+    """
+  'declaration':
+    'prefix': '%!'
+    'body': """
+    <%!
+    \t$1
+    %>
+    """
+  'declaration (xml)':
+    'prefix': 'declaration'
+    'body': """
+    <jsp:declaration>
+    \t$1
+    </jsp:declaration>
+    """
+  'expression':
+    'prefix': '%='
+    'body': """
+    <%=
+    \t$1
+    %>
+    """
+  'expression (xml)':
+    'prefix': 'expression'
+    'body': """
+    <jsp:expression>
+    \t$1
+    </jsp:expression>
+    """
+  'comment':
+    'prefix': '%--'
+    'body': """
+    <%--
+    \t$1
+    --%>
+    """
+  'scriptlet (xml)':
+    'prefix': 'scriptlet'
+    'body': """
+    <jsp:scriptlet>
+    \t$1
+    </jsp:scriptlet>
+    """
   'c:out':
     'prefix': 'out'
-    'body': '<c:out value="\\${$1}"/>'
+    'body': """
+    <c:out value="\\${$1}"/>
+    """
   'c:set':
     'prefix': 'set'
-    'body': '<c:set var="${1:name}" value="\\${$2}"/>'
+    'body': """
+    <c:set var="${1:name}" value="\\${$2}"/>
+    """
   'c:remove':
     'prefix': 'rm'
-    'body': '<c:remove var="${1:name}"/>'
+    'body': """
+    <c:remove var="${1:name}"/>
+    """
   'c:catch':
     'prefix': 'catch'
-    'body': '<c:catch var="${1:ex}">\n\t$2\n</c:catch>'
+    'body': """
+    <c:catch var="${1:ex}">
+    \t$2
+    </c:catch>
+    """
   'c:if':
     'prefix': 'if'
-    'body': '<c:if test="\\${${1:true}}">\n\t$0\n</c:if>'
+    'body': """
+    <c:if test="\\${${1:true}}">
+    \t$0
+    </c:if>
+    """
   'c:choose':
     'prefix': 'choose'
-    'body': '<c:choose>\n\t<c:when test="\\${${1:true}}">\n\t\t$2\n\t</c:when>$3\n\t<c:otherwise>\n\t\t$4\n\t</c:otherwise>\n</c:choose>'
+    'body': """
+    <c:choose>
+    \t<c:when test="\\${${1:true}}">
+    \t\t$2
+    \t</c:when>$3
+    \t<c:otherwise>
+    \t\t$4
+    \t</c:otherwise>
+    </c:choose>
+    """
   'c:when':
     'prefix': 'when'
-    'body': '<c:when test="\\${${1:true}}">\n\t$2\n</c:when>'
+    'body': """
+    <c:when test="\\${${1:true}}">
+    \t$2
+    </c:when>
+    """
   'c:otherwise':
     'prefix': 'other'
-    'body': '<c:otherwise>\n\t$1\n</c:otherwise>'
+    'body': """
+    <c:otherwise>
+    \t$1
+    </c:otherwise>
+    """
   'c:forEach':
     'prefix': 'forEach'
-    'body': '<c:forEach var="${1:i}" begin="$2" end="$3">\n\t$4\n</c:forEach>'
+    'body': """
+    <c:forEach var="${1:i}" begin="$2" end="$3">
+    \t$4
+    </c:forEach>
+    """
   'c:forEach':
     'prefix': 'forEachIn'
-    'body': '<c:forEach var="${1:item}" items="$2">\n\t$3\n</c:forEach>'
+    'body': """
+    <c:forEach var="${1:item}" items="$2">
+    \t$3
+    </c:forEach>
+    """
   'c:forTokens':
     'prefix': 'forTokens'
-    'body': '<c:forTokens var="${1:item}" items="$2" delims="${3:,}">\n\t$4\n</c:forTokens>'
+    'body': """
+    <c:forTokens var="${1:item}" items="$2" delims="${3:,}">
+    \t$4
+    </c:forTokens>
+    """
