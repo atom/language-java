@@ -509,7 +509,7 @@
             'begin': '{'
             'beginCaptures':
               '0':
-                'name':'punctuation.section.try.begin.bracket.curly.java'
+                'name': 'punctuation.section.try.begin.bracket.curly.java'
             'end': '(?=})'
             'contentName': 'meta.try.body.java'
             'patterns': [
@@ -555,7 +555,7 @@
             'begin': '{'
             'beginCaptures':
               '0':
-                'name':'punctuation.section.catch.begin.bracket.curly.java'
+                'name': 'punctuation.section.catch.begin.bracket.curly.java'
             'end': '(?=})'
             'contentName': 'meta.catch.body.java'
             'patterns': [
@@ -585,7 +585,7 @@
             'begin': '{'
             'beginCaptures':
               '0':
-                'name':'punctuation.section.finally.begin.bracket.curly.java'
+                'name': 'punctuation.section.finally.begin.bracket.curly.java'
             'end': '(?=})'
             'contentName': 'meta.finally.body.java'
             'patterns': [
