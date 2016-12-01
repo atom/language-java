@@ -252,6 +252,64 @@ describe 'Java grammar', ->
     expect(lines[2][18]).toEqual value: 'scorefinal', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'variable.parameter.java']
     expect(lines[4][2]).toEqual value: ' finalScore', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java']
 
+  describe 'numbers', ->
+    describe 'integers', ->
+      it 'tokenizes hexadecimal integers', ->
+        {tokens} = grammar.tokenizeLine '0x0'
+        expect(tokens[0]).toEqual value: '0x0', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0X0'
+        expect(tokens[0]).toEqual value: '0X0', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0x1234567ABCDEF'
+        expect(tokens[0]).toEqual value: '0x1234567ABCDEF', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0x1234567aBcDEf'
+        expect(tokens[0]).toEqual value: '0x1234567aBcDEf', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0x3746A4l'
+        expect(tokens[0]).toEqual value: '0x3746A4l', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xC3L'
+        expect(tokens[0]).toEqual value: '0xC3L', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0x0_1B'
+        expect(tokens[0]).toEqual value: '0x0_1B', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xCF______3_2_A_73_B'
+        expect(tokens[0]).toEqual value: '0xCF______3_2_A_73_B', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xCF______3_2_A_73_BL'
+        expect(tokens[0]).toEqual value: '0xCF______3_2_A_73_BL', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        # Invalid
+        {tokens} = grammar.tokenizeLine '0x_0'
+        expect(tokens[0]).toEqual value: '0x_0', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x_'
+        expect(tokens[0]).toEqual value: '0x_', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0_'
+        expect(tokens[0]).toEqual value: '0x0_', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x123ABCQ'
+        expect(tokens[0]).toEqual value: '0x123ABCQ', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x123ABC$'
+        expect(tokens[0]).toEqual value: '0x123ABC$', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x123ABCLl'
+        expect(tokens[0]).toEqual value: '0x123ABCLl', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine 'a0x123ABC'
+        expect(tokens[0]).toEqual value: 'a0x123ABC', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1x0'
+        expect(tokens[0]).toEqual value: '1x0', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '.0x1'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.java', 'punctuation.separator.period.java']
+
   it 'tokenizes `final` in class fields', ->
     lines = grammar.tokenizeLines '''
       class A
