@@ -428,6 +428,16 @@ describe 'Java grammar', ->
         {tokens} = grammar.tokenizeLine '02637242638_L'
         expect(tokens[0]).toEqual value: '02637242638_L', scopes: ['source.java']
 
+      it 'tokenizes numeric integers', ->
+        # TODO
+
+    describe 'floats', ->
+      it 'tokenizes hexadecimal floats', ->
+        # TODO
+
+      it 'tokenizes numeric floats', ->
+        # TODO
+
   it 'tokenizes `final` in class fields', ->
     lines = grammar.tokenizeLines '''
       class A
