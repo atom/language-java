@@ -161,75 +161,18 @@
     'beginCaptures':
       '0':
         'name': 'keyword.control.new.java'
-    'end': '(?<=\\)|\\])(?!\\s*{)|(?<=})|(?=;)'
+    'end': '(?=;|\\))'
     'patterns': [
       {
-        'begin': '(\\w+)\\s*(?=\\[)'
-        'beginCaptures':
-          '1':
-            'name': 'storage.type.java'
-        'end': '(})|(?=\\s*(?:,|;|\\)))'
-        'endCaptures':
-          '1':
-            'name': 'punctuation.section.block.end.bracket.curly.java'
-        'patterns': [
-          {
-            'begin': '\\['
-            'beginCaptures':
-              '0':
-                'name': 'punctuation.bracket.square.java'
-            'end': '\\]'
-            'endCaptures':
-              '0':
-                'name': 'punctuation.bracket.square.java'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
-          }
-          {
-            'begin': '{'
-            'beginCaptures':
-              '0':
-                'name': 'punctuation.section.block.begin.bracket.curly.java'
-            'end': '(?=})'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
-          }
-        ]
+        'include': '#function-call'
       }
       {
-        'begin': '(?=\\w.*\\()'
-        'end': '(?<=\\))'
-        'patterns': [
-          {
-            'include': '#object-types'
-          }
-          {
-            'begin': '\\('
-            'beginCaptures':
-              '0':
-                'name': 'punctuation.bracket.round.java'
-            'end': '\\)'
-            'endCaptures':
-              '0':
-                'name': 'punctuation.bracket.round.java'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
-          }
-        ]
+        'include': '#all-types'
       }
       {
-        'begin': '{'
+        'begin': '(?<!\\])\\s*({)' # Don't match new int[]{1, 2, 3};
         'beginCaptures':
-          '0':
+          '1':
             'name': 'punctuation.section.inner-class.begin.bracket.curly.java'
         'end': '}'
         'endCaptures':
@@ -241,6 +184,9 @@
             'include': '#class-body'
           }
         ]
+      }
+      {
+        'include': '#parens'
       }
     ]
   'assertions':
@@ -886,6 +832,9 @@
             'include': '#parameters'
           }
           {
+            'include': '#parens'
+          }
+          {
             'include': '#comments-inline'
           }
         ]
@@ -900,6 +849,9 @@
         'patterns': [
           {
             'include': '#all-types'
+          }
+          {
+            'include': '#parens'
           }
         ]
       }
@@ -929,12 +881,13 @@
         'include': '#generics'
       }
       {
-        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b\\s*(?=\\[)'
+        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*([A-Z]+\\w*)\\b\\s*(?=\\[)'
         'beginCaptures':
           '1':
             'name': 'punctuation.separator.period.java'
+          '2':
+            'name': 'storage.type.object.array.java'
         'end': '(?!\\s*\\[)'
-        'name': 'storage.type.object.array.java'
         'patterns': [
           {
             'include': '#comments'
@@ -1062,8 +1015,10 @@
     'patterns': [
       {
         'begin': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b\\s*(?=\\[)'
+        'beginCaptures':
+          '1':
+            'name': 'storage.type.primitive.array.java'
         'end': '(?!\\s*\\[)'
-        'name': 'storage.type.primitive.array.java'
         'patterns': [
           {
             'include': '#comments'
@@ -1075,12 +1030,8 @@
       }
     ]
   'primitive-types':
-    'patterns': [
-      {
-        'match': '\\b(?:void|boolean|byte|char|short|int|float|long|double)\\b'
-        'name': 'storage.type.primitive.java'
-      }
-    ]
+    'match': '\\b(void|boolean|byte|char|short|int|float|long|double)\\b'
+    'name': 'storage.type.primitive.java'
   'properties':
     'patterns': [
       {
@@ -1112,10 +1063,8 @@
       }
     ]
   'storage-modifiers':
-    'captures':
-      '1':
-        'name': 'storage.modifier.java'
     'match': '\\b(public|private|protected|static|final|native|synchronized|abstract|threadsafe|transient|volatile)\\b'
+    'name': 'storage.modifier.java'
   'strings':
     'patterns': [
       {
