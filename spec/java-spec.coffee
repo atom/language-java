@@ -410,26 +410,70 @@ describe 'Java grammar', ->
         {tokens} = grammar.tokenizeLine '02637242638'
         expect(tokens[0]).toEqual value: '02637242638', scopes: ['source.java']
 
-        {tokens} = grammar.tokenizeLine '02637242638Q'
-        expect(tokens[0]).toEqual value: '02637242638Q', scopes: ['source.java']
+        {tokens} = grammar.tokenizeLine '0263724263Q'
+        expect(tokens[0]).toEqual value: '0263724263Q', scopes: ['source.java']
 
-        {tokens} = grammar.tokenizeLine '02637242638$'
-        expect(tokens[0]).toEqual value: '02637242638$', scopes: ['source.java']
+        {tokens} = grammar.tokenizeLine '0263724263$'
+        expect(tokens[0]).toEqual value: '0263724263$', scopes: ['source.java']
 
-        {tokens} = grammar.tokenizeLine 'a02637242638'
-        expect(tokens[0]).toEqual value: 'a02637242638', scopes: ['source.java']
+        {tokens} = grammar.tokenizeLine 'a0263724263'
+        expect(tokens[0]).toEqual value: 'a0263724263', scopes: ['source.java']
 
-        {tokens} = grammar.tokenizeLine '$02637242638'
-        expect(tokens[0]).toEqual value: '$02637242638', scopes: ['source.java']
+        {tokens} = grammar.tokenizeLine '$0263724263'
+        expect(tokens[0]).toEqual value: '$0263724263', scopes: ['source.java']
 
-        {tokens} = grammar.tokenizeLine '02637242638Ll'
-        expect(tokens[0]).toEqual value: '02637242638Ll', scopes: ['source.java']
+        {tokens} = grammar.tokenizeLine '0263724263Ll'
+        expect(tokens[0]).toEqual value: '0263724263Ll', scopes: ['source.java']
 
-        {tokens} = grammar.tokenizeLine '02637242638_L'
-        expect(tokens[0]).toEqual value: '02637242638_L', scopes: ['source.java']
+        {tokens} = grammar.tokenizeLine '0263724263_L'
+        expect(tokens[0]).toEqual value: '0263724263_L', scopes: ['source.java']
 
       it 'tokenizes numeric integers', ->
-        # TODO
+        {tokens} = grammar.tokenizeLine '0'
+        expect(tokens[0]).toEqual value: '0', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '123456789'
+        expect(tokens[0]).toEqual value: '123456789', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '362__2643_0_7'
+        expect(tokens[0]).toEqual value: '362__2643_0_7', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '29473923603492738L'
+        expect(tokens[0]).toEqual value: '29473923603492738L', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '29473923603492738l'
+        expect(tokens[0]).toEqual value: '29473923603492738l', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '2947_39___23__60_3_4______92738l'
+        expect(tokens[0]).toEqual value: '2947_39___23__60_3_4______92738l', scopes: ['source.java', 'constant.numeric.java']
+
+        # Invalid
+        {tokens} = grammar.tokenizeLine '01'
+        expect(tokens[0]).toEqual value: '01', scopes: ['source.java', 'constant.numeric.octal.java']
+
+        {tokens} = grammar.tokenizeLine '1_'
+        expect(tokens[0]).toEqual value: '1_', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '_1'
+        expect(tokens[0]).toEqual value: '_1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '2639724263Q'
+        expect(tokens[0]).toEqual value: '2639724263Q', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '2639724263$'
+        expect(tokens[0]).toEqual value: '2639724263$', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine 'a2639724263'
+        expect(tokens[0]).toEqual value: 'a2639724263', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '$2639724263'
+        expect(tokens[0]).toEqual value: '$2639724263', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '2639724263Ll'
+        expect(tokens[0]).toEqual value: '2639724263Ll', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '2639724263_L'
+        expect(tokens[0]).toEqual value: '2639724263_L', scopes: ['source.java']
 
     describe 'floats', ->
       it 'tokenizes hexadecimal floats', ->
