@@ -522,6 +522,51 @@ describe 'Java grammar', ->
         {tokens} = grammar.tokenizeLine '0xD3.17_Fp-0f'
         expect(tokens[0]).toEqual value: '0xD3.17_Fp-0f', scopes: ['source.java', 'constant.numeric.hex.java']
 
+        # Invalid
+        {tokens} = grammar.tokenizeLine '0x0p'
+        expect(tokens[0]).toEqual value: '0x0p', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0pA'
+        expect(tokens[0]).toEqual value: '0x0pA', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0p+'
+        expect(tokens[0]).toEqual value: '0x0p', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0p'
+        expect(tokens[0]).toEqual value: '0x0p', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0pF'
+        expect(tokens[0]).toEqual value: '0x0pF', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0p_'
+        expect(tokens[0]).toEqual value: '0x0p_', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0_p1'
+        expect(tokens[0]).toEqual value: '0x0_p1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0p1_'
+        expect(tokens[0]).toEqual value: '0x0p1_', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0p+-2'
+        expect(tokens[0]).toEqual value: '0x0p', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0p+2Ff'
+        expect(tokens[0]).toEqual value: '0x0p', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0._p2'
+        expect(tokens[0]).toEqual value: '0x0', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0_.p2'
+        expect(tokens[0]).toEqual value: '0x0_', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0..p2'
+        expect(tokens[0]).toEqual value: '0x0', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0x0Pp2'
+        expect(tokens[0]).toEqual value: '0x0Pp2', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '0xp2'
+        expect(tokens[0]).toEqual value: '0xp2', scopes: ['source.java']
 
       it 'tokenizes numeric floats', ->
         # TODO

@@ -989,7 +989,7 @@
     ]
   'objects':
     # obj in obj.prop, obj.methodCall()
-    'match': '[a-zA-Z_$][\\w$]*(?=\\s*\\.\\s*[\\w$]+)'
+    'match': '(?<![\\w$])[a-zA-Z_$][\\w$]*(?=\\s*\\.\\s*[\\w$]+)'
     'name': 'variable.other.object.java'
   'parameters':
     'patterns': [
