@@ -477,7 +477,51 @@ describe 'Java grammar', ->
 
     describe 'floats', ->
       it 'tokenizes hexadecimal floats', ->
-        # TODO
+        {tokens} = grammar.tokenizeLine '0x0P0'
+        expect(tokens[0]).toEqual value: '0x0P0', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0x0p0'
+        expect(tokens[0]).toEqual value: '0x0p0', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xDp3746'
+        expect(tokens[0]).toEqual value: '0xDp3746', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD__3p3_7_46'
+        expect(tokens[0]).toEqual value: '0xD__3p3_7_46', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD3.p3_7_46'
+        expect(tokens[0]).toEqual value: '0xD3.p3_7_46', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD3.17Fp3_7_46'
+        expect(tokens[0]).toEqual value: '0xD3.17Fp3_7_46', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD3.17_Fp3_7_46'
+        expect(tokens[0]).toEqual value: '0xD3.17_Fp3_7_46', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD3.17_Fp+3_7_46'
+        expect(tokens[0]).toEqual value: '0xD3.17_Fp+3_7_46', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD3.17_Fp-3_7_46'
+        expect(tokens[0]).toEqual value: '0xD3.17_Fp-3_7_46', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD3.17_Fp3_7_46F'
+        expect(tokens[0]).toEqual value: '0xD3.17_Fp3_7_46F', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD3.17_Fp3_7_46f'
+        expect(tokens[0]).toEqual value: '0xD3.17_Fp3_7_46f', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD3.17_Fp3_7_46D'
+        expect(tokens[0]).toEqual value: '0xD3.17_Fp3_7_46D', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD3.17_Fp3_7_46d'
+        expect(tokens[0]).toEqual value: '0xD3.17_Fp3_7_46d', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD3.17_Fp-3_7_46f'
+        expect(tokens[0]).toEqual value: '0xD3.17_Fp-3_7_46f', scopes: ['source.java', 'constant.numeric.hex.java']
+
+        {tokens} = grammar.tokenizeLine '0xD3.17_Fp-0f'
+        expect(tokens[0]).toEqual value: '0xD3.17_Fp-0f', scopes: ['source.java', 'constant.numeric.hex.java']
+
 
       it 'tokenizes numeric floats', ->
         # TODO
