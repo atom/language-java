@@ -645,7 +645,77 @@ describe 'Java grammar', ->
         expect(tokens[0]).toEqual value: '7_26f', scopes: ['source.java', 'constant.numeric.java']
 
         # Invalid
+        {tokens} = grammar.tokenizeLine '1e'
+        expect(tokens[0]).toEqual value: '1e', scopes: ['source.java']
 
+        {tokens} = grammar.tokenizeLine '1.e'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '.e'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.java', 'punctuation.separator.period.java']
+
+        {tokens} = grammar.tokenizeLine '1_.'
+        expect(tokens[0]).toEqual value: '1_', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1._'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '_.'
+        expect(tokens[0]).toEqual value: '_', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1._1'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '_1.1'
+        expect(tokens[0]).toEqual value: '_1', scopes: ['source.java', 'variable.other.object.java']
+
+        {tokens} = grammar.tokenizeLine '1.1_'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1e++7'
+        expect(tokens[0]).toEqual value: '1e', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1.ee5'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1.Ff'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1.e'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1..1'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine 'a1'
+        expect(tokens[0]).toEqual value: 'a1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1a'
+        expect(tokens[0]).toEqual value: '1a', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1.q'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1.3fa'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1.1_f'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1.1_e3'
+        expect(tokens[0]).toEqual value: '1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '$1'
+        expect(tokens[0]).toEqual value: '$1', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '1$'
+        expect(tokens[0]).toEqual value: '1$', scopes: ['source.java']
+
+        {tokens} = grammar.tokenizeLine '$.1'
+        expect(tokens[0]).toEqual value: '$', scopes: ['source.java', 'variable.other.object.java']
+
+        {tokens} = grammar.tokenizeLine '.1$'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.java', 'punctuation.separator.period.java']
 
   it 'tokenizes `final` in class fields', ->
     lines = grammar.tokenizeLines '''
