@@ -569,7 +569,83 @@ describe 'Java grammar', ->
         expect(tokens[0]).toEqual value: '0xp2', scopes: ['source.java']
 
       it 'tokenizes numeric floats', ->
-        # TODO
+        {tokens} = grammar.tokenizeLine '1.'
+        expect(tokens[0]).toEqual value: '1.', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.0'
+        expect(tokens[0]).toEqual value: '1.0', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1273.47363'
+        expect(tokens[0]).toEqual value: '1273.47363', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1_2.4_7__89_5'
+        expect(tokens[0]).toEqual value: '1_2.4_7__89_5', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.F'
+        expect(tokens[0]).toEqual value: '1.F', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.f'
+        expect(tokens[0]).toEqual value: '1.f', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.D'
+        expect(tokens[0]).toEqual value: '1.D', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.d'
+        expect(tokens[0]).toEqual value: '1.d', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.0f'
+        expect(tokens[0]).toEqual value: '1.0f', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.0_7f'
+        expect(tokens[0]).toEqual value: '1.0_7f', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.E5'
+        expect(tokens[0]).toEqual value: '1.E5', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.e5'
+        expect(tokens[0]).toEqual value: '1.e5', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.e5_7'
+        expect(tokens[0]).toEqual value: '1.e5_7', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.6e58_26'
+        expect(tokens[0]).toEqual value: '1.6e58_26', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.6e8f'
+        expect(tokens[0]).toEqual value: '1.6e8f', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.78e+7'
+        expect(tokens[0]).toEqual value: '1.78e+7', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.78e-7'
+        expect(tokens[0]).toEqual value: '1.78e-7', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '1.78e+7f'
+        expect(tokens[0]).toEqual value: '1.78e+7f', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '.7'
+        expect(tokens[0]).toEqual value: '.7', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '.726'
+        expect(tokens[0]).toEqual value: '.726', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '.72__6e97_5632f'
+        expect(tokens[0]).toEqual value: '.72__6e97_5632f', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '7_26e+52_3'
+        expect(tokens[0]).toEqual value: '7_26e+52_3', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '7_26e+52_3f'
+        expect(tokens[0]).toEqual value: '7_26e+52_3f', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '3f'
+        expect(tokens[0]).toEqual value: '3f', scopes: ['source.java', 'constant.numeric.java']
+
+        {tokens} = grammar.tokenizeLine '7_26f'
+        expect(tokens[0]).toEqual value: '7_26f', scopes: ['source.java', 'constant.numeric.java']
+
+        # Invalid
+
 
   it 'tokenizes `final` in class fields', ->
     lines = grammar.tokenizeLines '''
