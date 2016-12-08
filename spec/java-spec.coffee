@@ -396,7 +396,7 @@ describe 'Java grammar', ->
 
         # Invalid
         {tokens} = grammar.tokenizeLine '0'
-        expect(tokens[0]).toEqual value: '0', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '0', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '0_'
         expect(tokens[0]).toEqual value: '0_', scopes: ['source.java']
@@ -430,22 +430,22 @@ describe 'Java grammar', ->
 
       it 'tokenizes numeric integers', ->
         {tokens} = grammar.tokenizeLine '0'
-        expect(tokens[0]).toEqual value: '0', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '0', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '123456789'
-        expect(tokens[0]).toEqual value: '123456789', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '123456789', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '362__2643_0_7'
-        expect(tokens[0]).toEqual value: '362__2643_0_7', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '362__2643_0_7', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '29473923603492738L'
-        expect(tokens[0]).toEqual value: '29473923603492738L', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '29473923603492738L', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '29473923603492738l'
-        expect(tokens[0]).toEqual value: '29473923603492738l', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '29473923603492738l', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '2947_39___23__60_3_4______92738l'
-        expect(tokens[0]).toEqual value: '2947_39___23__60_3_4______92738l', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '2947_39___23__60_3_4______92738l', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         # Invalid
         {tokens} = grammar.tokenizeLine '01'
@@ -570,79 +570,79 @@ describe 'Java grammar', ->
 
       it 'tokenizes numeric floats', ->
         {tokens} = grammar.tokenizeLine '1.'
-        expect(tokens[0]).toEqual value: '1.', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.0'
-        expect(tokens[0]).toEqual value: '1.0', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.0', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1273.47363'
-        expect(tokens[0]).toEqual value: '1273.47363', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1273.47363', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1_2.4_7__89_5'
-        expect(tokens[0]).toEqual value: '1_2.4_7__89_5', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1_2.4_7__89_5', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.F'
-        expect(tokens[0]).toEqual value: '1.F', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.F', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.f'
-        expect(tokens[0]).toEqual value: '1.f', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.f', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.D'
-        expect(tokens[0]).toEqual value: '1.D', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.D', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.d'
-        expect(tokens[0]).toEqual value: '1.d', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.d', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.0f'
-        expect(tokens[0]).toEqual value: '1.0f', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.0f', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.0_7f'
-        expect(tokens[0]).toEqual value: '1.0_7f', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.0_7f', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.E5'
-        expect(tokens[0]).toEqual value: '1.E5', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.E5', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.e5'
-        expect(tokens[0]).toEqual value: '1.e5', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.e5', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.e5_7'
-        expect(tokens[0]).toEqual value: '1.e5_7', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.e5_7', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.6e58_26'
-        expect(tokens[0]).toEqual value: '1.6e58_26', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.6e58_26', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.6e8f'
-        expect(tokens[0]).toEqual value: '1.6e8f', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.6e8f', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.78e+7'
-        expect(tokens[0]).toEqual value: '1.78e+7', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.78e+7', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.78e-7'
-        expect(tokens[0]).toEqual value: '1.78e-7', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.78e-7', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '1.78e+7f'
-        expect(tokens[0]).toEqual value: '1.78e+7f', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '1.78e+7f', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '.7'
-        expect(tokens[0]).toEqual value: '.7', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '.7', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '.726'
-        expect(tokens[0]).toEqual value: '.726', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '.726', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '.72__6e97_5632f'
-        expect(tokens[0]).toEqual value: '.72__6e97_5632f', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '.72__6e97_5632f', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '7_26e+52_3'
-        expect(tokens[0]).toEqual value: '7_26e+52_3', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '7_26e+52_3', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '7_26e+52_3f'
-        expect(tokens[0]).toEqual value: '7_26e+52_3f', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '7_26e+52_3f', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '3f'
-        expect(tokens[0]).toEqual value: '3f', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '3f', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         {tokens} = grammar.tokenizeLine '7_26f'
-        expect(tokens[0]).toEqual value: '7_26f', scopes: ['source.java', 'constant.numeric.java']
+        expect(tokens[0]).toEqual value: '7_26f', scopes: ['source.java', 'constant.numeric.decimal.java']
 
         # Invalid
         {tokens} = grammar.tokenizeLine '1e'
@@ -753,7 +753,7 @@ describe 'Java grammar', ->
 
     expect(lines[6][1]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
     expect(lines[6][3]).toEqual value: 'primitive', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
-    expect(lines[6][7]).toEqual value: '5', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'constant.numeric.java']
+    expect(lines[6][7]).toEqual value: '5', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'constant.numeric.decimal.java']
 
   it 'tokenizes function and method calls', ->
     lines = grammar.tokenizeLines '''
@@ -933,7 +933,7 @@ describe 'Java grammar', ->
     expect(tokens[9]).toEqual value: ' ', scopes: ['source.java', 'meta.definition.variable.java']
     expect(tokens[10]).toEqual value: 'int', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.primitive.array.java']
     expect(tokens[11]).toEqual value: '[', scopes: ['source.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
-    expect(tokens[12]).toEqual value: '10', scopes: ['source.java', 'meta.definition.variable.java', 'constant.numeric.java']
+    expect(tokens[12]).toEqual value: '10', scopes: ['source.java', 'meta.definition.variable.java', 'constant.numeric.decimal.java']
     expect(tokens[13]).toEqual value: ']', scopes: ['source.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
     expect(tokens[14]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
@@ -946,7 +946,7 @@ describe 'Java grammar', ->
     expect(tokens[8]).toEqual value: 'new', scopes: ['source.java', 'meta.definition.variable.java', 'keyword.control.new.java']
     expect(tokens[10]).toEqual value: 'String', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.object.array.java']
     expect(tokens[11]).toEqual value: '[', scopes: ['source.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
-    expect(tokens[12]).toEqual value: '10', scopes: ['source.java', 'meta.definition.variable.java', 'constant.numeric.java']
+    expect(tokens[12]).toEqual value: '10', scopes: ['source.java', 'meta.definition.variable.java', 'constant.numeric.decimal.java']
     expect(tokens[13]).toEqual value: ']', scopes: ['source.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
     expect(tokens[14]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
@@ -1046,7 +1046,7 @@ describe 'Java grammar', ->
     expect(lines[4][6]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java']
     expect(lines[4][7]).toEqual value: '=', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'keyword.operator.assignment.java']
     expect(lines[4][8]).toEqual value: ' ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java']
-    expect(lines[4][9]).toEqual value: '3', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'constant.numeric.java']
+    expect(lines[4][9]).toEqual value: '3', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'constant.numeric.decimal.java']
     expect(lines[4][10]).toEqual value: ';', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.terminator.java']
 
     expect(lines[5][5]).toEqual value: 'variable1', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
@@ -1077,10 +1077,10 @@ describe 'Java grammar', ->
     expect(lines[9][9]).toEqual value: 'somevar', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
     expect(lines[9][15]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.primitive.array.java']
     expect(lines[9][16]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
-    expect(lines[9][17]).toEqual value: '10', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'constant.numeric.java']
+    expect(lines[9][17]).toEqual value: '10', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'constant.numeric.decimal.java']
     expect(lines[9][18]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
     expect(lines[9][19]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
-    expect(lines[9][20]).toEqual value: '12', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'constant.numeric.java']
+    expect(lines[9][20]).toEqual value: '12', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'constant.numeric.decimal.java']
     expect(lines[9][21]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
 
     expect(lines[10][2]).toEqual value: ' int 1invalid', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java']

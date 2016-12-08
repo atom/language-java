@@ -927,7 +927,7 @@
           )
           (?!\\$)
         '''
-        'name': 'constant.numeric.java'
+        'name': 'constant.numeric.decimal.java'
       }
     ]
   'object-types':
