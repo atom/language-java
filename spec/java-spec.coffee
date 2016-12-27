@@ -1003,3 +1003,64 @@ describe 'Java grammar', ->
     expect(lines[8][5]).toEqual value: '#', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java']
     expect(lines[8][6]).toEqual value: 'method$(int a)', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java', 'variable.parameter.java']
     expect(lines[8][7]).toEqual value: ' label {@link Class#method()}}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java']
+
+  it 'tokenizes class-body block initializer', ->
+    lines = grammar.tokenizeLines '''
+      class Test
+      {
+        public static HashSet<Integer> set = new HashSet<Integer>();
+        {
+          int a = 1;
+          set.add(a);
+        }
+      }
+      '''
+
+    expect(lines[3][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.section.block.begin.bracket.curly.java']
+    expect(lines[4][1]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[4][3]).toEqual value: 'a', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[5][1]).toEqual value: 'set', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'variable.other.object.java']
+    expect(lines[5][3]).toEqual value: 'add', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method-call.java', 'entity.name.function.java']
+    expect(lines[6][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.section.block.end.bracket.curly.java']
+
+  it 'tokenizes method-body block initializer', ->
+    lines = grammar.tokenizeLines '''
+      class Test
+      {
+        public int func() {
+          List<Integer> list = new ArrayList<Integer>();
+          {
+            int a = 1;
+            list.add(a);
+          }
+          return 1;
+        }
+      }
+      '''
+
+    expect(lines[4][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'punctuation.section.block.begin.bracket.curly.java']
+    expect(lines[5][1]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[5][3]).toEqual value: 'a', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[6][1]).toEqual value: 'list', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'variable.other.object.java']
+    expect(lines[6][3]).toEqual value: 'add', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.method-call.java', 'entity.name.function.java']
+    expect(lines[7][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'punctuation.section.block.end.bracket.curly.java']
+
+  it 'tokenizes static initializer', ->
+    lines = grammar.tokenizeLines '''
+      class Test
+      {
+        public static HashSet<Integer> set = new HashSet<Integer>();
+        static {
+          int a = 1;
+          set.add(a);
+        }
+      }
+      '''
+
+    expect(lines[3][1]).toEqual value: 'static', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.modifier.java']
+    expect(lines[3][3]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.section.block.begin.bracket.curly.java']
+    expect(lines[4][1]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[4][3]).toEqual value: 'a', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[5][1]).toEqual value: 'set', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'variable.other.object.java']
+    expect(lines[5][3]).toEqual value: 'add', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method-call.java', 'entity.name.function.java']
+    expect(lines[6][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.section.block.end.bracket.curly.java']
