@@ -299,6 +299,9 @@
         'include': '#generics'
       }
       {
+        'include': '#static-initializer'
+      }
+      {
         'include': '#methods'
       }
       {
@@ -326,6 +329,16 @@
     'patterns': [
       {
         'include': '#code'
+      }
+    ]
+  'static-initializer':
+    'patterns': [
+      {
+        'include': '#anonymous-block-and-instance-initializer'
+      }
+      {
+        'match': 'static'
+        'name': 'storage.modifier.java'
       }
     ]
   'code':
