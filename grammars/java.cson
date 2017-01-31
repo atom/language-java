@@ -912,7 +912,8 @@
       }
       {
         # Match possible generics first, eg Wow<String> instead of just Wow
-        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b\\s*(?=<)'
+        # Also expression ensures that generic is specified on single line with closing '>'
+        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b\\s*(?=<.*>)'
         'beginCaptures':
           '0':
             'name': 'storage.type.java'
