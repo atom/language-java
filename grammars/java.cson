@@ -371,6 +371,9 @@
         'include': '#constants-and-special-vars'
       }
       {
+        'include': '#numbers'
+      }
+      {
         'include': '#anonymous-classes-and-new'
       }
       {
@@ -626,10 +629,6 @@
       {
         'match': '\\bsuper\\b'
         'name': 'variable.language.java'
-      }
-      {
-        'match': '\\b((0(b|B)[01]+)|(0(x|X)[0-9a-fA-F]+)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)([LlFfUuDd]|UL|ul)?\\b'
-        'name': 'constant.numeric.java'
       }
     ]
   'generics':
@@ -888,6 +887,62 @@
         'include': '#comments'
       }
     ]
+  'numbers':
+    # See http://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.10.1 (integers)
+    # and http://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.10.2 (floats)
+    # for the official specifications
+    'patterns': [
+      {
+        'match': '''(?x)
+          \\b(?<!\\$)
+          0(x|X)
+          (
+            (?<!\\.)[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?[Ll]?(?!\\.)
+            |
+            (
+              [0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?\\.?
+              |
+              ([0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?)?\\.[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?
+            )
+            [Pp][+-]?[0-9]([0-9_]*[0-9])?[FfDd]?
+          )
+          \\b(?!\\$)
+        '''
+        'name': 'constant.numeric.hex.java'
+      }
+      {
+        'match': '\\b(?<!\\$)0(b|B)[01]([01_]*[01])?[Ll]?\\b(?!\\$)'
+        'name': 'constant.numeric.binary.java'
+      }
+      {
+        'match': '\\b(?<!\\$)0[0-7]([0-7_]*[0-7])?[Ll]?\\b(?!\\$)'
+        'name': 'constant.numeric.octal.java'
+      }
+      {
+        'match': '''(?x)
+          (?<!\\$)
+          (
+            \\b[0-9]([0-9_]*[0-9])?\\.\\B(?!\\.)
+            |
+            \\b[0-9]([0-9_]*[0-9])?\\.([Ee][+-]?[0-9]([0-9_]*[0-9])?)[FfDd]?\\b
+            |
+            \\b[0-9]([0-9_]*[0-9])?\\.([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]\\b
+            |
+            \\b[0-9]([0-9_]*[0-9])?\\.([0-9]([0-9_]*[0-9])?)([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]?\\b
+            |
+            (?<!\\.)\\B\\.[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]?\\b
+            |
+            \\b[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)[FfDd]?\\b
+            |
+            \\b[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]\\b
+            |
+            \\b(0|[1-9]([0-9_]*[0-9])?)(?!\\.)[Ll]?\\b
+          )
+          (?!\\$)
+        '''
+        'name': 'constant.numeric.decimal.java'
+      }
+    ]
   'object-types':
     'patterns': [
       {
@@ -953,7 +1008,7 @@
     ]
   'objects':
     # obj in obj.prop, obj.methodCall()
-    'match': '[a-zA-Z_$][\\w$]*(?=\\s*\\.\\s*[\\w$]+)'
+    'match': '(?<![\\w$])[a-zA-Z_$][\\w$]*(?=\\s*\\.\\s*[\\w$]+)'
     'name': 'variable.other.object.java'
   'parameters':
     'patterns': [
