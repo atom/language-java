@@ -949,7 +949,7 @@
         'include': '#generics'
       }
       {
-        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*([A-Z]+\\w*)\\b\\s*(?=\\[)'
+        'begin': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*([A-Z]\\w*)\\s*(?=\\[)'
         'beginCaptures':
           '1':
             'name': 'punctuation.separator.period.java'
@@ -967,7 +967,7 @@
       }
       {
         # Match possible generics first, eg Wow<String> instead of just Wow
-        'begin': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b\\s*(?=<)'
+        'begin': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\s*(?=<)'
         'beginCaptures':
           '0':
             'name': 'storage.type.java'
@@ -982,11 +982,11 @@
       }
       {
         # If the above fails *then* just look for Wow
-        'match': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*\\b'
+        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\b'
+        'name': 'storage.type.java'
         'captures':
           '1':
             'name': 'punctuation.separator.period.java'
-        'name': 'storage.type.java'
       }
     ]
   'object-types-inherited':
@@ -995,7 +995,7 @@
         'include': '#generics'
       }
       {
-        'match': '\\b(?:[a-z]\\w*\\s*(\\.)\\s*)*[A-Z]+\\w*'
+        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\b'
         'name': 'entity.other.inherited-class.java'
         'captures':
           '1':
