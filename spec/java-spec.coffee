@@ -1115,6 +1115,15 @@ describe 'Java grammar', ->
     expect(lines[1][5]).toEqual value: 'Double', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
     expect(lines[1][7]).toEqual value: 'something', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
 
+  it 'does not tokenize uppercase variables as storage types', ->
+    lines = grammar.tokenizeLines '''
+      class Test {
+        private int G = 0;
+        G += 3;
+      }
+    '''
+    expect(lines[2][0]).toEqual value: '  G ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java']
+
   it 'tokenizes try-catch-finally blocks', ->
     lines = grammar.tokenizeLines '''
     class Test {
