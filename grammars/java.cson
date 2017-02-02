@@ -982,7 +982,7 @@
       }
       {
         # If the above fails *then* just look for Wow
-        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\b'
+        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*+(?=\\s*[\\w$])'
         'name': 'storage.type.java'
         'captures':
           '1':
@@ -995,7 +995,7 @@
         'include': '#generics'
       }
       {
-        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\b'
+        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*+(?=\\s*[\\w$])'
         'name': 'entity.other.inherited-class.java'
         'captures':
           '1':
