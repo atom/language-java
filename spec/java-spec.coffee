@@ -1118,11 +1118,11 @@ describe 'Java grammar', ->
   it 'does not tokenize uppercase variables as storage types', ->
     lines = grammar.tokenizeLines '''
       class Test {
-        private int G = 0;
-        G += 3;
+        private int HELLO = 0;
+        HELLO += 3;
       }
     '''
-    expect(lines[2][0]).toEqual value: '  G ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java']
+    expect(lines[2][0]).toEqual value: '  HELLO ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java']
 
   it 'tokenizes try-catch-finally blocks', ->
     lines = grammar.tokenizeLines '''
