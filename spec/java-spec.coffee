@@ -1104,6 +1104,17 @@ describe 'Java grammar', ->
     expect(lines[13][3]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
     expect(lines[13][5]).toEqual value: 'primitiveArray', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
 
+  it 'tokenizes qualified storage types', ->
+    lines = grammar.tokenizeLines '''
+      class Test {
+        private Test.Double something;
+      }
+    '''
+    expect(lines[1][3]).toEqual value: 'Test', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[1][4]).toEqual value: '.', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java', 'punctuation.separator.period.java']
+    expect(lines[1][5]).toEqual value: 'Double', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[1][7]).toEqual value: 'something', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+
   it 'tokenizes try-catch-finally blocks', ->
     lines = grammar.tokenizeLines '''
     class Test {
