@@ -145,10 +145,6 @@
           {
             'include': '#code'
           }
-          {
-            'match': ','
-            'name': 'punctuation.separator.delimiter.java'
-          }
         ]
       }
       {
@@ -546,9 +542,6 @@
             'contentName': 'meta.try.body.java'
             'patterns': [
               {
-                'include': '#variables'
-              }
-              {
                 'include': '#code'
               }
             ]
@@ -592,9 +585,6 @@
             'contentName': 'meta.catch.body.java'
             'patterns': [
               {
-                'include': '#variables'
-              }
-              {
                 'include': '#code'
               }
             ]
@@ -621,9 +611,6 @@
             'end': '(?=})'
             'contentName': 'meta.finally.body.java'
             'patterns': [
-              {
-                'include': '#variables'
-              }
               {
                 'include': '#code'
               }
@@ -740,10 +727,6 @@
     'name': 'meta.function-call.java'
     'patterns': [
       {
-        'match': ','
-        'name': 'punctuation.separator.delimiter.java'
-      }
-      {
         'include': '#code'
       }
     ]
@@ -824,10 +807,6 @@
         'name': 'punctuation.definition.parameters.end.bracket.round.java'
     'name': 'meta.method-call.java'
     'patterns': [
-      {
-        'match': ','
-        'name': 'punctuation.separator.delimiter.java'
-      }
       {
         'include': '#code'
       }
