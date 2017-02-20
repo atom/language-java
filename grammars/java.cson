@@ -522,6 +522,22 @@
         'name': 'meta.try.java'
         'patterns': [
           {
+            'begin': '\\('
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.try.resources.begin.bracket.round.java'
+            'end': '\\)'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.section.try.resources.end.bracket.round.java'
+            'name': 'meta.try.resources.java'
+            'patterns': [
+              {
+                'include': '#code'
+              }
+            ]
+          }
+          {
             'begin': '{'
             'beginCaptures':
               '0':
