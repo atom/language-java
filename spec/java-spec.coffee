@@ -975,10 +975,12 @@ describe 'Java grammar', ->
     expect(tokens[14]).toEqual value: ')', scopes: ['source.java', 'meta.definition.variable.java', 'meta.function-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
     expect(tokens[15]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
-    {tokens} = grammar.tokenizeLine 'map.put(key, new Value(value));'
+    {tokens} = grammar.tokenizeLine 'map.put(key, new Value(value), "extra");'
 
     expect(tokens[12]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'meta.function-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
-    expect(tokens[13]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
+    expect(tokens[13]).toEqual value: ',', scopes: ['source.java', 'meta.method-call.java', 'punctuation.separator.delimiter.java']
+    expect(tokens[15]).toEqual value: '"', scopes: ['source.java', 'meta.method-call.java', 'string.quoted.double.java', 'punctuation.definition.string.begin.java']
+    expect(tokens[18]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
 
     lines = grammar.tokenizeLines '''
       map.put(key,
