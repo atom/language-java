@@ -5,9 +5,9 @@
     'increaseIndentPattern': '''(?x)
       ^.*{[^}"\']*$                             # Opening bracket without closing bracket or quotes
       |
-      ^\\s*(else\\s+)?if\\s*\\([^\\)]+\\)\\s*$  # single-line if/else if (change to indentNextLinePattern when available)
+      ^\\s*(else\\s+)?if\\s*\\([^\\)]+\\)\\s*(//.*)?$  # single-line if/else if (change to indentNextLinePattern when available)
       |
-      ^\\s*else\\s*$                            # single-line else (change to indentNextLinePattern when available)
+      ^\\s*else\\s*(//.*)?$                            # single-line else (change to indentNextLinePattern when available)
     '''
     'decreaseIndentPattern': '^(.*\\*/)?\\s*}'
 '.text.html.jsp':
