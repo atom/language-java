@@ -975,6 +975,17 @@ describe 'Java grammar', ->
     expect(tokens[14]).toEqual value: ')', scopes: ['source.java', 'meta.definition.variable.java', 'meta.function-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
     expect(tokens[15]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
+    {tokens} = grammar.tokenizeLine 'Point point = true ? new Point(1, 4) : new Point(0, 0);'
+
+    expect(tokens[8]).toEqual value: '?', scopes: ['source.java', 'meta.definition.variable.java', 'keyword.control.ternary.java']
+    expect(tokens[10]).toEqual value: 'new', scopes: ['source.java', 'meta.definition.variable.java', 'keyword.control.new.java']
+    expect(tokens[12]).toEqual value: 'Point', scopes: ['source.java', 'meta.definition.variable.java', 'meta.function-call.java', 'entity.name.function.java']
+    expect(tokens[13]).toEqual value: '(', scopes: ['source.java', 'meta.definition.variable.java', 'meta.function-call.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(tokens[18]).toEqual value: ')', scopes: ['source.java', 'meta.definition.variable.java', 'meta.function-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
+    expect(tokens[20]).toEqual value: ':', scopes: ['source.java', 'meta.definition.variable.java', 'keyword.control.ternary.java']
+    expect(tokens[22]).toEqual value: 'new', scopes: ['source.java', 'meta.definition.variable.java', 'keyword.control.new.java']
+    expect(tokens[31]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+
     {tokens} = grammar.tokenizeLine 'map.put(key, new Value(value), "extra");'
 
     expect(tokens[12]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'meta.function-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
