@@ -157,7 +157,7 @@
     'beginCaptures':
       '0':
         'name': 'keyword.control.new.java'
-    'end': '(?=;|\\)|,|:|\\})' # close when '}' to interpret ';' correctly for arrays and blocks
+    'end': '(?=;|\\)|,|:|}|\\+)'
     'patterns': [
       {
         'include': '#function-call'

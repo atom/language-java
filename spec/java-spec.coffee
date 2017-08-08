@@ -991,6 +991,12 @@ describe 'Java grammar', ->
     expect(tokens[21]).toEqual value: '}', scopes: ['source.java', 'meta.definition.variable.java', 'punctuation.section.block.end.bracket.curly.java']
     expect(tokens[22]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
+    {tokens} = grammar.tokenizeLine 'String a = (valid ? new Date().toString() + " : " : "");'
+    expect(tokens[23]).toEqual value: ' : ', scopes: ['source.java', 'meta.definition.variable.java', 'string.quoted.double.java']
+    expect(tokens[26]).toEqual value: ':', scopes: ['source.java', 'meta.definition.variable.java', 'keyword.control.ternary.java']
+    expect(tokens[28]).toEqual value: '"', scopes: ['source.java', 'meta.definition.variable.java', 'string.quoted.double.java', 'punctuation.definition.string.begin.java']
+    expect(tokens[29]).toEqual value: '"', scopes: ['source.java', 'meta.definition.variable.java', 'string.quoted.double.java', 'punctuation.definition.string.end.java']
+
     {tokens} = grammar.tokenizeLine 'String[] list = new String[variable];'
 
     expect(tokens[12]).toEqual value: 'variable', scopes: ['source.java', 'meta.definition.variable.java']
