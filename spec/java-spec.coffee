@@ -216,6 +216,21 @@ describe 'Java grammar', ->
     expect(lines[2][1]).toEqual value: 'A', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
     expect(lines[6][0]).toEqual value: '}', scopes: ['source.java', 'meta.enum.java', 'punctuation.section.enum.end.bracket.curly.java']
 
+  it 'does not catastrophically backtrack when tokenizing large enums (regression)', ->
+    # https://github.com/atom/language-java/issues/103
+    # This test 'fails' if it runs for an absurdly long time without completing.
+    # It should pass almost immediately just like all the other tests.
+
+    enumContents = 'AAAAAAAAAAA, BBBBBBBBBB, CCCCCCCCCC, DDDDDDDDDD, EEEEEEEEEE, FFFFFFFFFF, '.repeat(50)
+
+    lines = grammar.tokenizeLines """
+      public enum test {
+        #{enumContents}
+      }
+    """
+
+    expect(lines[0][2]).toEqual value: 'enum', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'storage.modifier.java']
+
   it 'tokenizes methods', ->
     lines = grammar.tokenizeLines '''
       class A
