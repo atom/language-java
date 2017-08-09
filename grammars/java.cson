@@ -157,7 +157,7 @@
     'beginCaptures':
       '0':
         'name': 'keyword.control.new.java'
-    'end': '(?=;|\\)|,|:)'
+    'end': '(?=;|\\)|,|:|}|\\+)'
     'patterns': [
       {
         'include': '#function-call'
