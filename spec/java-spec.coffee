@@ -964,6 +964,7 @@ describe 'Java grammar', ->
     expect(tokens[28]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
     {tokens} = grammar.tokenizeLine 'A[] arr = new A[]{new A(), new A()};'
+
     expect(tokens[8]).toEqual value: 'new', scopes: ['source.java', 'meta.definition.variable.java', 'keyword.control.new.java']
     expect(tokens[10]).toEqual value: 'A', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.object.array.java']
     expect(tokens[13]).toEqual value: '{', scopes: ['source.java', 'meta.definition.variable.java', 'punctuation.bracket.curly.java']
@@ -979,6 +980,7 @@ describe 'Java grammar', ->
     expect(tokens[27]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
     {tokens} = grammar.tokenizeLine 'A[] arr = {new A(), new A()};'
+
     expect(tokens[8]).toEqual value: '{', scopes: ['source.java', 'meta.definition.variable.java', 'punctuation.section.block.begin.bracket.curly.java']
     expect(tokens[9]).toEqual value: 'new', scopes: ['source.java', 'meta.definition.variable.java', 'keyword.control.new.java']
     expect(tokens[11]).toEqual value: 'A', scopes: ['source.java', 'meta.definition.variable.java', 'meta.function-call.java', 'entity.name.function.java']
@@ -992,6 +994,11 @@ describe 'Java grammar', ->
     expect(tokens[22]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
     {tokens} = grammar.tokenizeLine 'String a = (valid ? new Date().toString() + " : " : "");'
+
+    expect(tokens[16]).toEqual value: 'toString', scopes: ['source.java', 'meta.definition.variable.java', 'meta.function-call.java', 'entity.name.function.java']
+    expect(tokens[17]).toEqual value: '(', scopes: ['source.java', 'meta.definition.variable.java', 'meta.function-call.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(tokens[18]).toEqual value: ')', scopes: ['source.java', 'meta.definition.variable.java', 'meta.function-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
+    expect(tokens[20]).toEqual value: '+', scopes: ['source.java', 'meta.definition.variable.java', 'keyword.operator.arithmetic.java']
     expect(tokens[23]).toEqual value: ' : ', scopes: ['source.java', 'meta.definition.variable.java', 'string.quoted.double.java']
     expect(tokens[26]).toEqual value: ':', scopes: ['source.java', 'meta.definition.variable.java', 'keyword.control.ternary.java']
     expect(tokens[28]).toEqual value: '"', scopes: ['source.java', 'meta.definition.variable.java', 'string.quoted.double.java', 'punctuation.definition.string.begin.java']
