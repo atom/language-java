@@ -777,7 +777,7 @@ describe 'Java grammar', ->
         A()
         {
           hello();
-          hello(a, b);
+          hello(a, 1, "hello");
           $hello();
           this.hello();
           this . hello(a, b);
@@ -793,7 +793,10 @@ describe 'Java grammar', ->
     expect(lines[5][1]).toEqual value: 'hello', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.function-call.java', 'entity.name.function.java']
     expect(lines[5][3]).toEqual value: 'a', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.function-call.java']
     expect(lines[5][4]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.function-call.java', 'punctuation.separator.delimiter.java']
-    expect(lines[5][7]).toEqual value: ';', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'punctuation.terminator.java']
+    expect(lines[5][6]).toEqual value: '1', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.function-call.java', 'constant.numeric.decimal.java']
+    expect(lines[5][9]).toEqual value: '"', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.function-call.java', 'string.quoted.double.java', 'punctuation.definition.string.begin.java']
+    expect(lines[5][11]).toEqual value: '"', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.function-call.java', 'string.quoted.double.java', 'punctuation.definition.string.end.java']
+    expect(lines[5][13]).toEqual value: ';', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'punctuation.terminator.java']
 
     expect(lines[6][1]).toEqual value: '$hello', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.function-call.java', 'entity.name.function.java']
 
