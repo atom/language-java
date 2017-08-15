@@ -1018,6 +1018,9 @@
         'include': '#all-types'
       }
       {
+        'include': '#strings'
+      }
+      {
         'match': '\\w+'
         'name': 'variable.parameter.java'
       }
