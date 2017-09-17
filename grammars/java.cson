@@ -157,7 +157,7 @@
     'beginCaptures':
       '0':
         'name': 'keyword.control.new.java'
-    'end': '(?=;|\\)|,|:)'
+    'end': '(?=;|\\)|,|:|}|\\+)'
     'patterns': [
       {
         'include': '#function-call'
@@ -1019,6 +1019,9 @@
         'include': '#all-types'
       }
       {
+        'include': '#strings'
+      }
+      {
         'match': '\\w+'
         'name': 'variable.parameter.java'
       }
@@ -1179,19 +1182,23 @@
       }
     ]
   'variables':
-    'begin': '''
-      (?x:(?=
+    'begin': '''(?x)
+      (?=
         (
           (void|boolean|byte|char|short|int|float|long|double)
           |
-          ((\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
+          (?>(\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
         )
-        ([\\w<>\\[\\],][\\w<>\\[\\],?\\s]*)?
+        (
+          <[\\w<>,?\\s]*> # HashMap<Integer, String>
+          |
+          (\\[\\])* # int[][]
+        )?
         \\s+
         [A-Za-z_$][\\w$]* # At least one identifier after space
         ([\\w\\[\\],$][\\w\\[\\],\\s]*)? # possibly primitive array or additional identifiers
         \\s*(=|;)
-      ))
+      )
     '''
     'end': '(?=;)'
     'name': 'meta.definition.variable.java'
