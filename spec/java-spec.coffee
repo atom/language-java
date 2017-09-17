@@ -1033,6 +1033,23 @@ describe 'Java grammar', ->
     expect(lines[2][10]).toEqual value: 'C', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.generic.java']
     expect(lines[2][11]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'punctuation.bracket.angle.java']
 
+  it 'tokenizes generics array declaration', ->
+    lines = grammar.tokenizeLines '''
+      class A<T> {
+        private B<T>[] arr;
+      }
+    '''
+
+    expect(lines[1][1]).toEqual value: 'private', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.modifier.java']
+    expect(lines[1][3]).toEqual value: 'B', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[1][4]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[1][5]).toEqual value: 'T', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[1][6]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[1][7]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
+    expect(lines[1][8]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
+    expect(lines[1][10]).toEqual value: 'arr', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[1][11]).toEqual value: ';', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.terminator.java']
+
   it 'tokenizes lambda expressions', ->
     {tokens} = grammar.tokenizeLine '(String s1) -> s1.length() - outer.length();'
 
