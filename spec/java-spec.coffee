@@ -1663,3 +1663,51 @@ describe 'Java grammar', ->
     expect(lines[5][1]).toEqual value: 'set', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'variable.other.object.java']
     expect(lines[5][3]).toEqual value: 'add', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method-call.java', 'entity.name.function.java']
     expect(lines[6][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.section.block.end.bracket.curly.java']
+
+  it 'tokenizes annotations', ->
+    lines = grammar.tokenizeLines '''
+      @Annotation
+      @Table(key = "value")
+      class Test {
+        @Override
+        @Column(true)
+      }
+       @interface Test {}
+      @interface Test {}
+      public @interface Test {}
+      '''
+
+    expect(lines[0][0]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java', 'punctuation.definition.annotation.java']
+    expect(lines[0][1]).toEqual value: 'Annotation', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
+
+    expect(lines[1][0]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java', 'punctuation.definition.annotation.java']
+    expect(lines[1][1]).toEqual value: 'Table', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
+    expect(lines[1][2]).toEqual value: '(', scopes: ['source.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation-arguments.begin.bracket.round.java']
+    expect(lines[1][3]).toEqual value: 'key', scopes: ['source.java', 'meta.declaration.annotation.java', 'constant.other.key.java']
+    expect(lines[1][5]).toEqual value: '=', scopes: ['source.java', 'meta.declaration.annotation.java', 'keyword.operator.assignment.java']
+    expect(lines[1][7]).toEqual value: '"', scopes: ['source.java', 'meta.declaration.annotation.java', 'string.quoted.double.java', 'punctuation.definition.string.begin.java']
+    expect(lines[1][8]).toEqual value: 'value', scopes: ['source.java', 'meta.declaration.annotation.java', 'string.quoted.double.java']
+    expect(lines[1][9]).toEqual value: '"', scopes: ['source.java', 'meta.declaration.annotation.java',  'string.quoted.double.java', 'punctuation.definition.string.end.java']
+    expect(lines[1][10]).toEqual value: ')', scopes: ['source.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation-arguments.end.bracket.round.java']
+
+    expect(lines[3][1]).toEqual value: '@', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java', 'punctuation.definition.annotation.java']
+    expect(lines[3][2]).toEqual value: 'Override', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
+
+    expect(lines[4][1]).toEqual value: '@', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java', 'punctuation.definition.annotation.java']
+    expect(lines[4][2]).toEqual value: 'Column', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
+    expect(lines[4][3]).toEqual value: '(', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation-arguments.begin.bracket.round.java']
+    expect(lines[4][4]).toEqual value: 'true', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'constant.language.java']
+    expect(lines[4][5]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation-arguments.end.bracket.round.java']
+
+    expect(lines[6][1]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation.java']
+    expect(lines[6][2]).toEqual value: 'interface', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.modifier.java']
+    expect(lines[6][4]).toEqual value: 'Test', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
+
+    expect(lines[7][0]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation.java']
+    expect(lines[7][1]).toEqual value: 'interface', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.modifier.java']
+    expect(lines[7][3]).toEqual value: 'Test', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
+
+    expect(lines[8][0]).toEqual value: 'public', scopes: ['source.java', 'storage.modifier.java']
+    expect(lines[8][2]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation.java']
+    expect(lines[8][3]).toEqual value: 'interface', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.modifier.java']
+    expect(lines[8][5]).toEqual value: 'Test', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
