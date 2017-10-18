@@ -130,9 +130,9 @@
             'name': 'punctuation.definition.annotation.java'
           '3':
             'name': 'punctuation.definition.annotation-arguments.begin.bracket.round.java'
-        'end': '(\\))'
+        'end': '\\)'
         'endCaptures':
-          '1':
+          '0':
             'name': 'punctuation.definition.annotation-arguments.end.bracket.round.java'
         'name': 'meta.declaration.annotation.java'
         'patterns': [
