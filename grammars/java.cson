@@ -122,7 +122,7 @@
   'annotations':
     'patterns': [
       {
-        'begin': '((@)[^ (]+)(\\()'
+        'begin': '((@)[^\\s(]+)(\\()'
         'beginCaptures':
           '1':
             'name': 'storage.type.annotation.java'
