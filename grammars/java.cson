@@ -122,11 +122,13 @@
   'annotations':
     'patterns': [
       {
-        'begin': '(@[^ (]+)(\\()'
+        'begin': '((@)[^ (]+)(\\()'
         'beginCaptures':
           '1':
             'name': 'storage.type.annotation.java'
           '2':
+            'name': 'punctuation.definition.annotation.java'
+          '3':
             'name': 'punctuation.definition.annotation-arguments.begin.bracket.round.java'
         'end': '(\\))'
         'endCaptures':
@@ -148,8 +150,19 @@
         ]
       }
       {
-        'match': '@\\w*'
-        'name': 'storage.type.annotation.java'
+        'match': '(@)(interface)\\s+(\\w*)|((@)\\w*)'
+        'name': 'meta.declaration.annotation.java'
+        'captures':
+          '1':
+            'name': 'punctuation.definition.annotation.java'
+          '2':
+            'name': 'storage.modifier.java'
+          '3':
+            'name': 'storage.type.annotation.java'
+          '4':
+            'name': 'storage.type.annotation.java'
+          '5':
+            'name': 'punctuation.definition.annotation.java'
       }
     ]
   'anonymous-classes-and-new':
@@ -206,7 +219,7 @@
       }
     ]
   'class':
-    'begin': '(?=\\w?[\\w\\s]*(?:class|(?:@)?interface|enum)\\s+\\w+)'
+    'begin': '(?=\\w?[\\w\\s]*(?:class|(?<!@)interface|enum)\\s+\\w+)'
     'end': '}'
     'endCaptures':
       '0':
@@ -228,7 +241,7 @@
             'name': 'storage.modifier.java'
           '2':
             'name': 'entity.name.type.class.java'
-        'match': '(class|(?:@)?interface|enum)\\s+(\\w+)'
+        'match': '(class|(?<!@)interface|enum)\\s+(\\w+)'
         'name': 'meta.class.identifier.java'
       }
       {
