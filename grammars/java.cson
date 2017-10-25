@@ -122,15 +122,17 @@
   'annotations':
     'patterns': [
       {
-        'begin': '(@[^ (]+)(\\()'
+        'begin': '((@)[^\\s(]+)(\\()'
         'beginCaptures':
           '1':
             'name': 'storage.type.annotation.java'
           '2':
+            'name': 'punctuation.definition.annotation.java'
+          '3':
             'name': 'punctuation.definition.annotation-arguments.begin.bracket.round.java'
-        'end': '(\\))'
+        'end': '\\)'
         'endCaptures':
-          '1':
+          '0':
             'name': 'punctuation.definition.annotation-arguments.end.bracket.round.java'
         'name': 'meta.declaration.annotation.java'
         'patterns': [
@@ -148,8 +150,19 @@
         ]
       }
       {
-        'match': '@\\w*'
-        'name': 'storage.type.annotation.java'
+        'match': '(@)(interface)\\s+(\\w*)|((@)\\w*)'
+        'name': 'meta.declaration.annotation.java'
+        'captures':
+          '1':
+            'name': 'punctuation.definition.annotation.java'
+          '2':
+            'name': 'storage.modifier.java'
+          '3':
+            'name': 'storage.type.annotation.java'
+          '4':
+            'name': 'storage.type.annotation.java'
+          '5':
+            'name': 'punctuation.definition.annotation.java'
       }
     ]
   'anonymous-classes-and-new':
@@ -159,6 +172,9 @@
         'name': 'keyword.control.new.java'
     'end': '(?=;|\\)|,|:|}|\\+)'
     'patterns': [
+      {
+        'include': '#comments'
+      }
       {
         'include': '#function-call'
       }
@@ -206,7 +222,7 @@
       }
     ]
   'class':
-    'begin': '(?=\\w?[\\w\\s]*(?:class|(?:@)?interface|enum)\\s+\\w+)'
+    'begin': '(?=\\w?[\\w\\s]*(?:class|(?<!@)interface|enum)\\s+\\w+)'
     'end': '}'
     'endCaptures':
       '0':
@@ -228,7 +244,7 @@
             'name': 'storage.modifier.java'
           '2':
             'name': 'entity.name.type.class.java'
-        'match': '(class|(?:@)?interface|enum)\\s+(\\w+)'
+        'match': '(class|(?<!@)interface|enum)\\s+(\\w+)'
         'name': 'meta.class.identifier.java'
       }
       {
