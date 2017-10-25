@@ -173,6 +173,9 @@
     'end': '(?=;|\\)|,|:|}|\\+)'
     'patterns': [
       {
+        'include': '#comments'
+      }
+      {
         'include': '#function-call'
       }
       {

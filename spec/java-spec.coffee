@@ -1081,6 +1081,14 @@ describe 'Java grammar', ->
     expect(tokens[15]).toEqual value: '"', scopes: ['source.java', 'meta.method-call.java', 'string.quoted.double.java', 'punctuation.definition.string.begin.java']
     expect(tokens[18]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
 
+    {tokens} = grammar.tokenizeLine 'new /* JPanel() */ Point();'
+
+    expect(tokens[0]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
+    expect(tokens[2]).toEqual value: '/*', scopes: ['source.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(tokens[4]).toEqual value: '*/', scopes: ['source.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(tokens[6]).toEqual value: 'Point', scopes: ['source.java', 'meta.function-call.java', 'entity.name.function.java']
+    expect(tokens[9]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+
     lines = grammar.tokenizeLines '''
       map.put(key,
         new Value(value)
