@@ -984,8 +984,8 @@
             'name': 'storage.type.java'
           '2':
             'name': 'punctuation.separator.period.java'
-        # making sure there isn't `;` behind us
-        'end': '(?<!;)'
+        # Stop at statement terminator
+        'end': '(?=;)'
         'patterns': [
           {
             'include': '#generics'
