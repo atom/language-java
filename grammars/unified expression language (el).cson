@@ -1,5 +1,4 @@
 'scopeName': 'source.java.el'
-'name': 'Unified Expression Language (EL)'
 'fileTypes': []
 'patterns': [
   {
