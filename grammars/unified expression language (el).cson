@@ -1,5 +1,4 @@
 'scopeName': 'source.java.el'
-'fileTypes': []
 'patterns': [
   {
     'include': '#el'
