@@ -978,13 +978,14 @@
       }
       {
         # Match possible generics first, eg Wow<String> instead of just Wow
-        'begin': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\s*(?=<)'
+        'begin': '\\b((?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*)\\s*(?=<)'
         'beginCaptures':
-          '0':
-            'name': 'storage.type.java'
           '1':
+            'name': 'storage.type.java'
+          '2':
             'name': 'punctuation.separator.period.java'
-        'end': '(?<=>)'
+        # Stop after a successful generic match or if we are not at a terminator
+        'end': '(?<=>)|(?!;)'
         'patterns': [
           {
             'include': '#generics'

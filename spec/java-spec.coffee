@@ -934,6 +934,123 @@ describe 'Java grammar', ->
     expect(lines[6][3]).toEqual value: 'Object', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.java']
     expect(lines[6][5]).toEqual value: 'otherMethod', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
 
+  it 'tokenizes generics in if-else code block', ->
+    lines = grammar.tokenizeLines '''
+      void func() {
+        int a = 1, A = 2, b = 0;
+        if (A < a) {
+          b = a;
+        }
+        String S = "str>str";
+      }
+    '''
+
+    expect(lines[2][4]).toEqual value: 'A', scopes: ['source.java', 'storage.type.java']
+    expect(lines[2][6]).toEqual value: '<', scopes: ['source.java', 'keyword.operator.comparison.java']
+    expect(lines[5][1]).toEqual value: 'String', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[5][3]).toEqual value: 'S', scopes: ['source.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[5][5]).toEqual value: '=', scopes: ['source.java', 'meta.definition.variable.java', 'keyword.operator.assignment.java']
+    # check that string does not extend to/include ';'
+    expect(lines[5][10]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+
+  it 'tokenizes generics with multiple conditions in if-else code block', ->
+    lines = grammar.tokenizeLines '''
+      void func() {
+        int a = 1, A = 2, b = 0;
+        if (A < a && b < a) {
+          b = a;
+        }
+      }
+    '''
+
+    expect(lines[2][4]).toEqual value: 'A', scopes: ['source.java', 'storage.type.java']
+    expect(lines[2][6]).toEqual value: '<', scopes: ['source.java', 'keyword.operator.comparison.java']
+    expect(lines[2][8]).toEqual value: '&&', scopes: ['source.java', 'keyword.operator.logical.java']
+    # 'b' should be just a variable, not part of generic
+    expect(lines[2][9]).toEqual value: ' b ', scopes: ['source.java']
+    expect(lines[2][10]).toEqual value: '<', scopes: ['source.java', 'keyword.operator.comparison.java']
+
+  it 'tokenizes generics before if-else code block, not including it', ->
+    lines = grammar.tokenizeLines '''
+      void func() {
+        int a = 1, A = 2;
+        ArrayList<A extends B<C>> list;
+        list = new ArrayList<>();
+        if (A < a) { }
+      }
+    '''
+
+    expect(lines[2][1]).toEqual value: 'ArrayList', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[2][2]).toEqual value: '<', scopes: ['source.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[2][3]).toEqual value: 'A', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    # "B" is storage.type.java because of the following generic <C>
+    expect(lines[2][7]).toEqual value: 'B', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[2][9]).toEqual value: 'C', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[2][11]).toEqual value: '>', scopes: ['source.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    # right part of the assignment
+    expect(lines[3][5]).toEqual value: 'ArrayList', scopes: ['source.java', 'storage.type.java']
+    expect(lines[3][6]).toEqual value: '<', scopes: ['source.java', 'punctuation.bracket.angle.java']
+    expect(lines[3][7]).toEqual value: '>', scopes: ['source.java', 'punctuation.bracket.angle.java']
+    # 'if' code block
+    expect(lines[4][4]).toEqual value: 'A', scopes: ['source.java', 'storage.type.java']
+    expect(lines[4][6]).toEqual value: '<', scopes: ['source.java', 'keyword.operator.comparison.java']
+
+  it 'tokenizes generics after if-else code block, not including it', ->
+    lines = grammar.tokenizeLines '''
+      void func() {
+        if (A < a) {
+          a = A;
+        }
+        ArrayList<A extends B, C> list;
+        list = new ArrayList<A extends B, C>();
+      }
+    '''
+
+    expect(lines[4][1]).toEqual value: 'ArrayList', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[4][2]).toEqual value: '<', scopes: ['source.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[4][3]).toEqual value: 'A', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[4][7]).toEqual value: 'B', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[4][10]).toEqual value: 'C', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[4][11]).toEqual value: '>', scopes: ['source.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    # right part of the assignment
+    expect(lines[5][5]).toEqual value: 'ArrayList', scopes: ['source.java', 'storage.type.java']
+    expect(lines[5][6]).toEqual value: '<', scopes: ['source.java', 'punctuation.bracket.angle.java']
+    expect(lines[5][7]).toEqual value: 'A', scopes: ['source.java', 'storage.type.generic.java']
+    expect(lines[5][11]).toEqual value: 'B', scopes: ['source.java', 'storage.type.generic.java']
+    expect(lines[5][14]).toEqual value: 'C', scopes: ['source.java', 'storage.type.generic.java']
+    expect(lines[5][15]).toEqual value: '>', scopes: ['source.java', 'punctuation.bracket.angle.java']
+
+  it 'tokenizes bit shift correctly, not as generics', ->
+    lines = grammar.tokenizeLines '''
+      void func() {
+        int t = 0;
+        t = M << 12;
+      }
+    '''
+
+    expect(lines[2][5]).toEqual value: '<<', scopes: ['source.java', 'keyword.operator.bitwise.java']
+    expect(lines[2][7]).toEqual value: '12', scopes: ['source.java', 'constant.numeric.decimal.java']
+
+  it 'tokenizes generics as a function return type', ->
+    # use function wrapped with class otherwise highlighting is broken
+    lines = grammar.tokenizeLines '''
+      class Test
+      {
+        ArrayList<A extends B, C> func() {
+          return null;
+        }
+      }
+    '''
+
+    expect(lines[2][1]).toEqual value: 'ArrayList', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.java']
+    expect(lines[2][2]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'punctuation.bracket.angle.java']
+    expect(lines[2][3]).toEqual value: 'A', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.generic.java']
+    expect(lines[2][5]).toEqual value: 'extends', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.modifier.extends.java']
+    expect(lines[2][7]).toEqual value: 'B', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.generic.java']
+    expect(lines[2][8]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'punctuation.separator.delimiter.java']
+    expect(lines[2][10]).toEqual value: 'C', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.generic.java']
+    expect(lines[2][11]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'punctuation.bracket.angle.java']
+
   it 'tokenizes generics and primitive arrays declarations', ->
     lines = grammar.tokenizeLines '''
       class A<T> {
