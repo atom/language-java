@@ -9,11 +9,11 @@
     'patterns': [
       {
         'name': 'keyword.control.ternary.java.el'
-        'match': '\\?|\\s+:'
+        'match': '\\?|(?<=\\s):'
       }
       {
         'name': 'keyword.operator.comparison.java.el'
-        'match': '(?:(==|!=|<=|>=|<>|<|>)|\\b(eq|ne|le|ge|lt|gt)\\b)'
+        'match': '((==|!=|<=|>=|<|>)|\\b(eq|ne|le|ge|lt|gt)\\b)'
       }
       {
         'name': 'keyword.operator.empty.java.el'
@@ -29,7 +29,10 @@
       }
       {
         'name': 'namespace.java.el'
-        'match': '[a-zA-Z]+:'
+        'match': '[a-zA-Z]+(:)'
+        'captures':
+          '1':
+            'name': 'punctuation.separator.namespace.java.el'
       }
       {
         'match': ','
@@ -44,16 +47,16 @@
         'name': 'meta.brace.square.java.el'
       }
       {
-        'name': 'constant.language.boolean.java.el'
+        'name': 'constant.boolean.java.el'
         'match': '\\b(true|false)\\b'
       }
       {
-        'name': 'constant.language.null.java.el'
+        'name': 'constant.null.java.el'
         'match': '\\bnull\\b'
       }
       {
-        'name': 'constant.numeric.java'
-        'match': '\\b([0-9]+|[0-9]+\\.[0-9]*)\\b'
+        'name': 'constant.numeric.java.el'
+        'match': '\\b([0-9]+\\.[0-9]+|[0-9]+)\\b'
       }
       {
         'name': 'string.quoted.single.java.el'
