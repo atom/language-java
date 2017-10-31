@@ -985,7 +985,7 @@
           '2':
             'name': 'punctuation.separator.period.java'
         # Stop at statement terminator
-        'end': '(?=;)'
+        'end': '(?!;)'
         'patterns': [
           {
             'include': '#generics'
