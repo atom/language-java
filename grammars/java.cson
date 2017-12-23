@@ -1250,7 +1250,7 @@
     'end': '(?=;)'
     'patterns': [
       {
-        'include': '#object-types'
+        'include': '#all-types'
       }
       {
         'include': '#storage-modifiers'
