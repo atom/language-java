@@ -1250,12 +1250,12 @@
     'end': '(?=;)'
     'patterns': [
       {
-        'include': '#all-types'
-      }
-      {
         'include': '#storage-modifiers'
       }
       {
         'include': '#variables'
+      }
+      {
+        'include': '#all-types'
       }
     ]
