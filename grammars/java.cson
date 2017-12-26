@@ -1256,6 +1256,9 @@
         'include': '#variables'
       }
       {
-        'include': '#all-types'
+        'include': '#primitive-arrays'
+      }
+      {
+        'include': '#object-types'
       }
     ]
