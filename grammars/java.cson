@@ -671,6 +671,9 @@
             'name': 'storage.type.java'
       }
       {
+        'include': '#primitive-arrays'
+      }
+      {
         'match': '[a-zA-Z$_][a-zA-Z0-9$_]*'
         'name': 'storage.type.generic.java'
       }
@@ -1254,5 +1257,11 @@
       }
       {
         'include': '#variables'
+      }
+      {
+        'include': '#primitive-arrays'
+      }
+      {
+        'include': '#object-types'
       }
     ]
