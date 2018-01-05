@@ -1582,6 +1582,39 @@ describe 'Java grammar', ->
     expect(lines[5][1]).toEqual value: ' javadoc comment ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java']
     expect(lines[5][2]).toEqual value: '*/', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
 
+  it 'tokenizes empty/single character comment', ->
+    # this test checks the correct tokenizing of empty/single character comments
+    # comment like /**/ should be parsed as single line comment, but /***/ should be parsed as javadoc
+    lines = grammar.tokenizeLines '''
+      /**/ int a = 1;
+      /**/ int b = 1;
+      /**/ int c = 1;
+      /**/ int d = 1;
+
+      /***/ int e = 1;
+      /**/ int f = 1;
+      /** */ int g = 1;
+      /* */ int h = 1;
+      '''
+
+    expect(lines[0][0]).toEqual value: '/**/', scopes: ['source.java', 'comment.block.empty.java', 'punctuation.definition.comment.java']
+    expect(lines[0][2]).toEqual value: 'int', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[1][0]).toEqual value: '/**/', scopes: ['source.java', 'comment.block.empty.java', 'punctuation.definition.comment.java']
+    expect(lines[1][2]).toEqual value: 'int', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[2][0]).toEqual value: '/**/', scopes: ['source.java', 'comment.block.empty.java', 'punctuation.definition.comment.java']
+    expect(lines[2][2]).toEqual value: 'int', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[3][0]).toEqual value: '/**/', scopes: ['source.java', 'comment.block.empty.java', 'punctuation.definition.comment.java']
+    expect(lines[3][2]).toEqual value: 'int', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+
+    expect(lines[5][0]).toEqual value: '/**', scopes: ['source.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
+    expect(lines[5][1]).toEqual value: '*/', scopes: ['source.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
+    expect(lines[6][0]).toEqual value: '/**/', scopes: ['source.java', 'comment.block.empty.java', 'punctuation.definition.comment.java']
+    expect(lines[6][2]).toEqual value: 'int', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[7][0]).toEqual value: '/**', scopes: ['source.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
+    expect(lines[7][2]).toEqual value: '*/', scopes: ['source.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
+    expect(lines[8][0]).toEqual value: '/*', scopes: ['source.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(lines[8][2]).toEqual value: '*/', scopes: ['source.java', 'comment.block.java', 'punctuation.definition.comment.java']
+
   it 'tokenizes inline comment inside method signature', ->
     # this checks usage of inline /*...*/ comments mixing with parameters
     lines = grammar.tokenizeLines '''
