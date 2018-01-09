@@ -73,7 +73,7 @@
     'body': 'try {\n\t$0\n}'
   'try-catch':
     'prefix':'trCa'
-    'body': 'try{$1}catch(${2:Exception} ${3:e}){$4}'
+    'body': 'try{\n\t$1\n}catch(${2:Exception} ${3:e}){\n\t$4\n}'
   'variable':
     'prefix': 'v'
     'body': '${1:String} ${2:var}${3: = ${0:null}};'
