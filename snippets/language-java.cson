@@ -131,4 +131,13 @@
     'body': 'public void test${1:Name}() throws Exception {\n\t$0\n}'
   'while':
     'prefix': 'wh'
-    'body': 'while ($1) {\n\t$0\n}'
+    'body': 'while ($1) {\n\t$0\n}' 
+  'To-do':
+    'prefix': 'todo'
+    'body':'// TODO: $1'
+  'Idea':
+    'prefix': 'idea'
+    'body':'// IDEA: $1'
+  'Fix-me':
+    'prefix': 'fix'
+    'body':'// FIXME: $1'
