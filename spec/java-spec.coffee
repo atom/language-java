@@ -1549,6 +1549,27 @@ describe 'Java grammar', ->
     expect(lines[5][1]).toEqual value: '//', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'comment.line.double-slash.java', 'punctuation.definition.comment.java']
     expect(lines[5][2]).toEqual value: ' single-line comment', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'comment.line.double-slash.java']
 
+  it 'tokenizes comment inside try-catch-finally block', ->
+    lines = grammar.tokenizeLines '''
+      try {
+        // comment A
+      } catch (IOException /* RuntimeException */ err) {
+        // comment B
+      } finally {
+        // comment C
+      }
+      '''
+
+    expect(lines[1][1]).toEqual value: '//', scopes: ['source.java', 'meta.try.java', 'meta.try.body.java', 'comment.line.double-slash.java', 'punctuation.definition.comment.java']
+    expect(lines[1][2]).toEqual value: ' comment A', scopes: ['source.java', 'meta.try.java', 'meta.try.body.java', 'comment.line.double-slash.java']
+    expect(lines[2][7]).toEqual value: '/*', scopes: ['source.java', 'meta.catch.java', 'meta.catch.parameters.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(lines[2][8]).toEqual value: ' RuntimeException ', scopes: ['source.java', 'meta.catch.java', 'meta.catch.parameters.java', 'comment.block.java']
+    expect(lines[2][9]).toEqual value: '*/', scopes: ['source.java', 'meta.catch.java', 'meta.catch.parameters.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(lines[3][1]).toEqual value: '//', scopes: ['source.java', 'meta.catch.java', 'meta.catch.body.java', 'comment.line.double-slash.java', 'punctuation.definition.comment.java']
+    expect(lines[3][2]).toEqual value: ' comment B', scopes: ['source.java', 'meta.catch.java', 'meta.catch.body.java', 'comment.line.double-slash.java']
+    expect(lines[5][1]).toEqual value: '//', scopes: ['source.java', 'meta.finally.java', 'meta.finally.body.java', 'comment.line.double-slash.java', 'punctuation.definition.comment.java']
+    expect(lines[5][2]).toEqual value: ' comment C', scopes: ['source.java', 'meta.finally.java', 'meta.finally.body.java', 'comment.line.double-slash.java']
+
   it 'tokenizes single-line javadoc comment', ->
     lines = grammar.tokenizeLines '''
       /** single-line javadoc comment */

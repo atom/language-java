@@ -588,6 +588,9 @@
             'contentName': 'meta.catch.parameters.java'
             'patterns': [
               {
+                'include': '#comments'
+              }
+              {
                 'include': '#parameters'
               }
             ]
