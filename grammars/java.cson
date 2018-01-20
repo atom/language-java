@@ -545,6 +545,9 @@
             'name': 'meta.try.resources.java'
             'patterns': [
               {
+                'include': '#variables-definition-only'
+              }
+              {
                 'include': '#code'
               }
             ]
@@ -1203,6 +1206,53 @@
         'include': '#object-types'
       }
     ]
+  # pattern for variable name
+  'variables-name':
+    'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
+    'captures':
+      '1':
+        'name': 'variable.other.definition.java'
+  # pattern for definition of a variable including assignment, but without expression part, e.g.
+  # 'String variable =' or 'int num =', used with '#code' when we cannot rely on ';' to terminate
+  # variable assignment
+  'variables-definition-only':
+    'begin': '''(?x)
+      (?=
+        (
+          (void|boolean|byte|char|short|int|float|long|double)
+          |
+          (?>(\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
+        )
+        (
+          <[\\w<>,?\\s]*> # HashMap<Integer, String>
+        )?
+        (
+          (\\[\\])* # int[][]
+        )?
+        \\s+
+        [A-Za-z_$][\\w$]* # At least one identifier after space
+        ([\\w\\[\\],$][\\w\\[\\],\\s]*)? # possibly primitive array or additional identifiers
+        \\s*(=)
+      )
+    '''
+    'end': '(?=\\=)'
+    'name': 'meta.definition.variable.java'
+    'patterns': [
+      {
+        'include': '#variables-name'
+      }
+      {
+        'include': '#all-types'
+      }
+      {
+        'match': '='
+        'captures':
+          '0':
+            'name': 'keyword.operator.assignment.java'
+      }
+    ]
+  # pattern for full variable assignment
+  # when updating pattern make sure it is in sync with '#variables-definition-only' pattern
   'variables':
     'begin': '''(?x)
       (?=
@@ -1227,10 +1277,7 @@
     'name': 'meta.definition.variable.java'
     'patterns': [
       {
-        'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
-        'captures':
-          '1':
-            'name': 'variable.other.definition.java'
+        'include': '#variables-name'
       }
       {
         'include': '#all-types'
