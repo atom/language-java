@@ -1510,6 +1510,7 @@ describe 'Java grammar', ->
         private void fn() {
           try (
             BufferedReader in = new BufferedReader();
+            BufferedReader br = new BufferedReader(new FileReader(path))
           ) {
             // stuff
           }
@@ -1522,9 +1523,10 @@ describe 'Java grammar', ->
     expect(lines[2][2]).toEqual value: ' ', scopes: scopes
     expect(lines[2][3]).toEqual value: '(', scopes: scopes.concat ['meta.try.resources.java', 'punctuation.section.try.resources.begin.bracket.round.java']
     expect(lines[3][1]).toEqual value: 'BufferedReader', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'storage.type.java']
-    expect(lines[4][1]).toEqual value: ')', scopes: scopes.concat ['meta.try.resources.java', 'punctuation.section.try.resources.end.bracket.round.java']
-    expect(lines[4][2]).toEqual value: ' ', scopes: scopes
-    expect(lines[4][3]).toEqual value: '{', scopes: scopes.concat ['punctuation.section.try.begin.bracket.curly.java']
+    expect(lines[4][1]).toEqual value: 'BufferedReader', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[5][1]).toEqual value: ')', scopes: scopes.concat ['meta.try.resources.java', 'punctuation.section.try.resources.end.bracket.round.java']
+    expect(lines[5][2]).toEqual value: ' ', scopes: scopes
+    expect(lines[5][3]).toEqual value: '{', scopes: scopes.concat ['punctuation.section.try.begin.bracket.curly.java']
 
   it 'tokenizes comment inside method body', ->
     lines = grammar.tokenizeLines '''
