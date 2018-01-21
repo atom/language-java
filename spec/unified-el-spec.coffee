@@ -157,6 +157,14 @@ describe 'Unified expression language grammar', ->
       expect(tokens[5]).toEqual value: 'baz', scopes: ['source.java.el', 'string.quoted.single.java.el']
       expect(tokens[6]).toEqual value: "'", scopes: ['source.java.el', 'string.quoted.single.java.el', 'punctuation.definition.string.end.java.el']
 
+    it 'tokenizes single quoted string literals with escaped single quote', ->
+      {tokens} = grammar.tokenizeLine "'foo \\\\\' bar'"
+      expect(tokens[0]).toEqual value: "'", scopes: ['source.java.el', 'string.quoted.single.java.el', 'punctuation.definition.string.begin.java.el']
+      expect(tokens[1]).toEqual value: 'foo ', scopes: ['source.java.el', 'string.quoted.single.java.el']
+      expect(tokens[2]).toEqual value: '\\\\', scopes: ['source.java.el', 'string.quoted.single.java.el', 'constant.character.escape.java.el']
+      expect(tokens[3]).toEqual value: '\' bar', scopes: ['source.java.el', 'string.quoted.single.java.el']
+      expect(tokens[4]).toEqual value: "'", scopes: ['source.java.el', 'string.quoted.single.java.el', 'punctuation.definition.string.end.java.el']
+
     it 'tokenizes double quoted string literals', ->
       {tokens} = grammar.tokenizeLine '"foo\\n bar \\\"baz"'
       expect(tokens[0]).toEqual value: '"', scopes: ['source.java.el', 'string.quoted.double.java.el', 'punctuation.definition.string.begin.java.el']
