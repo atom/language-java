@@ -545,7 +545,7 @@
             'name': 'meta.try.resources.java'
             'patterns': [
               {
-                'include': '#variables-definition-only'
+                'include': '#variable-assignment'
               }
               {
                 'include': '#code'
@@ -1207,15 +1207,14 @@
       }
     ]
   # pattern for variable name
-  'variables-name':
+  'variable-name':
     'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
     'captures':
       '1':
         'name': 'variable.other.definition.java'
-  # pattern for definition of a variable including assignment, but without expression part, e.g.
-  # 'String variable =' or 'int num =', used with '#code' when we cannot rely on ';' to terminate
-  # variable assignment
-  'variables-definition-only':
+  # pattern for a variable assignment (without expression part), e.g. 'String variable =' or
+  # 'int num =', used in places where we cannot rely on ';' as a terminating character for a match
+  'variable-assignment':
     'begin': '''(?x)
       (?=
         (
@@ -1239,20 +1238,21 @@
     'name': 'meta.definition.variable.java'
     'patterns': [
       {
-        'include': '#variables-name'
+        'include': '#variable-name'
       }
       {
         'include': '#all-types'
       }
       {
-        'match': '='
-        'captures':
+        'begin': '='
+        'beginCaptures':
           '0':
             'name': 'keyword.operator.assignment.java'
+        'end': '(?!\\G)'
       }
     ]
-  # pattern for full variable assignment
-  # when updating pattern make sure it is in sync with '#variables-definition-only' pattern
+  # pattern for full variable definition
+  # when updating pattern make sure it is in sync with '#variable-assignment' pattern
   'variables':
     'begin': '''(?x)
       (?=
@@ -1277,7 +1277,7 @@
     'name': 'meta.definition.variable.java'
     'patterns': [
       {
-        'include': '#variables-name'
+        'include': '#variable-name'
       }
       {
         'include': '#all-types'
