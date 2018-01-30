@@ -91,7 +91,7 @@ describe 'Java grammar', ->
 
     {tokens} = grammar.tokenizeLine 'package java.Hi;'
 
-    expect(tokens[4]).toEqual value: 'H', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
+    expect(tokens[4]).toEqual value: 'H', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.deprecated.package_name_not_lowercase.java']
 
     {tokens} = grammar.tokenizeLine 'package java.3a;'
 
