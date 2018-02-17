@@ -1003,8 +1003,8 @@
         ]
       }
       {
-        # If the above fails *then* just look for Wow
-        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\b'
+        # If the above fails *then* just look for Wow (must be followed by a variable name)
+        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\b(?=\\s*(\\w|\\$))'
         'name': 'storage.type.java'
         'captures':
           '1':
