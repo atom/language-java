@@ -790,6 +790,30 @@ describe 'Java grammar', ->
     expect(lines[6][3]).toEqual value: 'primitive', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
     expect(lines[6][7]).toEqual value: '5', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'constant.numeric.decimal.java']
 
+  it 'tokenizes capitalized variables', ->
+    lines = grammar.tokenizeLines '''
+      void func()
+      {
+        int g = 1;
+        g += 2;
+        int G = 1;
+        G += 2;
+
+        if (G > g) {
+          // do something
+        }
+      }
+    '''
+
+    expect(lines[2][3]).toEqual value: 'g', scopes: ['source.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[3][0]).toEqual value: '  g ', scopes: ['source.java']
+    expect(lines[4][3]).toEqual value: 'G', scopes: ['source.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[5][0]).toEqual value: '  G ', scopes: ['source.java'] # should not be highlighted as storage type!
+
+    expect(lines[7][4]).toEqual value: 'G ', scopes: ['source.java'] # should not be highlighted as storage type!
+    expect(lines[7][5]).toEqual value: '>', scopes: ['source.java', 'keyword.operator.comparison.java']
+    expect(lines[7][6]).toEqual value: ' g', scopes: ['source.java']
+
   it 'tokenizes function and method calls', ->
     lines = grammar.tokenizeLines '''
       class A
