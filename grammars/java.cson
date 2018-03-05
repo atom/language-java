@@ -1057,7 +1057,7 @@
       },
       {
         'match': '\\.\\.\\.'
-        'name': 'punctuation.definition.parameters.varargs'
+        'name': 'punctuation.definition.parameters.varargs.java'
       }
     ]
   'parens':
