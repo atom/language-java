@@ -672,7 +672,7 @@
         'name': 'storage.modifier.$1.java'
       }
       {
-        'match': '([a-zA-Z$_][a-zA-Z0-9$_]*)(?=\\s*<)'
+        'match': '(?<!\\.)([a-zA-Z$_][a-zA-Z0-9$_]*)(?=\\s*<)'
         'captures':
           '1':
             'name': 'storage.type.java'
