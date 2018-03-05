@@ -1058,6 +1058,10 @@
       {
         'match': ','
         'name': 'punctuation.separator.delimiter.java'
+      },
+      {
+        'match': '\\.\\.\\.'
+        'name': 'punctuation.definition.parameters.varargs.java'
       }
     ]
   'parens':

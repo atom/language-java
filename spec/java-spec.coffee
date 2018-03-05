@@ -250,6 +250,26 @@ describe 'Java grammar', ->
     expect(lines[3][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.begin.bracket.curly.java']
     expect(lines[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.end.bracket.curly.java']
 
+  it 'tokenizes variable-length argument list (varargs)', ->
+    lines = grammar.tokenizeLines '''
+      class A
+      {
+        void func1(String... args)
+        {
+        }
+
+        void func2(int /* ... */ arg, int ... args)
+        {
+        }
+      }
+    '''
+    expect(lines[2][5]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.java']
+    expect(lines[2][6]).toEqual value: '...', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.varargs.java']
+    expect(lines[6][5]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.primitive.java']
+    expect(lines[6][8]).toEqual value: ' ... ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'comment.block.java']
+    expect(lines[6][14]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.primitive.java']
+    expect(lines[6][16]).toEqual value: '...', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.varargs.java']
+
   it 'tokenizes `final` in class method', ->
     lines = grammar.tokenizeLines '''
       class A
