@@ -91,7 +91,7 @@ describe 'Java grammar', ->
 
     {tokens} = grammar.tokenizeLine 'package java.Hi;'
 
-    expect(tokens[4]).toEqual value: 'H', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.illegal.character_not_allowed_here.java']
+    expect(tokens[4]).toEqual value: 'H', scopes: ['source.java', 'meta.package.java', 'storage.modifier.package.java', 'invalid.deprecated.package_name_not_lowercase.java']
 
     {tokens} = grammar.tokenizeLine 'package java.3a;'
 
@@ -249,6 +249,26 @@ describe 'Java grammar', ->
     expect(lines[2][11]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.end.bracket.round.java']
     expect(lines[3][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.begin.bracket.curly.java']
     expect(lines[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.end.bracket.curly.java']
+
+  it 'tokenizes variable-length argument list (varargs)', ->
+    lines = grammar.tokenizeLines '''
+      class A
+      {
+        void func1(String... args)
+        {
+        }
+
+        void func2(int /* ... */ arg, int ... args)
+        {
+        }
+      }
+    '''
+    expect(lines[2][5]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.java']
+    expect(lines[2][6]).toEqual value: '...', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.varargs.java']
+    expect(lines[6][5]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.primitive.java']
+    expect(lines[6][8]).toEqual value: ' ... ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'comment.block.java']
+    expect(lines[6][14]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.primitive.java']
+    expect(lines[6][16]).toEqual value: '...', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.varargs.java']
 
   it 'tokenizes `final` in class method', ->
     lines = grammar.tokenizeLines '''
@@ -770,6 +790,30 @@ describe 'Java grammar', ->
     expect(lines[6][3]).toEqual value: 'primitive', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
     expect(lines[6][7]).toEqual value: '5', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'constant.numeric.decimal.java']
 
+  it 'tokenizes capitalized variables', ->
+    lines = grammar.tokenizeLines '''
+      void func()
+      {
+        int g = 1;
+        g += 2;
+        int G = 1;
+        G += 2;
+
+        if (G > g) {
+          // do something
+        }
+      }
+    '''
+
+    expect(lines[2][3]).toEqual value: 'g', scopes: ['source.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[3][0]).toEqual value: '  g ', scopes: ['source.java']
+    expect(lines[4][3]).toEqual value: 'G', scopes: ['source.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[5][0]).toEqual value: '  G ', scopes: ['source.java'] # should not be highlighted as storage type!
+
+    expect(lines[7][4]).toEqual value: 'G ', scopes: ['source.java'] # should not be highlighted as storage type!
+    expect(lines[7][5]).toEqual value: '>', scopes: ['source.java', 'keyword.operator.comparison.java']
+    expect(lines[7][6]).toEqual value: ' g', scopes: ['source.java']
+
   it 'tokenizes function and method calls', ->
     lines = grammar.tokenizeLines '''
       class A
@@ -873,6 +917,8 @@ describe 'Java grammar', ->
         C(Map<?, ? extends List<?>> m) {}
         Map<Integer, String> method() {}
         private Object otherMethod() { return null; }
+        Set<Map.Entry<K, V>> set1;
+        Set<java.util.List<K>> set2;
       }
     '''
 
@@ -933,6 +979,30 @@ describe 'Java grammar', ->
     expect(lines[6][1]).toEqual value: 'private', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'storage.modifier.java']
     expect(lines[6][3]).toEqual value: 'Object', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.java']
     expect(lines[6][5]).toEqual value: 'otherMethod', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[7][1]).toEqual value: 'Set', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[7][2]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[7][3]).toEqual value: 'Map', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[7][4]).toEqual value: '.', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.separator.period.java']
+    expect(lines[7][5]).toEqual value: 'Entry', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[7][6]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[7][7]).toEqual value: 'K', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[7][8]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.separator.delimiter.java']
+    expect(lines[7][10]).toEqual value: 'V', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[7][11]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[7][12]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[7][14]).toEqual value: 'set1', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[8][1]).toEqual value: 'Set', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[8][2]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[8][3]).toEqual value: 'java', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[8][4]).toEqual value: '.', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.separator.period.java']
+    expect(lines[8][5]).toEqual value: 'util', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[8][6]).toEqual value: '.', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.separator.period.java']
+    expect(lines[8][7]).toEqual value: 'List', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[8][8]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[8][9]).toEqual value: 'K', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[8][10]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[8][11]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[8][13]).toEqual value: 'set2', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
 
   it 'tokenizes generics in if-else code block', ->
     lines = grammar.tokenizeLines '''

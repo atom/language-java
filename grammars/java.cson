@@ -25,8 +25,12 @@
         'name': 'invalid.illegal.character_not_allowed_here.java'
       }
       {
-        'match': '(?<!_)_(?=\\s*(\\.|;))|[A-Z]+|\\b\\d+|-+'
+        'match': '(?<!_)_(?=\\s*(\\.|;))|\\b\\d+|-+'
         'name': 'invalid.illegal.character_not_allowed_here.java'
+      }
+      {
+        'match': '[A-Z]+'
+        'name': 'invalid.deprecated.package_name_not_lowercase.java'
       }
       {
         # http://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html
@@ -671,7 +675,7 @@
         'name': 'storage.modifier.$1.java'
       }
       {
-        'match': '([a-zA-Z$_][a-zA-Z0-9$_]*)(?=\\s*<)'
+        'match': '(?<!\\.)([a-zA-Z$_][a-zA-Z0-9$_]*)(?=\\s*<)'
         'captures':
           '1':
             'name': 'storage.type.java'
@@ -694,6 +698,10 @@
       {
         'match': ','
         'name': 'punctuation.separator.delimiter.java'
+      }
+      {
+        'match': '\\.'
+        'name': 'punctuation.separator.period.java'
       }
       {
         'include': '#parens'
@@ -1003,7 +1011,9 @@
       }
       {
         # If the above fails *then* just look for Wow
-        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\b'
+        # (must be followed by a variable name, we use '\n' to cover multi-line definitions,
+        # or varargs for function definitions)
+        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\b((?=\\s*[A-Za-z$_\\n])|(?=\\s*\\.\\.\\.))'
         'name': 'storage.type.java'
         'captures':
           '1':
@@ -1053,6 +1063,10 @@
       {
         'match': ','
         'name': 'punctuation.separator.delimiter.java'
+      },
+      {
+        'match': '\\.\\.\\.'
+        'name': 'punctuation.definition.parameters.varargs.java'
       }
     ]
   'parens':
@@ -1262,7 +1276,7 @@
           (?>(\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
         )
         (
-          <[\\w<>,?\\s]*> # HashMap<Integer, String>
+          <[\\w<>,\\.?\\s]*> # e.g. `HashMap<Integer, String>`, or `List<java.lang.String>`
         )?
         (
           (\\[\\])* # int[][]
