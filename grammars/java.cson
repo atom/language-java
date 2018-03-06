@@ -1008,8 +1008,9 @@
       }
       {
         # If the above fails *then* just look for Wow
-        # (must be followed by a variable name, we use '\n' to cover multi-line definitions)
-        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\b(?=\\s*[A-Za-z$_\\n])'
+        # (must be followed by a variable name, we use '\n' to cover multi-line definitions,
+        # or varargs for function definitions)
+        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\b((?=\\s*[A-Za-z$_\\n])|(?=\\s*\\.\\.\\.))'
         'name': 'storage.type.java'
         'captures':
           '1':
