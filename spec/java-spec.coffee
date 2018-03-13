@@ -183,6 +183,15 @@ describe 'Java grammar', ->
 
     expect(tokens[3]).toEqual value: '.', scopes: ['source.java', 'meta.import.java', 'storage.modifier.import.java', 'invalid.illegal.character_not_allowed_here.java']
 
+  it 'tokenizes reserved keywords', ->
+    {tokens} = grammar.tokenizeLine 'const value'
+
+    expect(tokens[0]).toEqual value: 'const', scopes: ['source.java', 'keyword.reserved.java']
+
+    {tokens} = grammar.tokenizeLine 'int a = 1; goto;'
+
+    expect(tokens[9]).toEqual value: 'goto', scopes: ['source.java', 'keyword.reserved.java']
+
   it 'tokenizes classes', ->
     lines = grammar.tokenizeLines '''
       class Thing {

@@ -814,6 +814,10 @@
         'match': '(\\||&)'
         'name': 'keyword.operator.bitwise.java'
       }
+      {
+        'match': '\\b(const|goto)\\b'
+        'name': 'keyword.reserved.java'
+      }
     ]
   'lambda-expression':
     'patterns': [
