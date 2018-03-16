@@ -1249,7 +1249,7 @@
         \\s+
         [A-Za-z_$][\\w$]* # At least one identifier after space
         ([\\w\\[\\],$][\\w\\[\\],\\s]*)? # possibly primitive array or additional identifiers
-        \\s*(=)
+        \\s*(=) # this should not contain ';'
       )
     '''
     'end': '(?=\\=)'
