@@ -29,10 +29,6 @@
         'name': 'invalid.illegal.character_not_allowed_here.java'
       }
       {
-        'match': '[A-Z]+'
-        'name': 'invalid.deprecated.package_name_not_lowercase.java'
-      }
-      {
         # http://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html
         'match': '''(?x)\\b(?<!\\$)
                     (abstract|assert|boolean|break|byte|case|catch|char|class|
