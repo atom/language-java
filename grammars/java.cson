@@ -109,6 +109,9 @@
   {
     'include': '#code'
   }
+  {
+    'include': '#module'
+  }
 ]
 'repository':
   'all-types':
@@ -914,6 +917,39 @@
       }
       {
         'include': '#comments'
+      }
+    ]
+  'module':
+    # a uniquely named, reusable group of related packages, as well as resources (such as images
+    # and XML files).
+    'begin': '((open)\\s)?(module)\\s+(\\w+)'
+    'end': '}'
+    'beginCaptures':
+      '1':
+        'name': 'storage.modifier.java'
+      '3':
+        'name': 'storage.modifier.java'
+      '4':
+        'name': 'entity.name.type.module.java'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.module.end.bracket.curly.java'
+    'name': 'meta.module.java'
+    'patterns': [
+      {
+        'begin': '{'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.section.module.begin.bracket.curly.java'
+        'end': '(?=})'
+        'contentName': 'meta.module.body.java'
+        'patterns': [
+          # TODO: Write more rules for module grammar
+          {
+            'match': '\\b(requires|transitive|exports|opens|to|uses|provides|with)\\b'
+            'name': 'keyword.module.java'
+          }
+        ]
       }
     ]
   'numbers':
