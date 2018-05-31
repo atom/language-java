@@ -596,10 +596,10 @@
               }
               {
                 'match': '\\|'
-                'name': 'punctuation.catch.separator'
+                'name': 'punctuation.catch.separator.java'
               }
               {
-                'match': '([a-zA-Z$_][\\.a-zA-Z0-9$_]*)\\s*(\\w+)*'
+                'match': '([a-zA-Z$_][\\.a-zA-Z0-9$_]*)\\s*(\\w+)?'
                 'captures':
                   '1':
                     'name': 'storage.type.java'
@@ -1228,7 +1228,7 @@
     'patterns': [
       {
         'match': ','
-        'name': 'punctuation.throwables.separator'
+        'name': 'punctuation.separator.delimiter.java'
       }
       {
         'match': '[a-zA-Z$_][\\.a-zA-Z0-9$_]*'

@@ -1622,7 +1622,7 @@ describe 'Java grammar', ->
     expect(lines[5][3]).toEqual value: 'catch', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'keyword.control.catch.java']
     expect(lines[5][5]).toEqual value: '(', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'punctuation.definition.parameters.begin.bracket.round.java']
     expect(lines[5][6]).toEqual value: 'Exception1', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'storage.type.java']
-    expect(lines[5][8]).toEqual value: '|', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'punctuation.catch.separator']
+    expect(lines[5][8]).toEqual value: '|', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'punctuation.catch.separator.java']
     expect(lines[5][10]).toEqual value: 'Exception2', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'storage.type.java']
     expect(lines[5][12]).toEqual value: 'err', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'variable.parameter.java']
     expect(lines[5][13]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'punctuation.definition.parameters.end.bracket.round.java']
@@ -1642,7 +1642,7 @@ describe 'Java grammar', ->
 
     expect(lines[1][9]).toEqual value: 'throws', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.throwables.java', 'storage.modifier.java']
     expect(lines[1][11]).toEqual value: 'Exception1', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.throwables.java', 'storage.type.java']
-    expect(lines[1][12]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.throwables.java', 'punctuation.throwables.separator']
+    expect(lines[1][12]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.throwables.java', 'punctuation.separator.delimiter.java']
     expect(lines[1][14]).toEqual value: 'Exception2', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.throwables.java', 'storage.type.java']
     expect(lines[1][16]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.begin.bracket.curly.java']
 
