@@ -192,6 +192,22 @@ describe 'Java grammar', ->
 
     expect(tokens[9]).toEqual value: 'goto', scopes: ['source.java', 'keyword.reserved.java']
 
+  it 'tokenizes module keywords', ->
+    lines = grammar.tokenizeLines '''
+      module Provider {
+        requires ServiceInterface;
+        provides javax0.serviceinterface.ServiceInterface with javax0.serviceprovider.Provider;
+      }
+    '''
+
+    expect(lines[0][0]).toEqual value: 'module', scopes: ['source.java', 'meta.module.java', 'storage.modifier.java']
+    expect(lines[0][2]).toEqual value: 'Provider', scopes: ['source.java', 'meta.module.java', 'entity.name.type.module.java']
+    expect(lines[0][4]).toEqual value: '{', scopes: ['source.java', 'meta.module.java', 'punctuation.section.module.begin.bracket.curly.java']
+    expect(lines[1][1]).toEqual value: 'requires', scopes: ['source.java', 'meta.module.java', 'meta.module.body.java', 'keyword.module.java']
+    expect(lines[2][1]).toEqual value: 'provides', scopes: ['source.java', 'meta.module.java', 'meta.module.body.java', 'keyword.module.java']
+    expect(lines[2][3]).toEqual value: 'with', scopes: ['source.java', 'meta.module.java', 'meta.module.body.java', 'keyword.module.java']
+    expect(lines[3][0]).toEqual value: '}', scopes: ['source.java', 'meta.module.java', 'punctuation.section.module.end.bracket.curly.java']
+
   it 'tokenizes classes', ->
     lines = grammar.tokenizeLines '''
       class Thing {
