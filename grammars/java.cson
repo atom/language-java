@@ -598,7 +598,16 @@
                 'include': '#comments'
               }
               {
-                'include': '#parameters'
+                'match': '\\|'
+                'name': 'punctuation.catch.separator.java'
+              }
+              {
+                'match': '([a-zA-Z$_][\\.a-zA-Z0-9$_]*)\\s*(\\w+)?'
+                'captures':
+                  '1':
+                    'name': 'storage.type.java'
+                  '2':
+                    'name': 'variable.parameter.java'
               }
             ]
           }
@@ -1254,7 +1263,12 @@
     'name': 'meta.throwables.java'
     'patterns': [
       {
-        'include': '#object-types'
+        'match': ','
+        'name': 'punctuation.separator.delimiter.java'
+      }
+      {
+        'match': '[a-zA-Z$_][\\.a-zA-Z0-9$_]*'
+        'name': 'storage.type.java'
       }
     ]
   'variables':
