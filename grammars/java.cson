@@ -552,6 +552,9 @@
             'name': 'meta.try.resources.java'
             'patterns': [
               {
+                'include': '#variable-assignment'
+              }
+              {
                 'include': '#code'
               }
             ]
@@ -1271,6 +1274,53 @@
         'name': 'storage.type.java'
       }
     ]
+  # pattern for variable name
+  'variable-name':
+    'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
+    'captures':
+      '1':
+        'name': 'variable.other.definition.java'
+  # pattern for a variable assignment (without expression part), e.g. 'String variable =' or
+  # 'int num =', used in places where we cannot rely on ';' as a terminating character for a match
+  'variable-assignment':
+    'begin': '''(?x)
+      (?=
+        (
+          (void|boolean|byte|char|short|int|float|long|double)
+          |
+          (?>(\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
+        )
+        (
+          <[\\w<>,\\.?\\s]*> # e.g. `HashMap<Integer, String>`, or `List<java.lang.String>`
+        )?
+        (
+          (\\[\\])* # int[][]
+        )?
+        \\s+
+        [A-Za-z_$][\\w$]* # At least one identifier after space
+        ([\\w\\[\\],$][\\w\\[\\],\\s]*)? # possibly primitive array or additional identifiers
+        \\s*(=) # this should not contain ';'
+      )
+    '''
+    'end': '(?=\\=)'
+    'name': 'meta.definition.variable.java'
+    'patterns': [
+      {
+        'include': '#variable-name'
+      }
+      {
+        'include': '#all-types'
+      }
+      {
+        'begin': '='
+        'beginCaptures':
+          '0':
+            'name': 'keyword.operator.assignment.java'
+        'end': '(?!\\G)'
+      }
+    ]
+  # pattern for full variable definition
+  # when updating pattern make sure it is in sync with '#variable-assignment' pattern
   'variables':
     'begin': '''(?x)
       (?=
@@ -1295,10 +1345,7 @@
     'name': 'meta.definition.variable.java'
     'patterns': [
       {
-        'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
-        'captures':
-          '1':
-            'name': 'variable.other.definition.java'
+        'include': '#variable-name'
       }
       {
         'include': '#all-types'
