@@ -809,10 +809,12 @@ describe 'Java grammar', ->
 
     expect(lines[5][1]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'storage.type.java']
     expect(lines[5][3]).toEqual value: 'assigned', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[5][5]).toEqual value: '=', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'keyword.operator.assignment.java']
     expect(lines[5][8]).toEqual value: "Rand al'Thor", scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'string.quoted.double.java']
 
     expect(lines[6][1]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
     expect(lines[6][3]).toEqual value: 'primitive', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[6][5]).toEqual value: '=', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'keyword.operator.assignment.java']
     expect(lines[6][7]).toEqual value: '5', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'constant.numeric.decimal.java']
 
   it 'tokenizes capitalized variables', ->
@@ -1398,6 +1400,7 @@ describe 'Java grammar', ->
     expect(lines[9][6]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
     expect(lines[9][7]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
     expect(lines[9][9]).toEqual value: 'somevar', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[9][11]).toEqual value: '=', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'keyword.operator.assignment.java']
     expect(lines[9][15]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.type.primitive.array.java']
     expect(lines[9][16]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.bracket.square.java']
     expect(lines[9][17]).toEqual value: '10', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'constant.numeric.decimal.java']
