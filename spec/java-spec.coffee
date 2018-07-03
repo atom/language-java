@@ -1606,6 +1606,7 @@ describe 'Java grammar', ->
         private void fn() {
           try (
             BufferedReader in = new BufferedReader();
+            BufferedReader br = new BufferedReader(new FileReader(path))
           ) {
             // stuff
           }
@@ -1618,9 +1619,35 @@ describe 'Java grammar', ->
     expect(lines[2][2]).toEqual value: ' ', scopes: scopes
     expect(lines[2][3]).toEqual value: '(', scopes: scopes.concat ['meta.try.resources.java', 'punctuation.section.try.resources.begin.bracket.round.java']
     expect(lines[3][1]).toEqual value: 'BufferedReader', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'storage.type.java']
-    expect(lines[4][1]).toEqual value: ')', scopes: scopes.concat ['meta.try.resources.java', 'punctuation.section.try.resources.end.bracket.round.java']
-    expect(lines[4][2]).toEqual value: ' ', scopes: scopes
-    expect(lines[4][3]).toEqual value: '{', scopes: scopes.concat ['punctuation.section.try.begin.bracket.curly.java']
+    expect(lines[4][1]).toEqual value: 'BufferedReader', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[5][1]).toEqual value: ')', scopes: scopes.concat ['meta.try.resources.java', 'punctuation.section.try.resources.end.bracket.round.java']
+    expect(lines[5][2]).toEqual value: ' ', scopes: scopes
+    expect(lines[5][3]).toEqual value: '{', scopes: scopes.concat ['punctuation.section.try.begin.bracket.curly.java']
+
+  it 'tokenizes generics with dots in try-catch with resources', ->
+    lines = grammar.tokenizeLines '''
+      class A {
+        void func() {
+          try (List<java.lang.String> a = get()) {
+            // do something
+          }
+        }
+      }
+    '''
+
+    scopes = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.try.java']
+    expect(lines[2][1]).toEqual value: 'try', scopes: scopes.concat ['keyword.control.try.java']
+    expect(lines[2][3]).toEqual value: '(', scopes: scopes.concat ['meta.try.resources.java', 'punctuation.section.try.resources.begin.bracket.round.java']
+    expect(lines[2][4]).toEqual value: 'List', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[2][5]).toEqual value: '<', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[2][6]).toEqual value: 'java', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[2][7]).toEqual value: '.', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'punctuation.separator.period.java']
+    expect(lines[2][8]).toEqual value: 'lang', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[2][9]).toEqual value: '.', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'punctuation.separator.period.java']
+    expect(lines[2][10]).toEqual value: 'String', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[2][11]).toEqual value: '>', scopes: scopes.concat ['meta.try.resources.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[2][20]).toEqual value: ')', scopes: scopes.concat ['meta.try.resources.java', 'punctuation.section.try.resources.end.bracket.round.java']
+    expect(lines[2][22]).toEqual value: '{', scopes: scopes.concat ['punctuation.section.try.begin.bracket.curly.java']
 
   it 'tokenizes list of exceptions in catch block', ->
     lines = grammar.tokenizeLines '''
