@@ -1309,7 +1309,7 @@
     ]
   'member-variables':
     'begin': '(?=private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final)'
-    'end': '(?=;)'
+    'end': '(?=\\=|;)'
     'patterns': [
       {
         'include': '#storage-modifiers'
@@ -1322,13 +1322,5 @@
       }
       {
         'include': '#object-types'
-      }
-      {
-        'begin': '(?=\\=)'
-        'patterns': [
-          {
-            'include': '#code'
-          }
-        ]
       }
     ]
