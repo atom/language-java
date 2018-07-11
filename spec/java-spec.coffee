@@ -1191,7 +1191,7 @@ describe 'Java grammar', ->
     {tokens} = grammar.tokenizeLine 'int[] list = new int[10];'
 
     expect(tokens[8]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
-    expect(tokens[9]).toEqual value: ' ', scopes: ['source.java', ]
+    expect(tokens[9]).toEqual value: ' ', scopes: ['source.java']
     expect(tokens[10]).toEqual value: 'int', scopes: ['source.java', 'storage.type.primitive.array.java']
     expect(tokens[11]).toEqual value: '[', scopes: ['source.java', 'punctuation.bracket.square.java']
     expect(tokens[12]).toEqual value: '10', scopes: ['source.java', 'constant.numeric.decimal.java']
