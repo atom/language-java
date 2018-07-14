@@ -1291,7 +1291,7 @@
         \\s*(=|;)
       )
     '''
-    'end': '(?=;)'
+    'end': '(?=\\=|;)'
     'name': 'meta.definition.variable.java'
     'patterns': [
       {
@@ -1304,24 +1304,12 @@
         'include': '#all-types'
       }
       {
-        'begin': '='
-        'beginCaptures':
-          '0':
-            'name': 'keyword.operator.assignment.java'
-        'end': '(?=;)'
-        'patterns': [
-          {
-            'include': '#code'
-          }
-        ]
-      }
-      {
         'include': '#code'
       }
     ]
   'member-variables':
     'begin': '(?=private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final)'
-    'end': '(?=;)'
+    'end': '(?=\\=|;)'
     'patterns': [
       {
         'include': '#storage-modifiers'
