@@ -935,6 +935,21 @@ describe 'Java grammar', ->
     expect(lines[12][3]).toEqual value: '123illegal', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'invalid.illegal.identifier.java']
     expect(lines[12][4]).toEqual value: ';', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'punctuation.terminator.java']
 
+  it 'tokenizes fully qualified types', ->
+    lines = grammar.tokenizeLines '''
+      class A {
+        java.util.Set<java.util.List<K>> varA = null;
+        java.lang.String varB = null;
+      }
+    '''
+
+    expect(lines[1][1]).toEqual value: 'java.util', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[1][2]).toEqual value: '.', scopes: [ 'source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java', 'punctuation.separator.period.java' ]
+    expect(lines[1][3]).toEqual value: 'Set', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[2][1]).toEqual value: 'java.lang', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[2][2]).toEqual value: '.', scopes: [ 'source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java', 'punctuation.separator.period.java' ]
+    expect(lines[2][3]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+
   it 'tokenizes generics', ->
     lines = grammar.tokenizeLines '''
       class A<T extends A & B, String, Integer>
