@@ -1452,6 +1452,7 @@ describe 'Java grammar', ->
         java.util.Set<java.util.List<K>> varA = null;
         java.lang.String a = null;
         java.util.List<Integer> b = new java.util.ArrayList<Integer>();
+        java.lang.String[] arr;
       }
     '''
     expect(lines[1][3]).toEqual value: 'Test', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
@@ -1497,6 +1498,14 @@ describe 'Java grammar', ->
     expect(lines[4][21]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.bracket.angle.java']
     expect(lines[4][22]).toEqual value: 'Integer', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.type.generic.java']
     expect(lines[4][23]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.bracket.angle.java']
+
+    expect(lines[5][1]).toEqual value: 'java', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[5][2]).toEqual value: '.', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.separator.period.java']
+    expect(lines[5][3]).toEqual value: 'lang', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[5][4]).toEqual value: '.', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.separator.period.java']
+    expect(lines[5][5]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.object.array.java']
+    expect(lines[5][6]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
+    expect(lines[5][7]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
 
   it 'tokenizes try-catch-finally blocks', ->
     lines = grammar.tokenizeLines '''

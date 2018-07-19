@@ -1023,10 +1023,19 @@
         'include': '#generics'
       }
       {
-        'begin': '\\b(?:[A-Za-z]\\w*\\s*(\\.)\\s*)*([A-Z]\\w*)\\s*(?=\\[)'
+        'begin': '\\b((?:[A-Za-z]\\w*\\s*\\.\\s*)*)([A-Z]\\w*)\\s*(?=\\[)'
         'beginCaptures':
           '1':
-            'name': 'punctuation.separator.period.java'
+            'patterns': [
+              {
+                'match': '[A-Za-z]\\w*'
+                'name': 'storage.type.java'
+              }
+              {
+                'match': '\\.'
+                'name': 'punctuation.separator.period.java'
+              }
+            ]
           '2':
             'name': 'storage.type.object.array.java'
         'end': '(?!\\s*\\[)'
