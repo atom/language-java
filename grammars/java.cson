@@ -411,13 +411,13 @@
         'include': '#function-call'
       }
       {
+        'include': '#variables'
+      }
+      {
         'include': '#objects'
       }
       {
         'include': '#properties'
-      }
-      {
-        'include': '#variables'
       }
       {
         'include': '#strings'
@@ -1023,10 +1023,19 @@
         'include': '#generics'
       }
       {
-        'begin': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*([A-Z]\\w*)\\s*(?=\\[)'
+        'begin': '\\b((?:[A-Za-z]\\w*\\s*\\.\\s*)*)([A-Z]\\w*)\\s*(?=\\[)'
         'beginCaptures':
           '1':
-            'name': 'punctuation.separator.period.java'
+            'patterns': [
+              {
+                'match': '[A-Za-z]\\w*'
+                'name': 'storage.type.java'
+              }
+              {
+                'match': '\\.'
+                'name': 'punctuation.separator.period.java'
+              }
+            ]
           '2':
             'name': 'storage.type.object.array.java'
         'end': '(?!\\s*\\[)'
@@ -1041,12 +1050,19 @@
       }
       {
         # Match possible generics first, eg Wow<String> instead of just Wow
-        'begin': '\\b((?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*)\\s*(?=<)'
+        'begin': '\\b((?:[A-Za-z]\\w*\\s*\\.\\s*)*[A-Z]\\w*)\\s*(?=<)'
         'beginCaptures':
           '1':
-            'name': 'storage.type.java'
-          '2':
-            'name': 'punctuation.separator.period.java'
+            'patterns': [
+              {
+                'match': '[A-Za-z]\\w*'
+                'name': 'storage.type.java'
+              }
+              {
+                'match': '\\.'
+                'name': 'punctuation.separator.period.java'
+              }
+            ]
         # Stop after a successful generic match or if we are not at a terminator
         'end': '(?<=>)|(?!;)'
         'patterns': [
@@ -1059,11 +1075,19 @@
         # If the above fails *then* just look for Wow
         # (must be followed by a variable name, we use '\n' to cover multi-line definitions,
         # or varargs for function definitions)
-        'match': '\\b(?:[A-Z]\\w*\\s*(\\.)\\s*)*[A-Z]\\w*\\b((?=\\s*[A-Za-z$_\\n])|(?=\\s*\\.\\.\\.))'
-        'name': 'storage.type.java'
+        'match': '\\b((?:[A-Za-z]\\w*\\s*\\.\\s*)*[A-Z]\\w*)\\b((?=\\s*[A-Za-z$_\\n])|(?=\\s*\\.\\.\\.))'
         'captures':
           '1':
-            'name': 'punctuation.separator.period.java'
+            'patterns': [
+              {
+                'match': '[A-Za-z]\\w*'
+                'name': 'storage.type.java'
+              }
+              {
+                'match': '\\.'
+                'name': 'punctuation.separator.period.java'
+              }
+            ]
       }
     ]
   'object-types-inherited':
