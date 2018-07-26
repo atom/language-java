@@ -1049,9 +1049,9 @@
         ]
       }
       {
-        # Match possible generics first, eg Wow<String> instead of just Wow
-        'begin': '\\b((?:[A-Za-z]\\w*\\s*\\.\\s*)*[A-Z]\\w*)\\s*(?=<)'
-        'beginCaptures':
+        # Match possible generics first, eg Foo.Bar in Foo.Bar<String>
+        'match': '\\b((?:[A-Za-z]\\w*\\s*\\.\\s*)*[A-Z]\\w*)\\s*(?=<)'
+        'captures':
           '1':
             'patterns': [
               {
@@ -1063,13 +1063,6 @@
                 'name': 'punctuation.separator.period.java'
               }
             ]
-        # Stop after a successful generic match or if we are not at a terminator
-        'end': '(?<=>)|(?!;)'
-        'patterns': [
-          {
-            'include': '#generics'
-          }
-        ]
       }
       {
         # If the above fails *then* just look for Wow
