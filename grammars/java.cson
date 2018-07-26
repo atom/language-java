@@ -172,6 +172,20 @@
             'name': 'punctuation.definition.annotation.java'
       }
     ]
+  'anonymous-block-and-instance-initializer':
+    'begin': '{'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.block.begin.bracket.curly.java'
+    'end': '}'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.block.end.bracket.curly.java'
+    'patterns': [
+      {
+        'include': '#code'
+      }
+    ]
   'anonymous-classes-and-new':
     'begin': '\\bnew\\b'
     'beginCaptures':
@@ -334,30 +348,6 @@
       }
       {
         'include': '#code'
-      }
-    ]
-  'anonymous-block-and-instance-initializer':
-    'begin': '{'
-    'beginCaptures':
-      '0':
-        'name': 'punctuation.section.block.begin.bracket.curly.java'
-    'end': '}'
-    'endCaptures':
-      '0':
-        'name': 'punctuation.section.block.end.bracket.curly.java'
-    'patterns': [
-      {
-        'include': '#code'
-      }
-    ]
-  'static-initializer':
-    'patterns': [
-      {
-        'include': '#anonymous-block-and-instance-initializer'
-      }
-      {
-        'match': 'static'
-        'name': 'storage.modifier.java'
       }
     ]
   'code':
@@ -526,134 +516,6 @@
         }
       ]
     ]
-  'try-catch-finally':
-    'patterns': [
-      # try block
-      {
-        'begin': '\\btry\\b'
-        'beginCaptures':
-          '0':
-            'name': 'keyword.control.try.java'
-        'end': '}'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.try.end.bracket.curly.java'
-        'name': 'meta.try.java'
-        'patterns': [
-          {
-            'begin': '\\('
-            'beginCaptures':
-              '0':
-                'name': 'punctuation.section.try.resources.begin.bracket.round.java'
-            'end': '\\)'
-            'endCaptures':
-              '0':
-                'name': 'punctuation.section.try.resources.end.bracket.round.java'
-            'name': 'meta.try.resources.java'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
-          }
-          {
-            'begin': '{'
-            'beginCaptures':
-              '0':
-                'name': 'punctuation.section.try.begin.bracket.curly.java'
-            'end': '(?=})'
-            'contentName': 'meta.try.body.java'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
-          }
-        ]
-      }
-      # catch block (with "parameters")
-      {
-        'begin': '\\b(catch)\\b\\s*(?=\\(\\s*[^\\s]+\\s*[^)]+\\))'
-        'beginCaptures':
-          '1':
-            'name': 'keyword.control.catch.java'
-        'end': '}'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.catch.end.bracket.curly.java'
-        'name': 'meta.catch.java'
-        'patterns': [
-          {
-            'begin': '\\('
-            'beginCaptures':
-              '0':
-                'name': 'punctuation.definition.parameters.begin.bracket.round.java'
-            'end': '\\)'
-            'endCaptures':
-              '0':
-                'name': 'punctuation.definition.parameters.end.bracket.round.java'
-            'contentName': 'meta.catch.parameters.java'
-            'patterns': [
-              {
-                'include': '#comments'
-              }
-              {
-                'match': '\\|'
-                'name': 'punctuation.catch.separator.java'
-              }
-              {
-                'match': '([a-zA-Z$_][\\.a-zA-Z0-9$_]*)\\s*(\\w+)?'
-                'captures':
-                  '1':
-                    'name': 'storage.type.java'
-                  '2':
-                    'name': 'variable.parameter.java'
-              }
-            ]
-          }
-          {
-            'begin': '{'
-            'beginCaptures':
-              '0':
-                'name': 'punctuation.section.catch.begin.bracket.curly.java'
-            'end': '(?=})'
-            'contentName': 'meta.catch.body.java'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
-          }
-        ]
-      }
-      # finally block
-      {
-        'begin': '\\bfinally\\b'
-        'beginCaptures':
-          '0':
-            'name': 'keyword.control.finally.java'
-        'end': '}'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.finally.end.bracket.curly.java'
-        'name': 'meta.finally.java'
-        'patterns': [
-          {
-            'begin': '{'
-            'beginCaptures':
-              '0':
-                'name': 'punctuation.section.finally.begin.bracket.curly.java'
-            'end': '(?=})'
-            'contentName': 'meta.finally.body.java'
-            'patterns': [
-              {
-                'include': '#code'
-              }
-            ]
-          }
-        ]
-      }
-    ]
   'constants-and-special-vars':
     'patterns': [
       {
@@ -667,6 +529,56 @@
       {
         'match': '\\bsuper\\b'
         'name': 'variable.language.java'
+      }
+    ]
+  'enums':
+    'begin': '^\\s*(enum)\\s+(\\w+)'
+    'beginCaptures':
+      '1':
+        'name': 'storage.modifier.java'
+      '2':
+        'name': 'entity.name.type.enum.java'
+    'end': '}'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.enum.end.bracket.curly.java'
+    'name': 'meta.enum.java'
+    'patterns': [
+      {
+        'begin': '{'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.section.enum.begin.bracket.curly.java'
+        'end': '(?=})'
+        'patterns': [
+          {
+            'match': '\\w+'
+            'name': 'constant.other.enum.java'
+          }
+          {
+            'include': '#class-body'
+          }
+        ]
+      }
+      {
+        'include': '#comments'
+      }
+    ]
+  'function-call':
+    'begin': '([A-Za-z_$][\\w$]*)\\s*(\\()'
+    'beginCaptures':
+      '1':
+        'name': 'entity.name.function.java'
+      '2':
+        'name': 'punctuation.definition.parameters.begin.bracket.round.java'
+    'end': '\\)'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.parameters.end.bracket.round.java'
+    'name': 'meta.function-call.java'
+    'patterns': [
+      {
+        'include': '#code'
       }
     ]
   'generics':
@@ -720,56 +632,6 @@
       }
       {
         'include': '#comments'
-      }
-    ]
-  'enums':
-    'begin': '^\\s*(enum)\\s+(\\w+)'
-    'beginCaptures':
-      '1':
-        'name': 'storage.modifier.java'
-      '2':
-        'name': 'entity.name.type.enum.java'
-    'end': '}'
-    'endCaptures':
-      '0':
-        'name': 'punctuation.section.enum.end.bracket.curly.java'
-    'name': 'meta.enum.java'
-    'patterns': [
-      {
-        'begin': '{'
-        'beginCaptures':
-          '0':
-            'name': 'punctuation.section.enum.begin.bracket.curly.java'
-        'end': '(?=})'
-        'patterns': [
-          {
-            'match': '\\w+'
-            'name': 'constant.other.enum.java'
-          }
-          {
-            'include': '#class-body'
-          }
-        ]
-      }
-      {
-        'include': '#comments'
-      }
-    ]
-  'function-call':
-    'begin': '([A-Za-z_$][\\w$]*)\\s*(\\()'
-    'beginCaptures':
-      '1':
-        'name': 'entity.name.function.java'
-      '2':
-        'name': 'punctuation.definition.parameters.begin.bracket.round.java'
-    'end': '\\)'
-    'endCaptures':
-      '0':
-        'name': 'punctuation.definition.parameters.end.bracket.round.java'
-    'name': 'meta.function-call.java'
-    'patterns': [
-      {
-        'include': '#code'
       }
     ]
   'keywords':
@@ -836,6 +698,23 @@
       {
         'match': '->'
         'name': 'storage.type.function.arrow.java'
+      }
+    ]
+  'member-variables':
+    'begin': '(?=private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final)'
+    'end': '(?=\\=|;)'
+    'patterns': [
+      {
+        'include': '#storage-modifiers'
+      }
+      {
+        'include': '#variables'
+      }
+      {
+        'include': '#primitive-arrays'
+      }
+      {
+        'include': '#object-types'
       }
     ]
   'method-call':
@@ -1231,6 +1110,16 @@
             'name': 'invalid.illegal.identifier.java'
       }
     ]
+  'static-initializer':
+    'patterns': [
+      {
+        'include': '#anonymous-block-and-instance-initializer'
+      }
+      {
+        'match': 'static'
+        'name': 'storage.modifier.java'
+      }
+    ]
   'storage-modifiers':
     'match': '\\b(public|private|protected|static|final|native|synchronized|abstract|threadsafe|transient|volatile|default|strictfp)\\b'
     'name': 'storage.modifier.java'
@@ -1288,6 +1177,134 @@
         'name': 'storage.type.java'
       }
     ]
+  'try-catch-finally':
+    'patterns': [
+      # try block
+      {
+        'begin': '\\btry\\b'
+        'beginCaptures':
+          '0':
+            'name': 'keyword.control.try.java'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.try.end.bracket.curly.java'
+        'name': 'meta.try.java'
+        'patterns': [
+          {
+            'begin': '\\('
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.try.resources.begin.bracket.round.java'
+            'end': '\\)'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.section.try.resources.end.bracket.round.java'
+            'name': 'meta.try.resources.java'
+            'patterns': [
+              {
+                'include': '#code'
+              }
+            ]
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.try.begin.bracket.curly.java'
+            'end': '(?=})'
+            'contentName': 'meta.try.body.java'
+            'patterns': [
+              {
+                'include': '#code'
+              }
+            ]
+          }
+        ]
+      }
+      # catch block (with "parameters")
+      {
+        'begin': '\\b(catch)\\b\\s*(?=\\(\\s*[^\\s]+\\s*[^)]+\\))'
+        'beginCaptures':
+          '1':
+            'name': 'keyword.control.catch.java'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.catch.end.bracket.curly.java'
+        'name': 'meta.catch.java'
+        'patterns': [
+          {
+            'begin': '\\('
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.parameters.begin.bracket.round.java'
+            'end': '\\)'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.definition.parameters.end.bracket.round.java'
+            'contentName': 'meta.catch.parameters.java'
+            'patterns': [
+              {
+                'include': '#comments'
+              }
+              {
+                'match': '\\|'
+                'name': 'punctuation.catch.separator.java'
+              }
+              {
+                'match': '([a-zA-Z$_][\\.a-zA-Z0-9$_]*)\\s*(\\w+)?'
+                'captures':
+                  '1':
+                    'name': 'storage.type.java'
+                  '2':
+                    'name': 'variable.parameter.java'
+              }
+            ]
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.catch.begin.bracket.curly.java'
+            'end': '(?=})'
+            'contentName': 'meta.catch.body.java'
+            'patterns': [
+              {
+                'include': '#code'
+              }
+            ]
+          }
+        ]
+      }
+      # finally block
+      {
+        'begin': '\\bfinally\\b'
+        'beginCaptures':
+          '0':
+            'name': 'keyword.control.finally.java'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.finally.end.bracket.curly.java'
+        'name': 'meta.finally.java'
+        'patterns': [
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.finally.begin.bracket.curly.java'
+            'end': '(?=})'
+            'contentName': 'meta.finally.body.java'
+            'patterns': [
+              {
+                'include': '#code'
+              }
+            ]
+          }
+        ]
+      }
+    ]
   'variables':
     'begin': '''(?x)
       (?=
@@ -1322,22 +1339,5 @@
       }
       {
         'include': '#code'
-      }
-    ]
-  'member-variables':
-    'begin': '(?=private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final)'
-    'end': '(?=\\=|;)'
-    'patterns': [
-      {
-        'include': '#storage-modifiers'
-      }
-      {
-        'include': '#variables'
-      }
-      {
-        'include': '#primitive-arrays'
-      }
-      {
-        'include': '#object-types'
       }
     ]
