@@ -1309,7 +1309,7 @@
     'begin': '''(?x)
       (?=
         (
-          (void|boolean|byte|char|short|int|float|long|double)
+          \\b(void|boolean|byte|char|short|int|float|long|double)\\b
           |
           (?>(\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
         )
