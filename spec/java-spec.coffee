@@ -817,6 +817,21 @@ describe 'Java grammar', ->
     expect(lines[6][5]).toEqual value: '=', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'keyword.operator.assignment.java']
     expect(lines[6][7]).toEqual value: '5', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'constant.numeric.decimal.java']
 
+  it 'tokenizes variables defined with incorrect primitive types', ->
+    lines = grammar.tokenizeLines '''
+      class A {
+        aint a = 1; int b = 2;
+        aboolean c = true; boolean d = false;
+      }
+    '''
+
+    expect(lines[1][0]).toEqual value: '  aint a ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java']
+    expect(lines[1][6]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[1][8]).toEqual value: 'b', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[2][0]).toEqual value: '  aboolean c ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java']
+    expect(lines[2][6]).toEqual value: 'boolean', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[2][8]).toEqual value: 'd', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+
   it 'tokenizes capitalized variables', ->
     lines = grammar.tokenizeLines '''
       void func()
