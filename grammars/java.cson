@@ -551,8 +551,13 @@
             'end': '(?=;|})'
             'patterns': [
               {
-                'match': '\\w+'
-                'name': 'constant.other.enum.java'
+                'include': '#comments'
+              }
+              {
+                'include': '#enum-method-field'
+              }
+              {
+                'include': '#enum-constant-field'
               }
             ]
           }
@@ -566,11 +571,41 @@
         'name': 'storage.modifier.java'
       }
       {
-        'match': '(?<=enum)\\s*\\w+'
-        'name': 'entity.name.type.enum.java'
+        'match': '(?<=enum)\\s*(\\w+)'
+        'captures':
+          '1':
+            'name': 'entity.name.type.enum.java'
       }
       {
         'include': '#storage-modifiers'
+      }
+    ]
+  # Represents enum's constant field with constructor
+  'enum-method-field':
+    'begin': '(\\w+)\\s*(\\()'
+    'beginCaptures':
+      '1':
+        'name': 'constant.other.enum.java'
+      '2':
+        'name': 'punctuation.bracket.round.java'
+    'end': '\\)'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.bracket.round.java'
+    'patterns': [
+      {
+        'include': '#numbers'
+      }
+      {
+        'include': '#strings'
+      }
+    ]
+  # Represents enum's constant field without constructor
+  'enum-constant-field':
+    'patterns': [
+      {
+        'match': '\\b\\w+\\b'
+        'name': 'constant.other.enum.java'
       }
     ]
   'function-call':
