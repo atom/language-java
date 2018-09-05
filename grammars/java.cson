@@ -532,7 +532,18 @@
       }
     ]
   'enums':
-    'begin': '^\\s*(?=\\w?[\\w\\s]*enum\\s+\\w+)'
+    'begin': '^\\s*([\\w\\s]*)(enum)\\s+(\\w+)'
+    'beginCaptures':
+      '1':
+        'patterns': [
+          {
+            'include': '#storage-modifiers'
+          }
+        ]
+      '2':
+        'name': 'storage.modifier.java'
+      '3':
+        'name': 'entity.name.type.enum.java'
     'end': '}'
     'endCaptures':
       '0':
@@ -585,19 +596,6 @@
             'include': '#class-body'
           }
         ]
-      }
-      {
-        'match': '\\b(enum)\\b'
-        'name': 'storage.modifier.java'
-      }
-      {
-        'match': '(?<=enum)\\s*(\\w+)'
-        'captures':
-          '1':
-            'name': 'entity.name.type.enum.java'
-      }
-      {
-        'include': '#storage-modifiers'
       }
     ]
   'function-call':
