@@ -1831,13 +1831,13 @@ describe 'Java grammar', ->
       }
       '''
 
-    expect(lines[1][0]).toEqual value: '  /**', scopes: ['source.java', 'meta.enum.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
-    expect(lines[1][1]).toEqual value: ' javadoc comment ', scopes: ['source.java', 'meta.enum.java', 'comment.block.javadoc.java']
-    expect(lines[1][2]).toEqual value: '*/', scopes: ['source.java', 'meta.enum.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
+    expect(lines[1][1]).toEqual value: '/**', scopes: ['source.java', 'meta.enum.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
+    expect(lines[1][2]).toEqual value: ' javadoc comment ', scopes: ['source.java', 'meta.enum.java', 'comment.block.javadoc.java']
+    expect(lines[1][3]).toEqual value: '*/', scopes: ['source.java', 'meta.enum.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
 
-    expect(lines[5][0]).toEqual value: '  /**', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
-    expect(lines[5][1]).toEqual value: ' javadoc comment ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java']
-    expect(lines[5][2]).toEqual value: '*/', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
+    expect(lines[5][1]).toEqual value: '/**', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
+    expect(lines[5][2]).toEqual value: ' javadoc comment ', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java']
+    expect(lines[5][3]).toEqual value: '*/', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java', 'punctuation.definition.comment.java']
 
   it 'tokenizes empty/single character comment', ->
     # this test checks the correct tokenizing of empty/single character comments
