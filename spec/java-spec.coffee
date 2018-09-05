@@ -249,8 +249,8 @@ describe 'Java grammar', ->
     expect(lines[4][1]).toEqual value: '//', scopes: commentLineDefinition
     expect(lines[4][2]).toEqual value: ' Comment about B', scopes: commentLine
     expect(lines[5][1]).toEqual value: 'B', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
-    expect(lines[7][0]).toEqual value: '  /**', scopes: commentJavadocDefinition
-    expect(lines[7][1]).toEqual value: ' Javadoc comment about C ', scopes: commentJavadoc
+    expect(lines[7][1]).toEqual value: '/**', scopes: commentJavadocDefinition
+    expect(lines[7][2]).toEqual value: ' Javadoc comment about C ', scopes: commentJavadoc
     expect(lines[8][1]).toEqual value: 'C', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
     expect(lines[9][0]).toEqual value: '}', scopes: ['source.java', 'meta.enum.java', 'punctuation.section.enum.end.bracket.curly.java']
 
