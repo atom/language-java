@@ -254,7 +254,7 @@ describe 'Java grammar', ->
       }
     """
 
-    expect(lines[0][2]).toEqual value: 'enum', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'storage.modifier.java']
+    expect(lines[0][2]).toEqual value: 'enum', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
 
   it 'tokenizes methods', ->
     lines = grammar.tokenizeLines '''
