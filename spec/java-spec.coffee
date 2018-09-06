@@ -225,12 +225,19 @@ describe 'Java grammar', ->
         A,
 
         // Comment about B
-        B
+        B,
+
+        /** Javadoc comment about C */
+        C
       }
     '''
 
     comment = ['source.java', 'meta.enum.java', 'comment.block.java']
+    commentLine = ['source.java', 'meta.enum.java', 'comment.line.double-slash.java']
+    commentJavadoc = ['source.java', 'meta.enum.java', 'comment.block.javadoc.java']
     commentDefinition = comment.concat('punctuation.definition.comment.java')
+    commentLineDefinition = commentLine.concat('punctuation.definition.comment.java')
+    commentJavadocDefinition = commentJavadoc.concat('punctuation.definition.comment.java')
 
     expect(lines[0][0]).toEqual value: 'enum', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
     expect(lines[0][2]).toEqual value: 'Letters', scopes: ['source.java', 'meta.enum.java', 'entity.name.type.enum.java']
@@ -239,7 +246,108 @@ describe 'Java grammar', ->
     expect(lines[1][2]).toEqual value: ' Comment about A ', scopes: comment
     expect(lines[1][3]).toEqual value: '*/', scopes: commentDefinition
     expect(lines[2][1]).toEqual value: 'A', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
-    expect(lines[6][0]).toEqual value: '}', scopes: ['source.java', 'meta.enum.java', 'punctuation.section.enum.end.bracket.curly.java']
+    expect(lines[4][1]).toEqual value: '//', scopes: commentLineDefinition
+    expect(lines[4][2]).toEqual value: ' Comment about B', scopes: commentLine
+    expect(lines[5][1]).toEqual value: 'B', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[7][1]).toEqual value: '/**', scopes: commentJavadocDefinition
+    expect(lines[7][2]).toEqual value: ' Javadoc comment about C ', scopes: commentJavadoc
+    expect(lines[8][1]).toEqual value: 'C', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[9][0]).toEqual value: '}', scopes: ['source.java', 'meta.enum.java', 'punctuation.section.enum.end.bracket.curly.java']
+
+  it 'tokenizes enums with class body', ->
+    lines = grammar.tokenizeLines '''
+      enum Colours {
+        RED ("red"),
+        GREEN (1000L),
+        BLUE (123);
+
+        private String v;
+
+        Colours(String v) {
+          this.v = v;
+        }
+
+        Colours(long v) {
+          this.v = "" + v;
+        }
+
+        Colours(int v) {
+          this.v = "" + v;
+        }
+
+        public String func() {
+          return "RGB";
+        }
+      }
+    '''
+
+    expect(lines[0][0]).toEqual value: 'enum', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
+    expect(lines[0][2]).toEqual value: 'Colours', scopes: ['source.java', 'meta.enum.java', 'entity.name.type.enum.java']
+    expect(lines[0][4]).toEqual value: '{', scopes: ['source.java', 'meta.enum.java', 'punctuation.section.enum.begin.bracket.curly.java']
+
+    expect(lines[1][1]).toEqual value: 'RED', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[1][3]).toEqual value: '(', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.round.java']
+    expect(lines[1][5]).toEqual value: 'red', scopes: ['source.java', 'meta.enum.java', 'string.quoted.double.java']
+    expect(lines[1][7]).toEqual value: ')', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.round.java']
+
+    expect(lines[2][1]).toEqual value: 'GREEN', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[2][3]).toEqual value: '(', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.round.java']
+    expect(lines[2][4]).toEqual value: '1000L', scopes: ['source.java', 'meta.enum.java', 'constant.numeric.decimal.java']
+    expect(lines[2][5]).toEqual value: ')', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.round.java']
+
+    expect(lines[3][1]).toEqual value: 'BLUE', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[3][3]).toEqual value: '(', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.round.java']
+    expect(lines[3][4]).toEqual value: '123', scopes: ['source.java', 'meta.enum.java', 'constant.numeric.decimal.java']
+    expect(lines[3][5]).toEqual value: ')', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.round.java']
+
+    expect(lines[19][1]).toEqual value: 'public', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'storage.modifier.java']
+    expect(lines[19][3]).toEqual value: 'String', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.java']
+    expect(lines[19][5]).toEqual value: 'func', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[22][0]).toEqual value: '}', scopes: ['source.java', 'meta.enum.java', 'punctuation.section.enum.end.bracket.curly.java']
+
+  it 'tokenizes enums with modifiers', ->
+    lines = grammar.tokenizeLines '''
+      public enum Test {
+      }
+
+      private enum Test {
+      }
+
+      protected enum Test {
+      }
+
+      unknown enum Test {
+      }
+    '''
+
+    expect(lines[0][0]).toEqual value: 'public', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
+    expect(lines[0][2]).toEqual value: 'enum', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
+    expect(lines[3][0]).toEqual value: 'private', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
+    expect(lines[3][2]).toEqual value: 'enum', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
+    expect(lines[6][0]).toEqual value: 'protected', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
+    expect(lines[6][2]).toEqual value: 'enum', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
+    expect(lines[9][0]).toEqual value: 'unknown ', scopes: ['source.java', 'meta.enum.java']
+    expect(lines[9][1]).toEqual value: 'enum', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
+
+  it 'tokenizes enums within a class', ->
+    lines = grammar.tokenizeLines '''
+      class A {
+        public enum Colours {
+          RED,
+          GREEN,
+          BLUE
+        }
+      }
+    '''
+
+    expect(lines[1][1]).toEqual value: 'public', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'storage.modifier.java']
+    expect(lines[1][3]).toEqual value: 'enum', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'storage.modifier.java']
+    expect(lines[1][5]).toEqual value: 'Colours', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'entity.name.type.enum.java']
+    expect(lines[1][7]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'punctuation.section.enum.begin.bracket.curly.java']
+    expect(lines[2][1]).toEqual value: 'RED', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[3][1]).toEqual value: 'GREEN', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[4][1]).toEqual value: 'BLUE', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[5][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'punctuation.section.enum.end.bracket.curly.java']
 
   it 'does not catastrophically backtrack when tokenizing large enums (regression)', ->
     # https://github.com/atom/language-java/issues/103
@@ -254,7 +362,7 @@ describe 'Java grammar', ->
       }
     """
 
-    expect(lines[0][2]).toEqual value: 'enum', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'storage.modifier.java']
+    expect(lines[0][2]).toEqual value: 'enum', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
 
   it 'tokenizes methods', ->
     lines = grammar.tokenizeLines '''

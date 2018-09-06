@@ -323,10 +323,10 @@
         'include': '#comments'
       }
       {
-        'include': '#class'
+        'include': '#enums'
       }
       {
-        'include': '#enums'
+        'include': '#class'
       }
       {
         'include': '#generics'
@@ -532,11 +532,17 @@
       }
     ]
   'enums':
-    'begin': '^\\s*(enum)\\s+(\\w+)'
+    'begin': '^\\s*([\\w\\s]*)(enum)\\s+(\\w+)'
     'beginCaptures':
       '1':
-        'name': 'storage.modifier.java'
+        'patterns': [
+          {
+            'include': '#storage-modifiers'
+          }
+        ]
       '2':
+        'name': 'storage.modifier.java'
+      '3':
         'name': 'entity.name.type.enum.java'
     'end': '}'
     'endCaptures':
@@ -552,16 +558,44 @@
         'end': '(?=})'
         'patterns': [
           {
-            'match': '\\w+'
-            'name': 'constant.other.enum.java'
+            'begin': '(?<={)'
+            'end': '(?=;|})'
+            'patterns': [
+              {
+                'include': '#comments-javadoc'
+              }
+              {
+                'include': '#comments'
+              }
+              # Represents enum's constant field with constructor, e.g. `Test(123)`
+              {
+                'begin': '(\\w+)\\s*(\\()'
+                'beginCaptures':
+                  '1':
+                    'name': 'constant.other.enum.java'
+                  '2':
+                    'name': 'punctuation.bracket.round.java'
+                'end': '\\)'
+                'endCaptures':
+                  '0':
+                    'name': 'punctuation.bracket.round.java'
+                'patterns': [
+                  {
+                    'include': '#code'
+                  }
+                ]
+              }
+              # Represents enum's constant field, e.g. `Test`
+              {
+                'match': '\\b\\w+\\b'
+                'name': 'constant.other.enum.java'
+              }
+            ]
           }
           {
             'include': '#class-body'
           }
         ]
-      }
-      {
-        'include': '#comments'
       }
     ]
   'function-call':
