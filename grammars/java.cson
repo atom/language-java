@@ -1360,6 +1360,7 @@
       )
     '''
     'end': '(?=\\=|;)'
+    'applyEndPatternLast': 1
     'name': 'meta.definition.variable.java'
     'patterns': [
       {
