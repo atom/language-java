@@ -779,9 +779,6 @@
         'include': '#storage-modifiers'
       }
       {
-        'include': '#comments'
-      }
-      {
         'begin': '(\\w+)\\s*(\\()'
         'beginCaptures':
           '1':
