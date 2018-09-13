@@ -438,9 +438,6 @@
         'name': 'comment.block.empty.java'
       }
       {
-        'include': 'text.html.javadoc'
-      }
-      {
         'include': '#comments-inline'
       }
     ]
@@ -771,7 +768,7 @@
       }
     ]
   'methods':
-    'begin': '(?!new)(?=[\\w<].*\\s+)(?=([^=/]|/(?!/))+\\()'
+    'begin': '(?!new)(?=[\\w<].*\\s+)(?=[\\w\\s\\[\\]<>,\\.\\?/\\*]+\\()'
     'end': '(})|(?=;)'
     'endCaptures':
       '1':
@@ -780,6 +777,9 @@
     'patterns': [
       {
         'include': '#storage-modifiers'
+      }
+      {
+        'include': '#comments'
       }
       {
         'begin': '(\\w+)\\s*(\\()'
@@ -801,7 +801,7 @@
             'include': '#parens'
           }
           {
-            'include': '#comments-inline'
+            'include': '#comments'
           }
         ]
       }
