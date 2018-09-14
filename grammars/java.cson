@@ -816,6 +816,9 @@
           {
             'include': '#parens'
           }
+          {
+            'include': '#comments'
+          }
         ]
       }
       {
