@@ -364,7 +364,7 @@ describe 'Java grammar', ->
 
     expect(lines[0][2]).toEqual value: 'enum', scopes: ['source.java', 'meta.enum.java', 'storage.modifier.java']
 
-  fit 'tokenizes methods', ->
+  it 'tokenizes methods', ->
     lines = grammar.tokenizeLines '''
       abstract class A
       {
