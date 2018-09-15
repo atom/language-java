@@ -352,9 +352,9 @@
     ]
   'class-fields-and-methods':
     # Pattern to match both class fields and method declarations inside class body.
-    # For class fields, we only need to match part after '=', because the first part will be matched
-    # using 'variables' pattern. Only then we apply pattern to match methods, because it is not strict
-    # and could potentially match functions in the code (issue #158).
+    # For class fields, we only need to match part after '=', because the first part will be
+    # matched using 'variables' pattern. Only then we apply pattern to match methods, because
+    # it is not strict and could potentially match functions in the code (issue #158).
     'patterns': [
       {
         'begin': '(?=\\=)'
