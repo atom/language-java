@@ -1058,6 +1058,14 @@
             'name': 'punctuation.bracket.round.java'
         'patterns': [
           {
+            'match': '<\\s*(?:[A-Za-z]\\w*\\s*\\.\\s*)*[A-Za-z]\\w*\\s*>'
+            'captures':
+              '0':
+                'patterns': [
+                  'include': '#generics'
+                ]
+          }
+          {
             'include': '#code'
           }
         ]

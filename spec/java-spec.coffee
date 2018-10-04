@@ -1300,6 +1300,29 @@ describe 'Java grammar', ->
     expect(lines[2][13]).toEqual value: 'null', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'constant.language.java']
     expect(lines[2][14]).toEqual value: ';', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.terminator.java']
 
+  it 'tokenizes generics within parenthesis', ->
+    {tokens} = grammar.tokenizeLine 'A<B> value = (A<B>) obj;'
+
+    expect(tokens[9]).toEqual value: '(', scopes: ['source.java', 'punctuation.bracket.round.java']
+    expect(tokens[10]).toEqual value: 'A', scopes: ['source.java', 'storage.type.java']
+    expect(tokens[11]).toEqual value: '<', scopes: ['source.java', 'punctuation.bracket.angle.java']
+    expect(tokens[12]).toEqual value: 'B', scopes: ['source.java', 'storage.type.generic.java']
+    expect(tokens[13]).toEqual value: '>', scopes: ['source.java', 'punctuation.bracket.angle.java']
+    expect(tokens[14]).toEqual value: ')', scopes: ['source.java', 'punctuation.bracket.round.java']
+
+    {tokens} = grammar.tokenizeLine 'A<java.lang.String> value = (A<java.lang.String>) obj;'
+
+    expect(tokens[13]).toEqual value: '(', scopes: ['source.java', 'punctuation.bracket.round.java']
+    expect(tokens[14]).toEqual value: 'A', scopes: ['source.java', 'storage.type.java']
+    expect(tokens[15]).toEqual value: '<', scopes: ['source.java', 'punctuation.bracket.angle.java']
+    expect(tokens[16]).toEqual value: 'java', scopes: ['source.java', 'storage.type.generic.java']
+    expect(tokens[17]).toEqual value: '.', scopes: ['source.java', 'punctuation.separator.period.java']
+    expect(tokens[18]).toEqual value: 'lang', scopes: ['source.java', 'storage.type.generic.java']
+    expect(tokens[19]).toEqual value: '.', scopes: ['source.java', 'punctuation.separator.period.java']
+    expect(tokens[20]).toEqual value: 'String', scopes: ['source.java', 'storage.type.generic.java']
+    expect(tokens[21]).toEqual value: '>', scopes: ['source.java', 'punctuation.bracket.angle.java']
+    expect(tokens[22]).toEqual value: ')', scopes: ['source.java', 'punctuation.bracket.round.java']
+
   it 'tokenizes lambda expressions', ->
     {tokens} = grammar.tokenizeLine '(String s1) -> s1.length() - outer.length();'
 
