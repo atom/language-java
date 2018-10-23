@@ -335,7 +335,7 @@
         'include': '#static-initializer'
       }
       {
-        'include': '#methods'
+        'include': '#class-fields-and-methods'
       }
       {
         'include': '#annotations'
@@ -348,6 +348,25 @@
       }
       {
         'include': '#code'
+      }
+    ]
+  'class-fields-and-methods':
+    # Pattern to match both class fields and method declarations inside class body.
+    # For class fields, we only need to match part after '=', because the first part will be
+    # matched using 'variables' pattern. Only then we apply pattern to match methods, because
+    # it is not strict and could potentially match functions in the code (issue #158).
+    'patterns': [
+      {
+        'begin': '(?=\\=)'
+        'end': '(?=;)'
+        'patterns': [
+          {
+            'include': '#code'
+          }
+        ]
+      }
+      {
+        'include': '#methods'
       }
     ]
   'code':
@@ -440,9 +459,6 @@
             'name': 'punctuation.definition.comment.java'
         'match': '/\\*\\*/'
         'name': 'comment.block.empty.java'
-      }
-      {
-        'include': 'text.html.javadoc'
       }
       {
         'include': '#comments-inline'
@@ -805,7 +821,7 @@
             'include': '#parens'
           }
           {
-            'include': '#comments-inline'
+            'include': '#comments'
           }
         ]
       }
@@ -822,6 +838,9 @@
           }
           {
             'include': '#parens'
+          }
+          {
+            'include': '#comments'
           }
         ]
       }

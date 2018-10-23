@@ -366,22 +366,108 @@ describe 'Java grammar', ->
 
   it 'tokenizes methods', ->
     lines = grammar.tokenizeLines '''
-      class A
+      abstract class A
       {
         A(int a, int b)
         {
+          super();
+          this.prop = a + b;
         }
+
+        public /* test */ List<Integer> /* test */ getList() /* test */ throws Exception
+        {
+          return null;
+        }
+
+        public void nothing();
+
+        public java.lang.String[][] getString()
+        {
+          return null;
+        }
+
+        public Map<Integer, Integer> getMap()
+        {
+          return null;
+        }
+
+        public <T extends Box> T call(String name, Class<T> type)
+        {
+          return null;
+        }
+
+        private int prop = 0;
       }
     '''
 
-    expect(lines[2][1]).toEqual value: 'A', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
-    expect(lines[2][2]).toEqual value: '(', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.begin.bracket.round.java']
-    expect(lines[2][3]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'storage.type.primitive.java']
-    expect(lines[2][5]).toEqual value: 'a', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'variable.parameter.java']
-    expect(lines[2][6]).toEqual value: ',', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.separator.delimiter.java']
-    expect(lines[2][11]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.identifier.java', 'punctuation.definition.parameters.end.bracket.round.java']
-    expect(lines[3][1]).toEqual value: '{', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.begin.bracket.curly.java']
-    expect(lines[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'punctuation.section.method.end.bracket.curly.java']
+    scopeStack = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java']
+
+    expect(lines[2][1]).toEqual value: 'A', scopes: scopeStack.concat ['meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[2][2]).toEqual value: '(', scopes: scopeStack.concat  ['meta.method.identifier.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(lines[2][3]).toEqual value: 'int', scopes: scopeStack.concat ['meta.method.identifier.java', 'storage.type.primitive.java']
+    expect(lines[2][5]).toEqual value: 'a', scopes: scopeStack.concat ['meta.method.identifier.java', 'variable.parameter.java']
+    expect(lines[2][6]).toEqual value: ',', scopes: scopeStack.concat ['meta.method.identifier.java', 'punctuation.separator.delimiter.java']
+    expect(lines[2][11]).toEqual value: ')', scopes: scopeStack.concat ['meta.method.identifier.java', 'punctuation.definition.parameters.end.bracket.round.java']
+    expect(lines[3][1]).toEqual value: '{', scopes: scopeStack.concat ['punctuation.section.method.begin.bracket.curly.java']
+    expect(lines[4][1]).toEqual value: 'super', scopes: scopeStack.concat ['meta.method.body.java', 'variable.language.java']
+    expect(lines[5][1]).toEqual value: 'this', scopes: scopeStack.concat ['meta.method.body.java', 'variable.language.this.java']
+    expect(lines[5][3]).toEqual value: 'prop', scopes: scopeStack.concat ['meta.method.body.java', 'variable.other.property.java']
+    expect(lines[6][1]).toEqual value: '}', scopes: scopeStack.concat ['punctuation.section.method.end.bracket.curly.java']
+
+    expect(lines[8][1]).toEqual value: 'public', scopes: scopeStack.concat ['storage.modifier.java']
+    expect(lines[8][4]).toEqual value: ' test ', scopes: scopeStack.concat ['comment.block.java']
+    expect(lines[8][7]).toEqual value: 'List', scopes: scopeStack.concat ['meta.method.return-type.java', 'storage.type.java']
+    expect(lines[8][8]).toEqual value: '<', scopes: scopeStack.concat ['meta.method.return-type.java', 'punctuation.bracket.angle.java']
+    expect(lines[8][9]).toEqual value: 'Integer', scopes: scopeStack.concat ['meta.method.return-type.java', 'storage.type.generic.java']
+    expect(lines[8][10]).toEqual value: '>', scopes: scopeStack.concat ['meta.method.return-type.java', 'punctuation.bracket.angle.java']
+    expect(lines[8][13]).toEqual value: ' test ', scopes: scopeStack.concat ['meta.method.return-type.java', 'comment.block.java']
+    expect(lines[8][16]).toEqual value: 'getList', scopes: scopeStack.concat ['meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[8][21]).toEqual value: ' test ', scopes: scopeStack.concat ['comment.block.java']
+    expect(lines[8][24]).toEqual value: 'throws', scopes: scopeStack.concat ['meta.throwables.java', 'storage.modifier.java']
+    expect(lines[8][26]).toEqual value: 'Exception', scopes: scopeStack.concat ['meta.throwables.java', 'storage.type.java']
+
+    expect(lines[13][1]).toEqual value: 'public', scopes: scopeStack.concat ['storage.modifier.java']
+    expect(lines[13][3]).toEqual value: 'void', scopes: scopeStack.concat ['meta.method.return-type.java', 'storage.type.primitive.java']
+    expect(lines[13][5]).toEqual value: 'nothing', scopes: scopeStack.concat ['meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[13][6]).toEqual value: '(', scopes: scopeStack.concat ['meta.method.identifier.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(lines[13][7]).toEqual value: ')', scopes: scopeStack.concat ['meta.method.identifier.java', 'punctuation.definition.parameters.end.bracket.round.java']
+
+    expect(lines[15][1]).toEqual value: 'public', scopes: scopeStack.concat ['storage.modifier.java']
+    expect(lines[15][3]).toEqual value: 'java', scopes: scopeStack.concat ['meta.method.return-type.java', 'storage.type.java']
+    expect(lines[15][5]).toEqual value: 'lang', scopes: scopeStack.concat ['meta.method.return-type.java', 'storage.type.java']
+    expect(lines[15][7]).toEqual value: 'String', scopes: scopeStack.concat ['meta.method.return-type.java', 'storage.type.object.array.java']
+    expect(lines[15][8]).toEqual value: '[', scopes: scopeStack.concat ['meta.method.return-type.java', 'punctuation.bracket.square.java']
+    expect(lines[15][9]).toEqual value: ']', scopes: scopeStack.concat ['meta.method.return-type.java', 'punctuation.bracket.square.java']
+    expect(lines[15][10]).toEqual value: '[', scopes: scopeStack.concat ['meta.method.return-type.java', 'punctuation.bracket.square.java']
+    expect(lines[15][11]).toEqual value: ']', scopes: scopeStack.concat ['meta.method.return-type.java', 'punctuation.bracket.square.java']
+    expect(lines[15][13]).toEqual value: 'getString', scopes: scopeStack.concat ['meta.method.identifier.java', 'entity.name.function.java']
+
+    expect(lines[20][1]).toEqual value: 'public', scopes: scopeStack.concat ['storage.modifier.java']
+    expect(lines[20][3]).toEqual value: 'Map', scopes: scopeStack.concat ['meta.method.return-type.java', 'storage.type.java']
+    expect(lines[20][4]).toEqual value: '<', scopes: scopeStack.concat ['meta.method.return-type.java', 'punctuation.bracket.angle.java']
+    expect(lines[20][5]).toEqual value: 'Integer', scopes: scopeStack.concat ['meta.method.return-type.java', 'storage.type.generic.java']
+    expect(lines[20][8]).toEqual value: 'Integer', scopes: scopeStack.concat ['meta.method.return-type.java', 'storage.type.generic.java']
+    expect(lines[20][9]).toEqual value: '>', scopes: scopeStack.concat ['meta.method.return-type.java', 'punctuation.bracket.angle.java']
+    expect(lines[20][11]).toEqual value: 'getMap', scopes: scopeStack.concat ['meta.method.identifier.java', 'entity.name.function.java']
+
+    expect(lines[25][1]).toEqual value: 'public', scopes: scopeStack.concat ['storage.modifier.java']
+    expect(lines[25][3]).toEqual value: '<', scopes: scopeStack.concat ['punctuation.bracket.angle.java']
+    expect(lines[25][4]).toEqual value: 'T', scopes: scopeStack.concat ['storage.type.generic.java']
+    expect(lines[25][6]).toEqual value: 'extends', scopes: scopeStack.concat ['storage.modifier.extends.java']
+    expect(lines[25][8]).toEqual value: 'Box', scopes: scopeStack.concat ['storage.type.generic.java']
+    expect(lines[25][9]).toEqual value: '>', scopes: scopeStack.concat ['punctuation.bracket.angle.java']
+    expect(lines[25][11]).toEqual value: 'T', scopes: scopeStack.concat ['meta.method.return-type.java', 'storage.type.java']
+    expect(lines[25][13]).toEqual value: 'call', scopes: scopeStack.concat ['meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[25][14]).toEqual value: '(', scopes: scopeStack.concat ['meta.method.identifier.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(lines[25][15]).toEqual value: 'String', scopes: scopeStack.concat ['meta.method.identifier.java', 'storage.type.java']
+    expect(lines[25][17]).toEqual value: 'name', scopes: scopeStack.concat ['meta.method.identifier.java', 'variable.parameter.java']
+    expect(lines[25][20]).toEqual value: 'Class', scopes: scopeStack.concat ['meta.method.identifier.java', 'storage.type.java']
+    expect(lines[25][21]).toEqual value: '<', scopes: scopeStack.concat ['meta.method.identifier.java', 'punctuation.bracket.angle.java']
+    expect(lines[25][22]).toEqual value: 'T', scopes: scopeStack.concat ['meta.method.identifier.java', 'storage.type.generic.java']
+    expect(lines[25][23]).toEqual value: '>', scopes: scopeStack.concat ['meta.method.identifier.java', 'punctuation.bracket.angle.java']
+    expect(lines[25][25]).toEqual value: 'type', scopes: scopeStack.concat ['meta.method.identifier.java', 'variable.parameter.java']
+    expect(lines[25][26]).toEqual value: ')', scopes: scopeStack.concat ['meta.method.identifier.java', 'punctuation.definition.parameters.end.bracket.round.java']
+
 
   it 'tokenizes variable-length argument list (varargs)', ->
     lines = grammar.tokenizeLines '''
@@ -1620,6 +1706,60 @@ describe 'Java grammar', ->
     expect(lines[15][4]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
     expect(lines[15][5]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
     expect(lines[15][6]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+
+  it 'tokenizes class fields with complex definitions', ->
+    lines = grammar.tokenizeLines '''
+      class A {
+        private String a = func();
+        private String b = a + "a()" + a() + "" + "a();" + "" + a() + abc + b() + "b();";
+        private String c = "a / a();";
+        private int d[] = a + "a();" + func();
+
+        int abcd() {
+          return 1;
+        }
+      }
+    '''
+
+    scopeStack = ['source.java', 'meta.class.java', 'meta.class.body.java']
+
+    expect(lines[1][1]).toEqual value: 'private', scopes: scopeStack.concat ['storage.modifier.java']
+    expect(lines[1][3]).toEqual value: 'String', scopes: scopeStack.concat ['meta.definition.variable.java', 'storage.type.java']
+    expect(lines[1][5]).toEqual value: 'a', scopes: scopeStack.concat ['meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[1][7]).toEqual value: '=', scopes: scopeStack.concat ['keyword.operator.assignment.java']
+    expect(lines[1][9]).toEqual value: 'func', scopes: scopeStack.concat ['meta.function-call.java', 'entity.name.function.java']
+
+    expect(lines[2][1]).toEqual value: 'private', scopes: scopeStack.concat ['storage.modifier.java']
+    expect(lines[2][3]).toEqual value: 'String', scopes: scopeStack.concat ['meta.definition.variable.java', 'storage.type.java']
+    expect(lines[2][5]).toEqual value: 'b', scopes: scopeStack.concat ['meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[2][7]).toEqual value: '=', scopes: scopeStack.concat ['keyword.operator.assignment.java']
+    expect(lines[2][8]).toEqual value: ' a ', scopes: scopeStack
+    expect(lines[2][12]).toEqual value: 'a()', scopes: scopeStack.concat ['string.quoted.double.java']
+    expect(lines[2][17]).toEqual value: 'a', scopes: scopeStack.concat ['meta.function-call.java', 'entity.name.function.java']
+    expect(lines[2][29]).toEqual value: 'a();', scopes: scopeStack.concat ['string.quoted.double.java']
+    expect(lines[2][39]).toEqual value: 'a', scopes: scopeStack.concat ['meta.function-call.java', 'entity.name.function.java']
+    expect(lines[2][44]).toEqual value: ' abc ', scopes: scopeStack
+    expect(lines[2][47]).toEqual value: 'b', scopes: scopeStack.concat ['meta.function-call.java', 'entity.name.function.java']
+    expect(lines[2][54]).toEqual value: 'b();', scopes: scopeStack.concat ['string.quoted.double.java']
+
+    expect(lines[3][1]).toEqual value: 'private', scopes: scopeStack.concat ['storage.modifier.java']
+    expect(lines[3][3]).toEqual value: 'String', scopes: scopeStack.concat ['meta.definition.variable.java', 'storage.type.java']
+    expect(lines[3][5]).toEqual value: 'c', scopes: scopeStack.concat ['meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[3][7]).toEqual value: '=', scopes: scopeStack.concat ['keyword.operator.assignment.java']
+    expect(lines[3][10]).toEqual value: 'a / a();', scopes: scopeStack.concat ['string.quoted.double.java']
+
+    expect(lines[4][1]).toEqual value: 'private', scopes: scopeStack.concat ['storage.modifier.java']
+    expect(lines[4][3]).toEqual value: 'int', scopes: scopeStack.concat ['meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[4][5]).toEqual value: 'd', scopes: scopeStack.concat ['meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[4][6]).toEqual value: '[', scopes: scopeStack.concat ['meta.definition.variable.java', 'punctuation.bracket.square.java']
+    expect(lines[4][7]).toEqual value: ']', scopes: scopeStack.concat ['meta.definition.variable.java', 'punctuation.bracket.square.java']
+    expect(lines[4][9]).toEqual value: '=', scopes: scopeStack.concat ['keyword.operator.assignment.java']
+    expect(lines[4][10]).toEqual value: ' a ', scopes: scopeStack
+    expect(lines[4][14]).toEqual value: 'a();', scopes: scopeStack.concat ['string.quoted.double.java']
+    expect(lines[4][19]).toEqual value: 'func', scopes: scopeStack.concat ['meta.function-call.java', 'entity.name.function.java']
+
+    expect(lines[6][1]).toEqual value: 'int', scopes: scopeStack.concat ['meta.method.java', 'meta.method.return-type.java', 'storage.type.primitive.java']
+    expect(lines[6][3]).toEqual value: 'abcd', scopes: scopeStack.concat ['meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
 
   it 'tokenizes qualified storage types', ->
     lines = grammar.tokenizeLines '''
