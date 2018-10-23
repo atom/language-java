@@ -964,6 +964,30 @@ describe 'Java grammar', ->
     expect(lines[7][5]).toEqual value: '>', scopes: ['source.java', 'keyword.operator.comparison.java']
     expect(lines[7][6]).toEqual value: ' g', scopes: ['source.java']
 
+  it 'tokenizes variables in for-each loop', ->
+    lines = grammar.tokenizeLines '''
+      void func()
+      {
+        for (int i : elements) {
+          // do something
+        }
+
+        for (HashMap<String, String> map : elementsFunc()) {
+          // do something
+        }
+      }
+    '''
+
+    expect(lines[2][3]).toEqual value: '(', scopes: ['source.java', 'punctuation.bracket.round.java']
+    expect(lines[2][4]).toEqual value: 'int', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[2][6]).toEqual value: 'i', scopes: ['source.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[2][10]).toEqual value: ')', scopes: ['source.java', 'punctuation.bracket.round.java']
+
+    expect(lines[6][3]).toEqual value: '(', scopes: ['source.java', 'punctuation.bracket.round.java']
+    expect(lines[6][4]).toEqual value: 'HashMap', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[6][12]).toEqual value: 'map', scopes: ['source.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[6][19]).toEqual value: ')', scopes: ['source.java', 'punctuation.bracket.round.java']
+
   it 'tokenizes function and method calls', ->
     lines = grammar.tokenizeLines '''
       class A

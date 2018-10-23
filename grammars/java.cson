@@ -1356,14 +1356,14 @@
         \\s+
         [A-Za-z_$][\\w$]* # At least one identifier after space
         ([\\w\\[\\],$][\\w\\[\\],\\s]*)? # possibly primitive array or additional identifiers
-        \\s*(=|;)
+        \\s*(=|:|;)
       )
     '''
-    'end': '(?=\\=|;)'
+    'end': '(?=\\=|:|;)'
     'name': 'meta.definition.variable.java'
     'patterns': [
       {
-        'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|=|,))'
+        'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])*\\s*(;|:|=|,))'
         'captures':
           '1':
             'name': 'variable.other.definition.java'
