@@ -1050,6 +1050,59 @@ describe 'Java grammar', ->
     expect(lines[7][5]).toEqual value: '>', scopes: ['source.java', 'keyword.operator.comparison.java']
     expect(lines[7][6]).toEqual value: ' g', scopes: ['source.java']
 
+  it 'tokenizes variables in for-each loop', ->
+    lines = grammar.tokenizeLines '''
+      void func()
+      {
+        for (int i : elements) {
+          // do something
+        }
+
+        for (HashMap<String, String> map : elementsFunc()) {
+          // do something
+        }
+      }
+    '''
+
+    expect(lines[2][3]).toEqual value: '(', scopes: ['source.java', 'punctuation.bracket.round.java']
+    expect(lines[2][4]).toEqual value: 'int', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.primitive.java']
+    expect(lines[2][6]).toEqual value: 'i', scopes: ['source.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[2][10]).toEqual value: ')', scopes: ['source.java', 'punctuation.bracket.round.java']
+
+    expect(lines[6][3]).toEqual value: '(', scopes: ['source.java', 'punctuation.bracket.round.java']
+    expect(lines[6][4]).toEqual value: 'HashMap', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[6][12]).toEqual value: 'map', scopes: ['source.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+    expect(lines[6][19]).toEqual value: ')', scopes: ['source.java', 'punctuation.bracket.round.java']
+
+  it 'tokenizes Java 10 local variables', ->
+    lines = grammar.tokenizeLines '''
+      void func() {
+        var a = new A();
+        B var = new B();
+        var = new C();
+        { var d = new D(); }
+        for (var e : elements()) {
+          // do something
+        }
+      }
+    '''
+
+    expect(lines[1][1]).toEqual value: 'var', scopes: ['source.java', 'meta.definition.variable.local.java', 'storage.type.local.java']
+    expect(lines[1][3]).toEqual value: 'a', scopes: ['source.java', 'meta.definition.variable.local.java', 'variable.other.definition.java']
+
+    # should be highlighted as variable name, not storage type
+    expect(lines[2][1]).toEqual value: 'B', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[2][3]).toEqual value: 'var', scopes: ['source.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+
+    # should be a variable name
+    expect(lines[3][0]).toEqual value: '  var ', scopes: ['source.java']
+
+    expect(lines[4][3]).toEqual value: 'var', scopes: ['source.java', 'meta.definition.variable.local.java', 'storage.type.local.java']
+    expect(lines[4][5]).toEqual value: 'd', scopes: ['source.java', 'meta.definition.variable.local.java', 'variable.other.definition.java']
+
+    expect(lines[5][4]).toEqual value: 'var', scopes: ['source.java', 'meta.definition.variable.local.java', 'storage.type.local.java']
+    expect(lines[5][6]).toEqual value: 'e', scopes: ['source.java', 'meta.definition.variable.local.java', 'variable.other.definition.java']
+
   it 'tokenizes function and method calls', ->
     lines = grammar.tokenizeLines '''
       class A
