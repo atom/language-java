@@ -404,6 +404,10 @@
         'include': '#variables'
       }
       {
+        # Java 10 local variable type
+        'include': '#variables-local'
+      }
+      {
         'include': '#objects'
       }
       {
@@ -1370,6 +1374,28 @@
       }
       {
         'include': '#all-types'
+      }
+      {
+        'include': '#code'
+      }
+    ]
+  # Java 10 local variable type "var", should only be used inside the method body,
+  # see spec http://openjdk.java.net/jeps/286
+  'variables-local':
+    # This is simplified version of `variables` pattern
+    'begin': '(?=\\b(var)\\b\\s+[A-Za-z_$][\\w$]*\\s*(=|:|;))'
+    'end': '(?=\\=|:|;)'
+    'name': 'meta.definition.variable.local.java'
+    'patterns': [
+      {
+        'match': '\\bvar\\b'
+        'name': 'storage.type.local.java'
+      }
+      {
+        'match': '([A-Za-z$_][\\w$]*)(?=\\s*(\\[\\])*\\s*(=|:|;))'
+        'captures':
+          '1':
+            'name': 'variable.other.definition.java'
       }
       {
         'include': '#code'
