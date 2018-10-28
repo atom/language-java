@@ -213,10 +213,29 @@ describe 'Java grammar', ->
       class Thing {
         int x;
       }
+
+      class classA {
+        int a;
+      }
+
+      class Aclass {
+        int b;
+      }
+
+      public static void main(String[] args) {
+        Testclass test1 = null;
+        TestClass test2 = null;
+      }
     '''
 
     expect(lines[0][0]).toEqual value: 'class', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'storage.modifier.java']
     expect(lines[0][2]).toEqual value: 'Thing', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'entity.name.type.class.java']
+    expect(lines[4][0]).toEqual value: 'class', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'storage.modifier.java']
+    expect(lines[4][2]).toEqual value: 'classA', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'entity.name.type.class.java']
+    expect(lines[8][0]).toEqual value: 'class', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'storage.modifier.java']
+    expect(lines[8][2]).toEqual value: 'Aclass', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'entity.name.type.class.java']
+    expect(lines[13][1]).toEqual value: 'Testclass', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[14][1]).toEqual value: 'TestClass', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.java']
 
   it 'tokenizes enums', ->
     lines = grammar.tokenizeLines '''
