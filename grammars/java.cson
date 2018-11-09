@@ -243,7 +243,7 @@
       }
     ]
   'class':
-    'begin': '(?=\\w?[\\w\\s]*(?:class|(?<!@)interface|enum)\\s+\\w+)'
+    'begin': '(?=\\w?[\\w\\s]*\\b(?:class|(?<!@)interface|enum)\\s+\\w+)'
     'end': '}'
     'endCaptures':
       '0':
