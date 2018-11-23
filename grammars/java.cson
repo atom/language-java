@@ -587,6 +587,26 @@
               {
                 'include': '#comments'
               }
+              # Represents enum's constant field with the code overrides
+              {
+                'begin': '(\\w+)\\s*({)'
+                'beginCaptures':
+                  '1':
+                    'name': 'constant.other.enum.java'
+                  '2':
+                    'name': 'punctuation.bracket.curly.java'
+                'end': '\\}'
+                'endCaptures':
+                  '0':
+                    'name': 'punctuation.bracket.curly.java'
+                'patterns': [
+                  {
+                    # Use #class-body, because the enum field overrides enum class body.
+                    # It is similar to inner class.
+                    'include': '#class-body'
+                  }
+                ]
+              }
               # Represents enum's constant field with constructor, e.g. `Test(123)`
               {
                 'begin': '(\\w+)\\s*(\\()'

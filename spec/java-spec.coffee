@@ -368,6 +368,48 @@ describe 'Java grammar', ->
     expect(lines[4][1]).toEqual value: 'BLUE', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'constant.other.enum.java']
     expect(lines[5][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java', 'punctuation.section.enum.end.bracket.curly.java']
 
+  it 'tokenizes enums with method overrides', ->
+    lines = grammar.tokenizeLines '''
+      enum TYPES {
+        TYPE_A {
+          @Override
+          int func() {
+            return 1;
+          }
+        },
+        TYPE_B {
+          @Override
+          int func() {
+            return 2;
+          }
+        },
+        TYPE_DEFAULT;
+
+        int func() {
+          return 0;
+        }
+      }
+    '''
+
+    expect(lines[1][1]).toEqual value: 'TYPE_A', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[1][3]).toEqual value: '{', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.curly.java']
+    expect(lines[2][2]).toEqual value: 'Override', scopes: ['source.java', 'meta.enum.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
+    expect(lines[3][1]).toEqual value: 'int', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.primitive.java']
+    expect(lines[3][3]).toEqual value: 'func', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[6][1]).toEqual value: '}', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.curly.java']
+
+    expect(lines[7][1]).toEqual value: 'TYPE_B', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[7][3]).toEqual value: '{', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.curly.java']
+    expect(lines[8][2]).toEqual value: 'Override', scopes: ['source.java', 'meta.enum.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
+    expect(lines[9][1]).toEqual value: 'int', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.primitive.java']
+    expect(lines[9][3]).toEqual value: 'func', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[12][1]).toEqual value: '}', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.curly.java']
+
+    expect(lines[13][1]).toEqual value: 'TYPE_DEFAULT', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
+
+    expect(lines[15][1]).toEqual value: 'int', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.primitive.java']
+    expect(lines[15][3]).toEqual value: 'func', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
+
   it 'does not catastrophically backtrack when tokenizing large enums (regression)', ->
     # https://github.com/atom/language-java/issues/103
     # This test 'fails' if it runs for an absurdly long time without completing.
