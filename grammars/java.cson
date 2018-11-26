@@ -759,6 +759,9 @@
     'end': '(?=\\=|;)'
     'patterns': [
       {
+        'include': '#comments'
+      }
+      {
         'include': '#storage-modifiers'
       }
       {
