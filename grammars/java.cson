@@ -1330,11 +1330,13 @@
                 'name': 'punctuation.catch.separator.java'
               }
               {
-                'match': '([a-zA-Z$_][\\.a-zA-Z0-9$_]*)\\s*(\\w+)?'
+                'match': '(final)?\\s*([a-zA-Z$_][\\.a-zA-Z0-9$_]*)\\s*(\\w+)?'
                 'captures':
                   '1':
-                    'name': 'storage.type.java'
+                    'name': 'storage.modifier.java'
                   '2':
+                    'name': 'storage.type.java'
+                  '3':
                     'name': 'variable.parameter.java'
               }
             ]
