@@ -2079,6 +2079,27 @@ describe 'Java grammar', ->
     expect(lines[2][20]).toEqual value: ')', scopes: scopes.concat ['meta.try.resources.java', 'punctuation.section.try.resources.end.bracket.round.java']
     expect(lines[2][22]).toEqual value: '{', scopes: scopes.concat ['punctuation.section.try.begin.bracket.curly.java']
 
+  it 'tokenizes storage modifier in catch block', ->
+    lines = grammar.tokenizeLines '''
+      class Test
+      {
+        private void method() {
+          try {
+            // do something
+          } catch (final Exception1 ex) {
+            throw new Exception2();
+          }
+        }
+      }
+      '''
+
+    expect(lines[5][3]).toEqual value: 'catch', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'keyword.control.catch.java']
+    expect(lines[5][5]).toEqual value: '(', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(lines[5][6]).toEqual value: 'final', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'storage.modifier.java']
+    expect(lines[5][8]).toEqual value: 'Exception1', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'storage.type.java']
+    expect(lines[5][10]).toEqual value: 'ex', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'variable.parameter.java']
+    expect(lines[5][11]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'punctuation.definition.parameters.end.bracket.round.java']
+
   it 'tokenizes list of exceptions in catch block', ->
     lines = grammar.tokenizeLines '''
       class Test
