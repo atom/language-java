@@ -571,6 +571,38 @@
     'name': 'meta.enum.java'
     'patterns': [
       {
+        'begin': '\\b(extends)\\b'
+        'beginCaptures':
+          '1':
+            'name': 'storage.modifier.extends.java'
+        'end': '(?={|\\bimplements\\b)'
+        'name': 'meta.definition.class.inherited.classes.java'
+        'patterns': [
+          {
+            'include': '#object-types-inherited'
+          }
+          {
+            'include': '#comments'
+          }
+        ]
+      }
+      {
+        'begin': '\\b(implements)\\b'
+        'beginCaptures':
+          '1':
+            'name': 'storage.modifier.implements.java'
+        'end': '(?={|\\bextends\\b)'
+        'name': 'meta.definition.class.implemented.interfaces.java'
+        'patterns': [
+          {
+            'include': '#object-types-inherited'
+          }
+          {
+            'include': '#comments'
+          }
+        ]
+      }
+      {
         'begin': '{'
         'beginCaptures':
           '0':
