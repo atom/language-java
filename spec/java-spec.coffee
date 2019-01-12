@@ -1657,6 +1657,23 @@ describe 'Java grammar', ->
 
     expect(tokens[0]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof.java']
 
+  it 'tokenizes the `instanceof` operator in assertions and if statements', ->
+    lines = grammar.tokenizeLines '''
+      class Test {
+        void func() {
+          A a = new A();
+          if (a instanceof A) {
+            // do something
+          }
+          assert a instanceof A;
+        }
+      }
+      '''
+
+    scopeStack = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java']
+    expect(lines[3][5]).toEqual value: 'instanceof', scopes: scopeStack.concat ['keyword.operator.instanceof.java']
+    expect(lines[6][4]).toEqual value: 'instanceof', scopes: scopeStack.concat ['meta.declaration.assertion.java', 'keyword.operator.instanceof.java']
+
   it 'tokenizes class fields', ->
     lines = grammar.tokenizeLines '''
       class Test
