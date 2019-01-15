@@ -410,6 +410,65 @@ describe 'Java grammar', ->
     expect(lines[15][1]).toEqual value: 'int', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.primitive.java']
     expect(lines[15][3]).toEqual value: 'func', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
 
+  it 'tokenizes enums with extends and implements', ->
+    lines = grammar.tokenizeLines '''
+      class A {
+        enum Test1 extends Bclass, Cclass implements Din, Ein {
+        }
+
+        enum Test2 implements Din, Ein extends Bclass, Cclass {
+        }
+
+        enum Test3 extends SomeClass {
+        }
+
+        enum Test4 implements SomeInterface {
+        }
+
+        enum Test5 extends java.lang.SomeClass {
+        }
+
+        enum Test6 implements java.lang.SomeInterface {
+        }
+      }
+      '''
+
+    scopeStack = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.enum.java']
+
+    # Test1
+    expect(lines[1][5]).toEqual value: 'extends', scopes: scopeStack.concat ['meta.definition.class.inherited.classes.java', 'storage.modifier.extends.java']
+    expect(lines[1][7]).toEqual value: 'Bclass', scopes: scopeStack.concat  ['meta.definition.class.inherited.classes.java', 'entity.other.inherited-class.java']
+    expect(lines[1][10]).toEqual value: 'Cclass', scopes: scopeStack.concat ['meta.definition.class.inherited.classes.java', 'entity.other.inherited-class.java']
+    expect(lines[1][12]).toEqual value: 'implements', scopes: scopeStack.concat ['meta.definition.class.implemented.interfaces.java', 'storage.modifier.implements.java']
+    expect(lines[1][14]).toEqual value: 'Din', scopes: scopeStack.concat ['meta.definition.class.implemented.interfaces.java', 'entity.other.inherited-class.java']
+    expect(lines[1][17]).toEqual value: 'Ein', scopes: scopeStack.concat ['meta.definition.class.implemented.interfaces.java', 'entity.other.inherited-class.java']
+
+    # Test2
+    expect(lines[4][5]).toEqual value: 'implements', scopes: scopeStack.concat ['meta.definition.class.implemented.interfaces.java', 'storage.modifier.implements.java']
+    expect(lines[4][7]).toEqual value: 'Din', scopes: scopeStack.concat ['meta.definition.class.implemented.interfaces.java', 'entity.other.inherited-class.java']
+    expect(lines[4][10]).toEqual value: 'Ein', scopes: scopeStack.concat ['meta.definition.class.implemented.interfaces.java', 'entity.other.inherited-class.java']
+    expect(lines[4][12]).toEqual value: 'extends', scopes: scopeStack.concat ['meta.definition.class.inherited.classes.java', 'storage.modifier.extends.java']
+    expect(lines[4][14]).toEqual value: 'Bclass', scopes: scopeStack.concat  ['meta.definition.class.inherited.classes.java', 'entity.other.inherited-class.java']
+    expect(lines[4][17]).toEqual value: 'Cclass', scopes: scopeStack.concat ['meta.definition.class.inherited.classes.java', 'entity.other.inherited-class.java']
+
+    # Test3
+    expect(lines[7][5]).toEqual value: 'extends', scopes: scopeStack.concat ['meta.definition.class.inherited.classes.java', 'storage.modifier.extends.java']
+    expect(lines[7][7]).toEqual value: 'SomeClass', scopes: scopeStack.concat  ['meta.definition.class.inherited.classes.java', 'entity.other.inherited-class.java']
+
+    # Test4
+    expect(lines[10][5]).toEqual value: 'implements', scopes: scopeStack.concat ['meta.definition.class.implemented.interfaces.java', 'storage.modifier.implements.java']
+    expect(lines[10][7]).toEqual value: 'SomeInterface', scopes: scopeStack.concat  ['meta.definition.class.implemented.interfaces.java', 'entity.other.inherited-class.java']
+
+    # Test5
+    # TODO ' java.lang.' is highlighted as a single block for some reason, same for the class
+    expect(lines[13][5]).toEqual value: 'extends', scopes: scopeStack.concat ['meta.definition.class.inherited.classes.java', 'storage.modifier.extends.java']
+    expect(lines[13][7]).toEqual value: 'SomeClass', scopes: scopeStack.concat  ['meta.definition.class.inherited.classes.java', 'entity.other.inherited-class.java']
+
+    # Test6
+    # TODO ' java.lang.' is highlighted as a single block for some reason, same for the class
+    expect(lines[16][5]).toEqual value: 'implements', scopes: scopeStack.concat ['meta.definition.class.implemented.interfaces.java', 'storage.modifier.implements.java']
+    expect(lines[16][7]).toEqual value: 'SomeInterface', scopes: scopeStack.concat  ['meta.definition.class.implemented.interfaces.java', 'entity.other.inherited-class.java']
+
   it 'does not catastrophically backtrack when tokenizing large enums (regression)', ->
     # https://github.com/atom/language-java/issues/103
     # This test 'fails' if it runs for an absurdly long time without completing.
