@@ -1,0 +1,118 @@
+name: 'Java'
+scopeName: 'source.java'
+type: 'tree-sitter'
+parser: 'tree-sitter-java'
+
+fileTypes: [
+  'java'
+]
+
+scopes:
+  'comment': 'comment.block'
+
+  '''
+  "package",
+  "import",
+  "class",
+  "interface",
+  "@interface",
+  "enum"
+  ''': 'keyword.other'
+
+  '''
+  "break",
+  "case",
+  "catch",
+  "continue",
+  "default",
+  "do",
+  "else",
+  "finally",
+  "for",
+  "if",
+  "new",
+  "return",
+  "switch",
+  "throw",
+  "try",
+  "while"
+  ''': 'keyword.control'
+
+  '''
+  "instanceof",
+  "<<",
+  ">>",
+  ">>>",
+  "|",
+  "~",
+  "^",
+  "&=",
+  "^=",
+  "|=",
+  "<<=",
+  ">>=",
+  ">>>=",
+
+  "===",
+  "==",
+  "!=",
+  "<=",
+  ">=",
+  "<>",
+  "<",
+  ">",
+
+  "+=",
+  "-=",
+  "*=",
+  "/=",
+  "%=",
+
+  "=",
+
+  "--",
+  "++",
+
+  "+",
+  "-",
+  "*",
+  "/",
+  "%",
+
+  "!",
+  "&&",
+  "||",
+
+  "|",
+  "&"
+  ''': 'keyword.operator'
+
+  'modifier': 'storage.modifier'
+
+  'null_literal': 'constant.language.null'
+  'boolean_literal': 'constant.language.boolean'
+  'integer_literal': 'constant.language.integer'
+  'floating_point_literal': 'constant.language.float'
+  'character_literal': 'string.quoted.single'
+  'string_literal': 'string.quoted.double'
+
+  # TODO
+  '"this"': 'variable.language'
+  '"super"': 'variable.language'
+
+  '";"': 'punctuation.terminator.statement'
+  '"["': 'punctuation.definition.begin.bracket.square'
+  '"]"': 'punctuation.definition.end.bracket.square'
+  '"{"': 'punctuation.section.block.begin.bracket.curly'
+  '"}"': 'punctuation.section.block.end.bracket.curly'
+  '"("': 'punctuation.section.parens.begin.bracket.round'
+  '")"': 'punctuation.section.parens.end.bracket.round'
+
+  'type_identifier': 'support.storage.type'
+  'void_type': 'support.storage.type'
+  'integral_type': 'support.storage.type'
+  'floating_point_type': 'support.storage.type'
+  'boolean_type': 'support.storage.type'
+
+  # Functions
+  'call_expression > identifier': 'entity.name.function'
