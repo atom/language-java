@@ -11,15 +11,6 @@ scopes:
   'comment': 'comment.block'
 
   '''
-  "package",
-  "import",
-  "class",
-  "interface",
-  "@interface",
-  "enum"
-  ''': 'keyword.other'
-
-  '''
   "assert",
   "break",
   "case",
@@ -111,3 +102,22 @@ scopes:
   'integral_type': 'support.storage.type'
   'floating_point_type': 'support.storage.type'
   'boolean_type': 'support.storage.type'
+  'type_identifier': 'support.storage.type'
+
+  # Package declaration
+  'package_declaration': 'meta.package'
+  '"package"': 'keyword.other.package'
+
+  # Import declaration
+  'import_declaration': 'meta.import'
+  '"import"': 'keyword.other.import'
+  'import_declaration > "static"': 'storage.modifier'
+
+  # Class declaration
+  'class_declaration': 'meta.class'
+  '"class"': 'keyword.other.class'
+  'class_declaration > identifier': 'entity.name.type.class'
+  'class_body': 'meta.class.body'
+
+  'superclass > "extends"': 'storage.modifier.extends'
+  'super_interfaces > "implements"': 'storage.modifier.implements'
