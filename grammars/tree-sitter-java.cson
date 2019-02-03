@@ -30,47 +30,55 @@ scopes:
   "while"
   ''': 'keyword.control'
 
+  '"instanceof"': 'keyword.operator.instanceof'
+  '"="': 'keyword.operator.assignment'
+
   '''
-  "instanceof",
-  "<<",
-  ">>",
-  ">>>",
-  "|",
-  "~",
-  "^",
-  "&=",
-  "^=",
-  "|=",
-  "<<=",
-  ">>=",
-  ">>>=",
-  "===",
   "==",
+  "===",
   "!=",
   "<=",
   ">=",
-  "<>",
-  "<",
   ">",
-  "+=",
-  "-=",
-  "*=",
-  "/=",
-  "%=",
-  "=",
-  "--",
-  "++",
-  "+",
+  "<"
+  ''': 'keyword.operator.comparison'
+
+  '''
+  "!",
+  "&&",
+  "||"
+  ''': 'keyword.operator.logical'
+
+  '''
   "-",
+  "+",
   "*",
   "/",
   "%",
-  "!",
-  "&&",
-  "||",
+  "-=",
+  "+=",
+  "*=",
+  "/=",
+  "%=",
+  "++",
+  "--"
+  ''': 'keyword.operator.arithmetic'
+
+  '''
+  "&",
   "|",
-  "&"
-  ''': 'keyword.operator'
+  "^",
+  "~",
+  "&=",
+  "|=",
+  "^=",
+  "<<",
+  ">>",
+  ">>>",
+  "<<=",
+  ">>=",
+  ">>>="
+  ''': 'keyword.operator.bitwise'
 
   '";"': 'punctuation.terminator.statement'
   '"["': 'punctuation.definition.begin.bracket.square'
@@ -103,6 +111,16 @@ scopes:
   'floating_point_type': 'support.storage.type'
   'boolean_type': 'support.storage.type'
   'type_identifier': 'support.storage.type'
+  # Generic highlights
+  'scoped_type_identifier > "."': 'punctuation.separator.period'
+  'generic_type > "<"': 'punctuation.bracket.angle'
+  'generic_type > ">"': 'punctuation.bracket.angle'
+  'generic_type > "<>"': 'punctuation.bracket.diamond'
+  'generic_type > "&"': 'punctuation.separator.types'
+  'generic_type > ","': 'punctuation.separator.delimiter'
+  'wildcard > "?"': 'support.storage.type.generic.wildcard'
+  'wildcard > "extends"': 'storage.modifier.generic.extends'
+  'wildcard > super': 'storage.modifier.generic.super'
 
   # Package declaration
   'package_declaration': 'meta.package'
