@@ -80,6 +80,8 @@ scopes:
   ">>>="
   ''': 'keyword.operator.bitwise'
 
+  '"."': 'punctuation.separator.period'
+  '","': 'punctuation.separator.delimiter'
   '";"': 'punctuation.terminator.statement'
   '"["': 'punctuation.definition.begin.bracket.square'
   '"]"': 'punctuation.definition.end.bracket.square'
@@ -88,6 +90,11 @@ scopes:
   '"("': 'punctuation.section.parens.begin.bracket.round'
   '")"': 'punctuation.section.parens.end.bracket.round'
 
+  'spread_parameter > "..."': 'punctuation.definition.parameters.varargs'
+
+  'this': 'variable.language'
+  'super': 'variable.language'
+
   'null_literal': 'constant.language.null'
   'boolean_literal': 'constant.boolean'
   'integer_literal': 'constant.numeric'
@@ -95,11 +102,9 @@ scopes:
   'character_literal': 'string.quoted.single'
   'string_literal': 'string.quoted.double'
 
-  'this': 'variable.language'
-  'super': 'variable.language'
-
   # Language modifiers, e.g. public, private, static, ...
   'modifier': 'storage.modifier'
+  'throws > "throws"': 'storage.modifier.throws'
 
   # Separately process ternary operators
   '"?"': 'keyword.control.ternary'
@@ -111,13 +116,12 @@ scopes:
   'floating_point_type': 'support.storage.type'
   'boolean_type': 'support.storage.type'
   'type_identifier': 'support.storage.type'
-  # Generic highlights
-  'scoped_type_identifier > "."': 'punctuation.separator.period'
+  # Generic types
+  # TODO: handle complex/nested cases
   'generic_type > "<"': 'punctuation.bracket.angle'
   'generic_type > ">"': 'punctuation.bracket.angle'
   'generic_type > "<>"': 'punctuation.bracket.diamond'
   'generic_type > "&"': 'punctuation.separator.types'
-  'generic_type > ","': 'punctuation.separator.delimiter'
   'wildcard > "?"': 'support.storage.type.generic.wildcard'
   'wildcard > "extends"': 'storage.modifier.generic.extends'
   'wildcard > super': 'storage.modifier.generic.super'
@@ -139,3 +143,18 @@ scopes:
 
   'superclass > "extends"': 'storage.modifier.extends'
   'super_interfaces > "implements"': 'storage.modifier.implements'
+
+  # Constructor declaration
+  'constructor_declaration': 'meta.constructor'
+  'constructor_declarator > identifier': 'entity.name.function'
+  'constructor_body': 'meta.constructor.body'
+
+  # Method declaration
+  'method_declaration': 'meta.method'
+  'method_header > method_declarator > identifier': 'entity.name.function'
+  'method_body': 'meta.method.body'
+
+  # Field access
+  # TODO
+  # 'field_access > identifier': 'variable.other.property'
+  # 'method_invocation > identifier': 'entity.name.function'
