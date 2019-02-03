@@ -20,6 +20,7 @@ scopes:
   ''': 'keyword.other'
 
   '''
+  "assert",
   "break",
   "case",
   "catch",
@@ -52,7 +53,6 @@ scopes:
   "<<=",
   ">>=",
   ">>>=",
-
   "===",
   "==",
   "!=",
@@ -61,44 +61,25 @@ scopes:
   "<>",
   "<",
   ">",
-
   "+=",
   "-=",
   "*=",
   "/=",
   "%=",
-
   "=",
-
   "--",
   "++",
-
   "+",
   "-",
   "*",
   "/",
   "%",
-
   "!",
   "&&",
   "||",
-
   "|",
   "&"
   ''': 'keyword.operator'
-
-  'modifier': 'storage.modifier'
-
-  'null_literal': 'constant.language.null'
-  'boolean_literal': 'constant.language.boolean'
-  'integer_literal': 'constant.language.integer'
-  'floating_point_literal': 'constant.language.float'
-  'character_literal': 'string.quoted.single'
-  'string_literal': 'string.quoted.double'
-
-  # TODO
-  '"this"': 'variable.language'
-  '"super"': 'variable.language'
 
   '";"': 'punctuation.terminator.statement'
   '"["': 'punctuation.definition.begin.bracket.square'
@@ -108,11 +89,25 @@ scopes:
   '"("': 'punctuation.section.parens.begin.bracket.round'
   '")"': 'punctuation.section.parens.end.bracket.round'
 
-  'type_identifier': 'support.storage.type'
+  'null_literal': 'constant.language.null'
+  'boolean_literal': 'constant.boolean'
+  'integer_literal': 'constant.numeric'
+  'floating_point_literal': 'constant.numeric'
+  'character_literal': 'string.quoted.single'
+  'string_literal': 'string.quoted.double'
+
+  'this': 'variable.language'
+  'super': 'variable.language'
+
+  # Language modifiers, e.g. public, private, static, ...
+  'modifier': 'storage.modifier'
+
+  # Separately process ternary operators
+  '"?"': 'keyword.control.ternary'
+  'ternary_expression > ":"': 'keyword.control.ternary'
+
+  # Type definitions
   'void_type': 'support.storage.type'
   'integral_type': 'support.storage.type'
   'floating_point_type': 'support.storage.type'
   'boolean_type': 'support.storage.type'
-
-  # Functions
-  'call_expression > identifier': 'entity.name.function'
