@@ -52,7 +52,7 @@ scopes:
   '''
   "-",
   "+",
-  "*",
+  binary_expression > "*",
   "/",
   "%",
   "-=",
@@ -126,6 +126,10 @@ scopes:
   'wildcard > "extends"': 'storage.modifier.generic.extends'
   'wildcard > super': 'storage.modifier.generic.super'
 
+  # Field and method access
+  # TODO: add obj.property access
+  'method_invocation > identifier': 'entity.name.function'
+
   # Package declaration
   'package_declaration': 'meta.package'
   'package_declaration > "package"': 'keyword.other.package'
@@ -155,8 +159,3 @@ scopes:
   'method_declaration': 'meta.method'
   'method_header > method_declarator > identifier': 'entity.name.function'
   'method_body': 'meta.method.body'
-
-  # Field access
-  # TODO
-  # 'field_access > identifier': 'variable.other.property'
-  # 'method_invocation > identifier': 'entity.name.function'
