@@ -128,12 +128,14 @@ scopes:
 
   # Package declaration
   'package_declaration': 'meta.package'
-  '"package"': 'keyword.other.package'
+  'package_declaration > "package"': 'keyword.other.package'
 
   # Import declaration
   'import_declaration': 'meta.import'
-  '"import"': 'keyword.other.import'
+  'import_declaration > "import"': 'keyword.other.import'
   'import_declaration > "static"': 'storage.modifier'
+  'import_declaration > identifier': 'support.storage.type'
+  'import_declaration > asterisk': 'support.storage.type'
 
   # Class declaration
   'class_declaration': 'meta.class'
