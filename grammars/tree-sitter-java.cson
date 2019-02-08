@@ -8,6 +8,8 @@ fileTypes: [
 ]
 
 scopes:
+  'program': 'source.java'
+
   'comment': 'comment.block'
 
   '''
@@ -140,6 +142,7 @@ scopes:
   # Field and method access
   # TODO: add obj.property access
   'method_invocation > identifier': 'entity.name.function'
+  'variable_declarator_id > identifier': 'variable.other.definition'
 
   # Package declaration
   'package_declaration': 'meta.package'
@@ -152,12 +155,24 @@ scopes:
   'import_declaration > identifier': 'support.storage.type'
   'import_declaration > asterisk': 'support.storage.type'
 
+  # Interface declaration
+  'normal_interface_declaration > "interface"': 'keyword.other.interface'
+  'normal_interface_declaration > identifier': 'entity.name.type.interface'
+  'interface_body': 'meta.interface.body'
+  'annotation_type_declaration > "@"': 'keyword.other.interface.annotated'
+  'annotation_type_declaration > "interface"': 'keyword.other.interface.annotated'
+  # 'annotation_type_declaration > "@interface"': 'keyword.other.interface.annotated'
+  'annotation_type_declaration > identifier': 'entity.name.type.interface.annotated'
+  'annotation_type_body': 'meta.interface.annotated.body'
+  'annotation_type_element_declaration > identifier': 'entity.name.function'
+
   # Class declaration
-  # 'class_declaration': 'meta.class'
-  '"class"': 'keyword.other.class'
+  'class_declaration > "class"': 'keyword.other.class'
   'class_declaration > identifier': 'entity.name.type.class'
-  'class_declaration > type_parameters > type_parameter > identifier': 'support.storage.type'
   'class_body': 'meta.class.body'
+
+  # Generic type parameters for class and interface
+  'type_parameters > type_parameter > identifier': 'support.storage.type'
 
   # Constructor declaration
   'constructor_declaration': 'meta.constructor'
