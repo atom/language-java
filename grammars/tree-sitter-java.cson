@@ -108,6 +108,15 @@ scopes:
   '"extends"': 'storage.modifier.extends'
   '"implements"': 'storage.modifier.implements'
 
+  # Annotations
+  'marker_annotation > "@"': 'punctuation.definition.annotation'
+  'marker_annotation > identifier': 'storage.type.annotation'
+  'single_element_annotation > "@"': 'punctuation.definition.annotation'
+  'single_element_annotation > identifier': 'storage.type.annotation'
+  'normal_annotation > "@"': 'punctuation.definition.annotation'
+  'normal_annotation > identifier': 'storage.type.annotation'
+  'element_value_pair > identifier': 'variable.other.annotation.element'
+
   # Separately process ternary operators
   '"?"': 'keyword.control.ternary'
   'ternary_expression > ":"': 'keyword.control.ternary'
@@ -147,7 +156,7 @@ scopes:
   # 'class_declaration': 'meta.class'
   '"class"': 'keyword.other.class'
   'class_declaration > identifier': 'entity.name.type.class'
-  'class_declaration > type_parameter > identifier': 'support.storage.type'
+  'class_declaration > type_parameters > type_parameter > identifier': 'support.storage.type'
   'class_body': 'meta.class.body'
 
   # Constructor declaration
