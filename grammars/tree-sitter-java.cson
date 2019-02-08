@@ -105,6 +105,8 @@ scopes:
   # Language modifiers, e.g. public, private, static, ...
   'modifier': 'storage.modifier'
   'throws > "throws"': 'storage.modifier.throws'
+  '"extends"': 'storage.modifier.extends'
+  '"implements"': 'storage.modifier.implements'
 
   # Separately process ternary operators
   '"?"': 'keyword.control.ternary'
@@ -142,13 +144,11 @@ scopes:
   'import_declaration > asterisk': 'support.storage.type'
 
   # Class declaration
-  'class_declaration': 'meta.class'
+  # 'class_declaration': 'meta.class'
   '"class"': 'keyword.other.class'
   'class_declaration > identifier': 'entity.name.type.class'
+  'class_declaration > type_parameter > identifier': 'support.storage.type'
   'class_body': 'meta.class.body'
-
-  'superclass > "extends"': 'storage.modifier.extends'
-  'super_interfaces > "implements"': 'storage.modifier.implements'
 
   # Constructor declaration
   'constructor_declaration': 'meta.constructor'
