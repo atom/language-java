@@ -7,6 +7,21 @@ fileTypes: [
   'java'
 ]
 
+folds: [
+  {
+    type: [
+      'comment',
+      'method_declaration',
+      'constructor_declaration',
+      'class_declaration',
+      'normal_interface_declaration'
+    ]
+  }
+]
+
+comments:
+  start: '// '
+
 scopes:
   'program': 'source.java'
 
