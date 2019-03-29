@@ -129,13 +129,13 @@
   'annotations':
     'patterns': [
       {
-        'begin': '((@)[^\\s(]+)(\\()'
+        'begin': '((@)\\s*([^\\s(]+))(\\()'
         'beginCaptures':
-          '1':
-            'name': 'storage.type.annotation.java'
           '2':
             'name': 'punctuation.definition.annotation.java'
           '3':
+            'name': 'storage.type.annotation.java'
+          '4':
             'name': 'punctuation.definition.annotation-arguments.begin.bracket.round.java'
         'end': '\\)'
         'endCaptures':
@@ -157,7 +157,7 @@
         ]
       }
       {
-        'match': '(@)(interface)\\s+(\\w*)|((@)\\w*)'
+        'match': '(@)(interface)\\s+(\\w*)|((@)\\s*(\\w+))'
         'name': 'meta.declaration.annotation.java'
         'captures':
           '1':
@@ -166,10 +166,10 @@
             'name': 'storage.modifier.java'
           '3':
             'name': 'storage.type.annotation.java'
-          '4':
-            'name': 'storage.type.annotation.java'
           '5':
             'name': 'punctuation.definition.annotation.java'
+          '6':
+            'name': 'storage.type.annotation.java'
       }
     ]
   'anonymous-block-and-instance-initializer':
