@@ -2617,7 +2617,6 @@ describe 'Java grammar', ->
       '''
 
     scopes = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java']
-    # expect(lines[2][1]).toEqual value: 'try', scopes: scopes.concat ['keyword.control.try.java']
     expect(lines[1][1]).toEqual value: '@', scopes: scopes.concat(['punctuation.definition.annotation.java'])
     expect(lines[1][3]).toEqual value: 'Override', scopes: scopes.concat(['storage.type.annotation.java'])
     expect(lines[5][1]).toEqual value: '@', scopes: scopes.concat(['punctuation.definition.annotation.java'])
