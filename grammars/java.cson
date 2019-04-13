@@ -1425,9 +1425,11 @@
           |
           (?>(\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
         )
+        \\s*
         (
           <[\\w<>,\\.?\\s\\[\\]]*> # e.g. `HashMap<Integer, String>`, or `List<java.lang.String>`
         )?
+        \\s*
         (
           (\\[\\])* # int[][]
         )?
