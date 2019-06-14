@@ -828,10 +828,6 @@ describe 'Java grammar', ->
         {tokens} = grammar.tokenizeLine '1_'
         expect(tokens[0]).toEqual value: '1_', scopes: ['source.java']
 
-        # TODO: Fix this test, currently it has a scope of "storage.type.java", because it starts with underscore.
-        # {tokens} = grammar.tokenizeLine '_1'
-        # expect(tokens[0]).toEqual value: '_1', scopes: ['source.java']
-
         {tokens} = grammar.tokenizeLine '2639724263Q'
         expect(tokens[0]).toEqual value: '2639724263Q', scopes: ['source.java']
 
