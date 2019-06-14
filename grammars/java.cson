@@ -1011,12 +1011,12 @@
         'include': '#generics'
       }
       {
-        'begin': '\\b((?:[A-Za-z]\\w*\\s*\\.\\s*)*)([A-Z]\\w*)\\s*(?=\\[)'
+        'begin': '\\b((?:[A-Za-z_]\\w*\\s*\\.\\s*)*)([A-Z_]\\w*)\\s*(?=\\[)'
         'beginCaptures':
           '1':
             'patterns': [
               {
-                'match': '[A-Za-z]\\w*'
+                'match': '[A-Za-z_]\\w*'
                 'name': 'storage.type.java'
               }
               {
@@ -1038,12 +1038,12 @@
       }
       {
         # Match possible generics first, eg Foo.Bar in Foo.Bar<String>
-        'match': '\\b((?:[A-Za-z]\\w*\\s*\\.\\s*)*[A-Z]\\w*)\\s*(?=<)'
+        'match': '\\b((?:[A-Za-z_]\\w*\\s*\\.\\s*)*[A-Z_]\\w*)\\s*(?=<)'
         'captures':
           '1':
             'patterns': [
               {
-                'match': '[A-Za-z]\\w*'
+                'match': '[A-Za-z_]\\w*'
                 'name': 'storage.type.java'
               }
               {
@@ -1056,12 +1056,12 @@
         # If the above fails *then* just look for Wow
         # (must be followed by a variable name, we use '\n' to cover multi-line definitions,
         # or varargs for function definitions)
-        'match': '\\b((?:[A-Za-z]\\w*\\s*\\.\\s*)*[A-Z]\\w*)\\b((?=\\s*[A-Za-z$_\\n])|(?=\\s*\\.\\.\\.))'
+        'match': '\\b((?:[A-Za-z_]\\w*\\s*\\.\\s*)*[A-Z_]\\w*)\\b((?=\\s*[A-Za-z$_\\n])|(?=\\s*\\.\\.\\.))'
         'captures':
           '1':
             'patterns': [
               {
-                'match': '[A-Za-z]\\w*'
+                'match': '[A-Za-z_]\\w*'
                 'name': 'storage.type.java'
               }
               {
@@ -1423,7 +1423,7 @@
         (
           \\b(void|boolean|byte|char|short|int|float|long|double)\\b
           |
-          (?>(\\w+\\.)*[A-Z]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
+          (?>(\\w+\\.)*[A-Z_]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
         )
         \\s*
         (
