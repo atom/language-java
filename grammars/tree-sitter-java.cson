@@ -14,6 +14,7 @@ folds: [
       'method_declaration',
       'constructor_declaration',
       'class_declaration',
+      'enum_declaration',
       'normal_interface_declaration'
     ]
   }
@@ -185,6 +186,12 @@ scopes:
   'class_declaration > "class"': 'keyword.other.class'
   'class_declaration > identifier': 'entity.name.type.class'
   'class_body': 'meta.class.body'
+  'class_body > static_initializer > "static"': 'storage.modifier'
+
+  # Enum declaration
+  'enum_declaration > "enum"': 'keyword.other.enum'
+  'enum_declaration > identifier': 'entity.name.type.enum'
+  'enum_declaration > enum_constant > identifier': 'constant.other.enum'
 
   # Generic type parameters for class and interface
   'type_parameters > type_parameter > identifier': 'support.storage.type'
