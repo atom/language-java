@@ -828,9 +828,6 @@ describe 'Java grammar', ->
         {tokens} = grammar.tokenizeLine '1_'
         expect(tokens[0]).toEqual value: '1_', scopes: ['source.java']
 
-        {tokens} = grammar.tokenizeLine '_1'
-        expect(tokens[0]).toEqual value: '_1', scopes: ['source.java']
-
         {tokens} = grammar.tokenizeLine '2639724263Q'
         expect(tokens[0]).toEqual value: '2639724263Q', scopes: ['source.java']
 
@@ -1751,6 +1748,8 @@ describe 'Java grammar', ->
         String[] primitiveArray;
         private Foo<int[]> hi;
         Foo<int[]> hi;
+        String [] var1;
+        List <String> var2;
       }
       '''
 
@@ -1843,6 +1842,17 @@ describe 'Java grammar', ->
     expect(lines[15][4]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
     expect(lines[15][5]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
     expect(lines[15][6]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+
+    expect(lines[16][1]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.object.array.java']
+    expect(lines[16][3]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
+    expect(lines[16][4]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
+    expect(lines[16][6]).toEqual value: 'var1', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+
+    expect(lines[17][1]).toEqual value: 'List', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[17][3]).toEqual value: '<', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[17][4]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.generic.java']
+    expect(lines[17][5]).toEqual value: '>', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.angle.java']
+    expect(lines[17][7]).toEqual value: 'var2', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
 
   it 'tokenizes class fields with complex definitions', ->
     lines = grammar.tokenizeLines '''
@@ -1959,6 +1969,26 @@ describe 'Java grammar', ->
     expect(lines[5][5]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.object.array.java']
     expect(lines[5][6]).toEqual value: '[', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
     expect(lines[5][7]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.bracket.square.java']
+
+  it 'tokenizes storage types with underscore', ->
+    lines = grammar.tokenizeLines '''
+      class _Class {
+        static _String var1;
+        static _abc._abc._Class var2;
+        static _abc._abc._Generic<_String> var3;
+      }
+      '''
+
+    expect(lines[1][3]).toEqual value: '_String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+
+    expect(lines[2][3]).toEqual value: '_abc', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[2][5]).toEqual value: '_abc', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[2][7]).toEqual value: '_Class', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+
+    expect(lines[3][3]).toEqual value: '_abc', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[3][5]).toEqual value: '_abc', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[3][7]).toEqual value: '_Generic', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[3][9]).toEqual value: '_String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.generic.java']
 
   it 'tokenizes try-catch-finally blocks', ->
     lines = grammar.tokenizeLines '''
@@ -2568,10 +2598,10 @@ describe 'Java grammar', ->
       public @interface Test {}
       '''
 
-    expect(lines[0][0]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java', 'punctuation.definition.annotation.java']
+    expect(lines[0][0]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation.java']
     expect(lines[0][1]).toEqual value: 'Annotation', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
 
-    expect(lines[1][0]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java', 'punctuation.definition.annotation.java']
+    expect(lines[1][0]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation.java']
     expect(lines[1][1]).toEqual value: 'Table', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
     expect(lines[1][2]).toEqual value: '(', scopes: ['source.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation-arguments.begin.bracket.round.java']
     expect(lines[1][3]).toEqual value: 'key', scopes: ['source.java', 'meta.declaration.annotation.java', 'constant.other.key.java']
@@ -2581,10 +2611,10 @@ describe 'Java grammar', ->
     expect(lines[1][9]).toEqual value: '"', scopes: ['source.java', 'meta.declaration.annotation.java',  'string.quoted.double.java', 'punctuation.definition.string.end.java']
     expect(lines[1][10]).toEqual value: ')', scopes: ['source.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation-arguments.end.bracket.round.java']
 
-    expect(lines[3][1]).toEqual value: '@', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java', 'punctuation.definition.annotation.java']
+    expect(lines[3][1]).toEqual value: '@', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation.java']
     expect(lines[3][2]).toEqual value: 'Override', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
 
-    expect(lines[4][1]).toEqual value: '@', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java', 'punctuation.definition.annotation.java']
+    expect(lines[4][1]).toEqual value: '@', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation.java']
     expect(lines[4][2]).toEqual value: 'Column', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
     expect(lines[4][3]).toEqual value: '(', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation-arguments.begin.bracket.round.java']
     expect(lines[4][4]).toEqual value: 'true', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java', 'constant.language.java']
@@ -2602,3 +2632,23 @@ describe 'Java grammar', ->
     expect(lines[8][2]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation.java', 'punctuation.definition.annotation.java']
     expect(lines[8][3]).toEqual value: 'interface', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.modifier.java']
     expect(lines[8][5]).toEqual value: 'Test', scopes: ['source.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
+
+  it 'tokenizes annotations with spaces', ->
+    lines = grammar.tokenizeLines '''
+      class A {
+        @ Override
+        public void func1() {
+        }
+
+        @ Message("message")
+        public void func2() {
+        }
+      }
+      '''
+
+    scopes = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.declaration.annotation.java']
+    expect(lines[1][1]).toEqual value: '@', scopes: scopes.concat(['punctuation.definition.annotation.java'])
+    expect(lines[1][3]).toEqual value: 'Override', scopes: scopes.concat(['storage.type.annotation.java'])
+    expect(lines[5][1]).toEqual value: '@', scopes: scopes.concat(['punctuation.definition.annotation.java'])
+    expect(lines[5][3]).toEqual value: 'Message', scopes: scopes.concat(['storage.type.annotation.java'])
+    expect(lines[5][6]).toEqual value: 'message', scopes: scopes.concat(['string.quoted.double.java'])
