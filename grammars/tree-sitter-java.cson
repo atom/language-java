@@ -15,7 +15,14 @@ folds: [
       'constructor_declaration',
       'class_declaration',
       'enum_declaration',
-      'normal_interface_declaration'
+      'normal_interface_declaration',
+      'block',
+      'if_then_else_statement',
+      'switch_statement',
+      'for_statement',
+      'while_statement',
+      'try_statement',
+      'synchronized_statement'
     ]
   }
 ]
@@ -125,6 +132,7 @@ scopes:
   'throws > "throws"': 'storage.modifier.throws'
   '"extends"': 'storage.modifier.extends'
   '"implements"': 'storage.modifier.implements'
+  '"synchronized"': 'storage.modifier.synchronized'
 
   # Annotations
   'marker_annotation > "@"': 'punctuation.definition.annotation'
@@ -156,9 +164,13 @@ scopes:
   'wildcard > super': 'storage.modifier.generic.super'
 
   # Field and method access
-  # TODO: add obj.property access
+  'scoped_identifier > identifier': 'support.storage.type' # for obj.property
+  'field_access > identifier': 'support.storage.type' # for super.property
   'method_invocation > identifier': 'entity.name.function'
-  'variable_declarator_id > identifier': 'variable.other.definition'
+  # Method reference
+  'method_reference > "::"': 'keyword.control.method'
+  'method_reference > "new"': 'entity.name.function'
+  'method_reference > identifier': 'entity.name.function'
 
   # Package declaration
   'package_declaration': 'meta.package'
