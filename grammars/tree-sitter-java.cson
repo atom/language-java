@@ -111,8 +111,10 @@ scopes:
 
   'spread_parameter > "..."': 'punctuation.definition.parameters.varargs'
 
-  'this': 'variable.language'
-  'super': 'variable.language'
+  '''
+  this,
+  super
+  ''': 'variable.language'
 
   'null_literal': 'constant.language.null'
   'boolean_literal': 'constant.boolean'
@@ -121,12 +123,41 @@ scopes:
   'character_literal': 'string.quoted.single'
   'string_literal': 'string.quoted.double'
 
+  # Type definitions
+  '''
+  void_type,
+  integral_type,
+  floating_point_type,
+  boolean_type,
+  type_identifier,
+  type_parameter > identifier
+  ''': 'support.storage.type'
+
+  # Generic types
+  '''
+  type_parameters > "<",
+  type_parameters > ">",
+  generic_type > "<",
+  generic_type > ">"
+  ''': 'punctuation.bracket.angle'
+
+  '''
+  type_bound > "&",
+  additional_bound > "&"
+  ''': 'punctuation.separator.types'
+
+  'generic_type > "<>"': 'punctuation.bracket.diamond'
+
+  'wildcard > "?"': 'support.storage.type.generic.wildcard'
+
   # Language modifiers, e.g. public, private, static, ...
-  'modifier': 'storage.modifier'
-  'throws > "throws"': 'storage.modifier.throws'
-  '"extends"': 'storage.modifier.extends'
-  '"implements"': 'storage.modifier.implements'
-  '"synchronized"': 'storage.modifier.synchronized'
+  '''
+  modifier,
+  throws > "throws",
+  "extends",
+  "implements",
+  "synchronized"
+  ''': 'storage.modifier'
 
   # Annotations
   '''
@@ -146,25 +177,6 @@ scopes:
   # Separately process ternary operators
   '"?"': 'keyword.control.ternary'
   'ternary_expression > ":"': 'keyword.control.ternary'
-
-  # Type definitions
-  '''
-  void_type,
-  integral_type,
-  floating_point_type,
-  boolean_type,
-  type_identifier
-  ''': 'support.storage.type'
-
-  # Generic types
-  # TODO: handle complex/nested cases
-  'generic_type > "<"': 'punctuation.bracket.angle'
-  'generic_type > ">"': 'punctuation.bracket.angle'
-  'generic_type > "<>"': 'punctuation.bracket.diamond'
-  'generic_type > "&"': 'punctuation.separator.types'
-  'wildcard > "?"': 'support.storage.type.generic.wildcard'
-  'wildcard > "extends"': 'storage.modifier.generic.extends'
-  'wildcard > super': 'storage.modifier.generic.super'
 
   # Field access
   'scoped_identifier > identifier': 'variable.other.object.java' # for obj.property
@@ -212,9 +224,6 @@ scopes:
   'enum_declaration > "enum"': 'keyword.other.enum'
   'enum_declaration > identifier': 'entity.name.type.enum'
   'enum_declaration > enum_constant > identifier': 'constant.other.enum'
-
-  # Generic type parameters for class and interface
-  'type_parameters > type_parameter > identifier': 'support.storage.type'
 
   # Constructor declaration
   'constructor_declaration': 'meta.constructor'
