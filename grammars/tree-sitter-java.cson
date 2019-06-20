@@ -102,12 +102,12 @@ scopes:
   '"."': 'punctuation.separator.period'
   '","': 'punctuation.separator.delimiter'
   '";"': 'punctuation.terminator.statement'
-  '"["': 'punctuation.definition.begin.bracket.square'
-  '"]"': 'punctuation.definition.end.bracket.square'
-  '"{"': 'punctuation.section.block.begin.bracket.curly'
-  '"}"': 'punctuation.section.block.end.bracket.curly'
-  '"("': 'punctuation.section.parens.begin.bracket.round'
-  '")"': 'punctuation.section.parens.end.bracket.round'
+  '"["': 'punctuation.bracket.square'
+  '"]"': 'punctuation.bracket.square'
+  '"{"': 'punctuation.bracket.curly'
+  '"}"': 'punctuation.bracket.curly'
+  '"("': 'punctuation.bracket.round'
+  '")"': 'punctuation.bracket.round'
 
   'spread_parameter > "..."': 'punctuation.definition.parameters.varargs'
 
