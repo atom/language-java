@@ -1708,6 +1708,33 @@ describe 'Java grammar', ->
     expect(lines[6][0]).toEqual value: '}', scopes: ['source.java', 'meta.inner-class.java', 'punctuation.section.inner-class.end.bracket.curly.java']
     expect(lines[6][1]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
+    # See issue https://github.com/atom/language-java/issues/192
+    lines = grammar.tokenizeLines '''
+      class A {
+        void func() {
+          long a = new Date().getTime() + start.getTime();
+          long b = new Date().getTime() - start.getTime();
+          long c = new Date().getTime() * start.getTime();
+          long d = new Date().getTime() / start.getTime();
+          long e = new Date().getTime() & start.getTime();
+          long f = new Date().getTime() | start.getTime();
+          boolean g = new Date().getTime() == start.getTime();
+          boolean h = new Date().getTime() != start.getTime();
+        }
+      }
+      '''
+
+    expected = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'variable.other.object.java']
+
+    expect(lines[2][19]).toEqual value: 'start', scopes: expected
+    expect(lines[3][19]).toEqual value: 'start', scopes: expected
+    expect(lines[4][19]).toEqual value: 'start', scopes: expected
+    expect(lines[5][19]).toEqual value: 'start', scopes: expected
+    expect(lines[6][19]).toEqual value: 'start', scopes: expected
+    expect(lines[7][19]).toEqual value: 'start', scopes: expected
+    expect(lines[8][19]).toEqual value: 'start', scopes: expected
+    expect(lines[9][19]).toEqual value: 'start', scopes: expected
+
   it 'tokenizes the `instanceof` operator', ->
     {tokens} = grammar.tokenizeLine 'instanceof'
 
