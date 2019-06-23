@@ -130,7 +130,7 @@ scopes:
   boolean_type,
   type_identifier,
   type_parameter > identifier
-  ''': 'support.storage.type'
+  ''': 'storage.type'
 
   # Generic types
   '''
@@ -147,7 +147,7 @@ scopes:
 
   'generic_type > "<>"': 'punctuation.bracket.diamond'
 
-  'wildcard > "?"': 'support.storage.type.generic.wildcard'
+  'wildcard > "?"': 'storage.type.generic.wildcard'
 
   # Language modifiers, e.g. public, private, static, ...
   '''
@@ -202,8 +202,8 @@ scopes:
   'import_declaration': 'meta.import'
   'import_declaration > "import"': 'keyword.other.import'
   'import_declaration > "static"': 'storage.modifier'
-  'import_declaration > identifier': 'support.storage.type'
-  'import_declaration > asterisk > "*"': 'support.storage.type'
+  'import_declaration > identifier': 'storage.type'
+  'import_declaration > asterisk > "*"': 'storage.type'
 
   # Interface declaration
   'normal_interface_declaration > "interface"': 'keyword.other.interface'

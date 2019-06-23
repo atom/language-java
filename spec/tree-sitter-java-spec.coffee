@@ -240,17 +240,17 @@ describe 'Tree-sitter based Java grammar', ->
       }
     '''
 
-    expect(tokens[1][1]).toEqual value: 'void', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
-    expect(tokens[2][1]).toEqual value: 'boolean', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
-    expect(tokens[3][1]).toEqual value: 'int', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
-    expect(tokens[4][1]).toEqual value: 'long', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
-    expect(tokens[5][1]).toEqual value: 'float', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
-    expect(tokens[6][1]).toEqual value: 'double', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
-    expect(tokens[7][1]).toEqual value: 'T', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
-    expect(tokens[8][1]).toEqual value: 'java', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
-    expect(tokens[8][3]).toEqual value: 'util', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
-    expect(tokens[8][5]).toEqual value: 'List', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
-    expect(tokens[8][7]).toEqual value: 'T', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
+    expect(tokens[1][1]).toEqual value: 'void', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[2][1]).toEqual value: 'boolean', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[3][1]).toEqual value: 'int', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[4][1]).toEqual value: 'long', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[5][1]).toEqual value: 'float', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[6][1]).toEqual value: 'double', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[7][1]).toEqual value: 'T', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[8][1]).toEqual value: 'java', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[8][3]).toEqual value: 'util', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[8][5]).toEqual value: 'List', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[8][7]).toEqual value: 'T', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
 
   it 'tokenizes annotations', ->
     tokens = tokenizeLines '''
@@ -283,9 +283,9 @@ describe 'Tree-sitter based Java grammar', ->
     tokens = tokenizeLine 'import com.package;'
 
     expect(tokens[0]).toEqual value: 'import', scopes: ['source.java', 'meta.import', 'keyword.other.import']
-    expect(tokens[2]).toEqual value: 'com', scopes: ['source.java', 'meta.import', 'support.storage.type']
+    expect(tokens[2]).toEqual value: 'com', scopes: ['source.java', 'meta.import', 'storage.type']
     expect(tokens[3]).toEqual value: '.', scopes: ['source.java', 'meta.import', 'punctuation.separator.period']
-    expect(tokens[4]).toEqual value: 'package', scopes: ['source.java', 'meta.import', 'support.storage.type']
+    expect(tokens[4]).toEqual value: 'package', scopes: ['source.java', 'meta.import', 'storage.type']
     expect(tokens[5]).toEqual value: ';', scopes: ['source.java', 'meta.import', 'punctuation.terminator.statement']
 
   it 'tokenizes static imports', ->
@@ -293,9 +293,9 @@ describe 'Tree-sitter based Java grammar', ->
 
     expect(tokens[0]).toEqual value: 'import', scopes: ['source.java', 'meta.import', 'keyword.other.import']
     expect(tokens[2]).toEqual value: 'static', scopes: ['source.java', 'meta.import', 'storage.modifier']
-    expect(tokens[4]).toEqual value: 'com', scopes: ['source.java', 'meta.import', 'support.storage.type']
+    expect(tokens[4]).toEqual value: 'com', scopes: ['source.java', 'meta.import', 'storage.type']
     expect(tokens[5]).toEqual value: '.', scopes: ['source.java', 'meta.import', 'punctuation.separator.period']
-    expect(tokens[6]).toEqual value: 'package', scopes: ['source.java', 'meta.import', 'support.storage.type']
+    expect(tokens[6]).toEqual value: 'package', scopes: ['source.java', 'meta.import', 'storage.type']
     expect(tokens[7]).toEqual value: ';', scopes: ['source.java', 'meta.import', 'punctuation.terminator.statement']
 
   it 'tokenizes imports with asterisk', ->
@@ -303,11 +303,11 @@ describe 'Tree-sitter based Java grammar', ->
 
     expect(tokens[0]).toEqual value: 'import', scopes: ['source.java', 'meta.import', 'keyword.other.import']
     expect(tokens[2]).toEqual value: 'static', scopes: ['source.java', 'meta.import', 'storage.modifier']
-    expect(tokens[4]).toEqual value: 'com', scopes: ['source.java', 'meta.import', 'support.storage.type']
+    expect(tokens[4]).toEqual value: 'com', scopes: ['source.java', 'meta.import', 'storage.type']
     expect(tokens[5]).toEqual value: '.', scopes: ['source.java', 'meta.import', 'punctuation.separator.period']
-    expect(tokens[6]).toEqual value: 'package', scopes: ['source.java', 'meta.import', 'support.storage.type']
+    expect(tokens[6]).toEqual value: 'package', scopes: ['source.java', 'meta.import', 'storage.type']
     expect(tokens[7]).toEqual value: '.', scopes: ['source.java', 'meta.import', 'punctuation.separator.period']
-    expect(tokens[8]).toEqual value: '*', scopes: ['source.java', 'meta.import', 'support.storage.type']
+    expect(tokens[8]).toEqual value: '*', scopes: ['source.java', 'meta.import', 'storage.type']
     expect(tokens[9]).toEqual value: ';', scopes: ['source.java', 'meta.import', 'punctuation.terminator.statement']
 
   it 'tokenizes field access', ->
@@ -363,7 +363,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[0][3]).toEqual value: 'interface', scopes: ['source.java', 'keyword.other.interface.annotated']
     expect(tokens[0][5]).toEqual value: 'A', scopes: ['source.java', 'entity.name.type.interface.annotated']
     expect(tokens[0][7]).toEqual value: '{', scopes: ['source.java', 'meta.interface.annotated.body', 'punctuation.bracket.curly']
-    expect(tokens[1][1]).toEqual value: 'String', scopes: ['source.java', 'meta.interface.annotated.body', 'support.storage.type']
+    expect(tokens[1][1]).toEqual value: 'String', scopes: ['source.java', 'meta.interface.annotated.body', 'storage.type']
     expect(tokens[1][3]).toEqual value: 'method', scopes: ['source.java', 'meta.interface.annotated.body', 'entity.name.function']
     expect(tokens[1][7]).toEqual value: 'default', scopes: ['source.java', 'meta.interface.annotated.body', 'keyword.control']
     expect(tokens[1][9]).toEqual value: '\"abc\"', scopes: ['source.java', 'meta.interface.annotated.body', 'string.quoted.double']
@@ -384,10 +384,10 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[0]).toEqual value: 'class', scopes: ['source.java', 'keyword.other.class']
     expect(tokens[2]).toEqual value: 'A', scopes: ['source.java', 'entity.name.type.class']
     expect(tokens[4]).toEqual value: 'extends', scopes: ['source.java', 'storage.modifier']
-    expect(tokens[6]).toEqual value: 'B', scopes: ['source.java', 'support.storage.type']
+    expect(tokens[6]).toEqual value: 'B', scopes: ['source.java', 'storage.type']
     expect(tokens[8]).toEqual value: 'implements', scopes: ['source.java', 'storage.modifier']
-    expect(tokens[10]).toEqual value: 'C', scopes: ['source.java', 'support.storage.type']
-    expect(tokens[13]).toEqual value: 'D', scopes: ['source.java', 'support.storage.type']
+    expect(tokens[10]).toEqual value: 'C', scopes: ['source.java', 'storage.type']
+    expect(tokens[13]).toEqual value: 'D', scopes: ['source.java', 'storage.type']
 
   it 'tokenizes enums', ->
     tokens = tokenizeLines '''
@@ -401,7 +401,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[0][2]).toEqual value: 'enum', scopes: ['source.java', 'keyword.other.enum']
     expect(tokens[0][4]).toEqual value: 'A', scopes: ['source.java', 'entity.name.type.enum']
     expect(tokens[0][6]).toEqual value: 'implements', scopes: ['source.java', 'storage.modifier']
-    expect(tokens[0][8]).toEqual value: 'B', scopes: ['source.java', 'support.storage.type']
+    expect(tokens[0][8]).toEqual value: 'B', scopes: ['source.java', 'storage.type']
     expect(tokens[0][10]).toEqual value: '{', scopes: ['source.java', 'punctuation.bracket.curly']
     expect(tokens[1][1]).toEqual value: 'C1', scopes: ['source.java', 'constant.other.enum']
     expect(tokens[2][1]).toEqual value: 'C2', scopes: ['source.java', 'constant.other.enum']
@@ -438,7 +438,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[1][3]).toEqual value: 'A', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'entity.name.function']
     expect(tokens[2][1]).toEqual value: 'super', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'variable.language']
     expect(tokens[5][1]).toEqual value: 'public', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.modifier']
-    expect(tokens[5][3]).toEqual value: 'int', scopes: ['source.java', 'meta.class.body', 'meta.method', 'support.storage.type']
+    expect(tokens[5][3]).toEqual value: 'int', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
     expect(tokens[5][5]).toEqual value: 'method', scopes: ['source.java', 'meta.class.body', 'meta.method', 'entity.name.function']
     expect(tokens[6][1]).toEqual value: 'return', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control']
     expect(tokens[6][3]).toEqual value: '1', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'constant.numeric']
