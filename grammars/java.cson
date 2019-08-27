@@ -341,10 +341,10 @@
         'include': '#annotations'
       }
       {
-        'include': '#member-variables'
+        'include': '#storage-modifiers'
       }
       {
-        'include': '#storage-modifiers'
+        'include': '#member-variables'
       }
       {
         'include': '#code'
