@@ -1834,7 +1834,8 @@ describe 'Java grammar', ->
     expect(lines[9][20]).toEqual value: '12', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'constant.numeric.decimal.java']
     expect(lines[9][21]).toEqual value: ']', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'punctuation.bracket.square.java']
 
-    expect(lines[10][2]).toEqual value: ' int 1invalid', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java']
+    expect(lines[10][3]).toEqual value: 'int', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'storage.type.primitive.java']
+    expect(lines[10][4]).toEqual value: ' 1invalid', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java']
 
     expect(lines[11][3]).toEqual value: 'Integer', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
     expect(lines[11][5]).toEqual value: '$tar_war$', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
@@ -2679,3 +2680,19 @@ describe 'Java grammar', ->
     expect(lines[5][1]).toEqual value: '@', scopes: scopes.concat(['punctuation.definition.annotation.java'])
     expect(lines[5][3]).toEqual value: 'Message', scopes: scopes.concat(['storage.type.annotation.java'])
     expect(lines[5][6]).toEqual value: 'message', scopes: scopes.concat(['string.quoted.double.java'])
+
+  it 'tokenizes annotations within classes', ->
+    lines = grammar.tokenizeLines '''
+      class A {
+        private @interface Test {
+          // comment 1
+          public boolean func() default true;
+        }
+      }
+      '''
+
+    scopes = ['source.java', 'meta.class.java', 'meta.class.body.java']
+    expect(lines[1][3]).toEqual value: '@', scopes: scopes.concat(['meta.declaration.annotation.java', 'punctuation.definition.annotation.java'])
+    expect(lines[1][4]).toEqual value: 'interface', scopes: scopes.concat(['meta.declaration.annotation.java', 'storage.modifier.java'])
+    expect(lines[2][1]).toEqual value: '//', scopes: scopes.concat(['comment.line.double-slash.java', 'punctuation.definition.comment.java'])
+    expect(lines[3][5]).toEqual value: 'func', scopes: scopes.concat(['meta.function-call.java', 'entity.name.function.java'])
