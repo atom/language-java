@@ -525,7 +525,7 @@
               'name': 'entity.name.type.class.java'
         }
         {
-          'match': '{(@link)\\s+(\\S+)?#([\\w$]+\\s*\\([^\\(\\)]*\\)).*}'
+          'match': '{(@link)\\s+(\\S+)?#([\\w$]+\\s*\\([^\\(\\)]*\\)).*?}'
           'captures':
             '1':
               'name': 'keyword.other.documentation.javadoc.java'
