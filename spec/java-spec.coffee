@@ -226,6 +226,10 @@ describe 'Java grammar', ->
         Testclass test1 = null;
         TestClass test2 = null;
       }
+
+      class A$B {
+        int a;
+      }
     '''
 
     expect(lines[0][0]).toEqual value: 'class', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'storage.modifier.java']
@@ -236,6 +240,8 @@ describe 'Java grammar', ->
     expect(lines[8][2]).toEqual value: 'Aclass', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'entity.name.type.class.java']
     expect(lines[13][1]).toEqual value: 'Testclass', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.java']
     expect(lines[14][1]).toEqual value: 'TestClass', scopes: ['source.java', 'meta.definition.variable.java', 'storage.type.java']
+    expect(lines[17][0]).toEqual value: 'class', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'storage.modifier.java']
+    expect(lines[17][2]).toEqual value: 'A$B', scopes: ['source.java', 'meta.class.java', 'meta.class.identifier.java', 'entity.name.type.class.java']
 
   it 'tokenizes enums', ->
     lines = grammar.tokenizeLines '''
