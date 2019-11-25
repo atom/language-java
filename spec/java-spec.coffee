@@ -1688,6 +1688,21 @@ describe 'Java grammar', ->
     expect(tokens[6]).toEqual value: 'Point', scopes: ['source.java', 'meta.function-call.java', 'entity.name.function.java']
     expect(tokens[9]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
+    {tokens} = grammar.tokenizeLine 'new Point() /* JPanel() */ { };'
+
+    expect(tokens[10]).toEqual value: '{', scopes: ['source.java', 'meta.inner-class.java', 'punctuation.section.inner-class.begin.bracket.curly.java']
+    expect(tokens[11]).toEqual value: ' ', scopes: ['source.java', 'meta.inner-class.java']
+    expect(tokens[12]).toEqual value: '}', scopes: ['source.java', 'meta.inner-class.java', 'punctuation.section.inner-class.end.bracket.curly.java']
+
+    lines = grammar.tokenizeLines '''
+      new Point() // JPanel()
+      { }
+      '''
+
+    expect(lines[1][0]).toEqual value: '{', scopes: ['source.java', 'meta.inner-class.java', 'punctuation.section.inner-class.begin.bracket.curly.java']
+    expect(lines[1][1]).toEqual value: ' ', scopes: ['source.java', 'meta.inner-class.java']
+    expect(lines[1][2]).toEqual value: '}', scopes: ['source.java', 'meta.inner-class.java', 'punctuation.section.inner-class.end.bracket.curly.java']
+
     lines = grammar.tokenizeLines '''
       map.put(key,
         new Value(value)
@@ -2569,7 +2584,7 @@ describe 'Java grammar', ->
     expect(lines[9][12]).toEqual value: 'String', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java', 'entity.name.type.class.java']
     expect(lines[9][13]).toEqual value: '#', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java']
     expect(lines[9][14]).toEqual value: 'chars()', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'comment.block.javadoc.java', 'variable.parameter.java']
-    
+
 
   it 'tokenizes class-body block initializer', ->
     lines = grammar.tokenizeLines '''
