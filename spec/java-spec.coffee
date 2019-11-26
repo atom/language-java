@@ -416,6 +416,70 @@ describe 'Java grammar', ->
     expect(lines[15][1]).toEqual value: 'int', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.primitive.java']
     expect(lines[15][3]).toEqual value: 'func', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
 
+  it 'tokenizes enums with method overrides and constructor', ->
+    lines = grammar.tokenizeLines '''
+      enum TYPES {
+        TYPE_A("1", 1) {
+          @Override
+          int func() {
+            return 1;
+          }
+        },
+        TYPE_B("2", 2)
+        {
+          @Override
+          int func() {
+            return 2;
+          }
+        },
+        TYPE_DEFAULT("3", 3);
+
+        String label;
+        int value;
+
+        TYPES(String label, int value) {
+          this.label = label;
+          this.value = value;
+        }
+
+        int func() {
+          return 0;
+        }
+      }
+    '''
+
+    expect(lines[1][1]).toEqual value: 'TYPE_A', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[1][2]).toEqual value: '(', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.round.java']
+    expect(lines[1][3]).toEqual value: '"', scopes: ['source.java', 'meta.enum.java', 'string.quoted.double.java', 'punctuation.definition.string.begin.java']
+    expect(lines[1][4]).toEqual value: '1', scopes: ['source.java', 'meta.enum.java', 'string.quoted.double.java']
+    expect(lines[1][5]).toEqual value: '"', scopes: ['source.java', 'meta.enum.java', 'string.quoted.double.java', 'punctuation.definition.string.end.java']
+    expect(lines[1][6]).toEqual value: ',', scopes: ['source.java', 'meta.enum.java', 'punctuation.separator.delimiter.java']
+    expect(lines[1][8]).toEqual value: '1', scopes: ['source.java', 'meta.enum.java', 'constant.numeric.decimal.java']
+    expect(lines[1][9]).toEqual value: ')', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.round.java']
+    expect(lines[1][11]).toEqual value: '{', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.curly.java']
+    expect(lines[2][2]).toEqual value: 'Override', scopes: ['source.java', 'meta.enum.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
+    expect(lines[3][1]).toEqual value: 'int', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.primitive.java']
+    expect(lines[3][3]).toEqual value: 'func', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[6][1]).toEqual value: '}', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.curly.java']
+
+    expect(lines[7][1]).toEqual value: 'TYPE_B', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
+    expect(lines[7][2]).toEqual value: '(', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.round.java']
+    expect(lines[7][3]).toEqual value: '"', scopes: ['source.java', 'meta.enum.java', 'string.quoted.double.java', 'punctuation.definition.string.begin.java']
+    expect(lines[7][4]).toEqual value: '2', scopes: ['source.java', 'meta.enum.java', 'string.quoted.double.java']
+    expect(lines[7][5]).toEqual value: '"', scopes: ['source.java', 'meta.enum.java', 'string.quoted.double.java', 'punctuation.definition.string.end.java']
+    expect(lines[7][6]).toEqual value: ',', scopes: ['source.java', 'meta.enum.java', 'punctuation.separator.delimiter.java']
+    expect(lines[7][8]).toEqual value: '2', scopes: ['source.java', 'meta.enum.java', 'constant.numeric.decimal.java']
+    expect(lines[7][9]).toEqual value: ')', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.round.java']
+    expect(lines[8][1]).toEqual value: '{', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.curly.java'] # Begin bracket placed at new line
+    expect(lines[9][2]).toEqual value: 'Override', scopes: ['source.java', 'meta.enum.java', 'meta.declaration.annotation.java', 'storage.type.annotation.java']
+    expect(lines[10][1]).toEqual value: 'int', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.return-type.java', 'storage.type.primitive.java']
+    expect(lines[10][3]).toEqual value: 'func', scopes: ['source.java', 'meta.enum.java', 'meta.method.java', 'meta.method.identifier.java', 'entity.name.function.java']
+    expect(lines[13][1]).toEqual value: '}', scopes: ['source.java', 'meta.enum.java', 'punctuation.bracket.curly.java']
+
+    expect(lines[14][1]).toEqual value: 'TYPE_DEFAULT', scopes: ['source.java', 'meta.enum.java', 'constant.other.enum.java']
+
+    expect(lines[27][0]).toEqual value: '}', scopes: ['source.java', 'meta.enum.java', 'punctuation.section.enum.end.bracket.curly.java'] # Test that enum scope correctly ends
+
   it 'tokenizes enums with extends and implements', ->
     lines = grammar.tokenizeLines '''
       class A {
