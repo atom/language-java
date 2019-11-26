@@ -619,8 +619,7 @@
               {
                 'include': '#comments'
               }
-              # Represents enum's constant field entry
-              {
+              { # Represents enum's constant field entry
                 'begin': '\\b(\\w+)\\b'
                 'beginCaptures':
                   '1':
@@ -636,7 +635,20 @@
                   {
                     'include': '#comments'
                   }
-                  { # Represents enum's constant field with the code overrides
+                  { # Represents enum's constructor, e.g. `("1", 123)` in `Test("1", 123)`
+                    'begin': '\\(',
+                    'beginCaptures':
+                      '0':
+                        'name': 'punctuation.bracket.round.java'
+                    'end': '\\)'
+                    'endCaptures':
+                      '0':
+                        'name': 'punctuation.bracket.round.java'
+                    'patterns': [
+                      'include': '#code'
+                    ]
+                  }
+                  { # Represents enum's body with code overrides
                     'begin': '{',
                     'beginCaptures':
                       '0':
@@ -649,19 +661,6 @@
                       # Use #class-body, because the enum field overrides enum class body.
                       # It is similar to inner class.
                       'include': '#class-body'
-                    ]
-                  }
-                  { # Represents enum's constant field with constructor, e.g. `Test(123)`
-                    'begin': '\\(',
-                    'beginCaptures':
-                      '0':
-                        'name': 'punctuation.bracket.round.java'
-                    'end': '\\)'
-                    'endCaptures':
-                      '0':
-                        'name': 'punctuation.bracket.round.java'
-                    'patterns': [
-                      'include': '#code'
                     ]
                   }
                 ]
