@@ -1641,9 +1641,10 @@ describe 'Java grammar', ->
 
     {tokens} = grammar.tokenizeLine 'String a = (valid ? new Date().toString() + " : " : "");'
 
-    expect(tokens[16]).toEqual value: 'toString', scopes: ['source.java', 'meta.function-call.java', 'entity.name.function.java']
-    expect(tokens[17]).toEqual value: '(', scopes: ['source.java', 'meta.function-call.java', 'punctuation.definition.parameters.begin.bracket.round.java']
-    expect(tokens[18]).toEqual value: ')', scopes: ['source.java', 'meta.function-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
+    expect(tokens[15]).toEqual value: '.', scopes: ['source.java', 'meta.method-call.java', 'punctuation.separator.period.java']
+    expect(tokens[16]).toEqual value: 'toString', scopes: ['source.java', 'meta.method-call.java', 'entity.name.function.java']
+    expect(tokens[17]).toEqual value: '(', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(tokens[18]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
     expect(tokens[20]).toEqual value: '+', scopes: ['source.java', 'keyword.operator.arithmetic.java']
     expect(tokens[23]).toEqual value: ' : ', scopes: ['source.java', 'string.quoted.double.java']
     expect(tokens[26]).toEqual value: ':', scopes: ['source.java', 'keyword.control.ternary.java']
