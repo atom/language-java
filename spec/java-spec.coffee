@@ -1674,6 +1674,17 @@ describe 'Java grammar', ->
     expect(tokens[22]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
     expect(tokens[31]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
+    {tokens} = grammar.tokenizeLine 'Point point = new Random() ? new Point(1, 4) : new Point(0, 0);'
+
+    expect(tokens[12]).toEqual value: '?', scopes: ['source.java', 'keyword.control.ternary.java']
+    expect(tokens[14]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
+    expect(tokens[16]).toEqual value: 'Point', scopes: ['source.java', 'meta.function-call.java', 'entity.name.function.java']
+    expect(tokens[17]).toEqual value: '(', scopes: ['source.java', 'meta.function-call.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(tokens[22]).toEqual value: ')', scopes: ['source.java', 'meta.function-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
+    expect(tokens[24]).toEqual value: ':', scopes: ['source.java', 'keyword.control.ternary.java']
+    expect(tokens[26]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
+    expect(tokens[35]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+
     {tokens} = grammar.tokenizeLine 'map.put(key, new Value(value), "extra");'
 
     expect(tokens[12]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'meta.function-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
