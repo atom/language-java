@@ -1768,6 +1768,40 @@ describe 'Java grammar', ->
     expect(lines[8][19]).toEqual value: 'start', scopes: expected
     expect(lines[9][19]).toEqual value: 'start', scopes: expected
 
+  # See issue https://github.com/atom/language-java/issues/180
+    lines = grammar.tokenizeLines '''
+      public class A {
+          void f() {
+              int a = 1;
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              int a = 1;
+          }
+
+          void g(Object o) {
+              int a = 1;
+          }
+      }
+      '''
+
+    expected = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.function-call.java', 'entity.name.function.java']
+
+    expect(lines[3][1]).toEqual value: 'g', scopes: expected
+    expect(lines[4][1]).toEqual value: 'g', scopes: expected
+    expect(lines[5][1]).toEqual value: 'g', scopes: expected
+    expect(lines[6][1]).toEqual value: 'g', scopes: expected
+    expect(lines[7][1]).toEqual value: 'g', scopes: expected
+    expect(lines[8][1]).toEqual value: 'g', scopes: expected
+    expect(lines[9][1]).toEqual value: 'g', scopes: expected
+    expect(lines[10][1]).toEqual value: 'g', scopes: expected
+    expect(lines[15][3]).toEqual value: 'a', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
+
   it 'tokenizes the `instanceof` operator', ->
     {tokens} = grammar.tokenizeLine 'instanceof'
 
