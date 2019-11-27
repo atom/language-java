@@ -1334,9 +1334,9 @@
           }
         ]
       }
-      # catch block (with "parameters")
+      # catch block
       {
-        'begin': '\\b(catch)\\b\\s*(?=\\(\\s*[^\\s]+\\s*[^)]+\\))'
+        'begin': '\\b(catch)\\b'
         'beginCaptures':
           '1':
             'name': 'keyword.control.catch.java'
@@ -1346,6 +1346,9 @@
             'name': 'punctuation.section.catch.end.bracket.curly.java'
         'name': 'meta.catch.java'
         'patterns': [
+          {
+            'include': '#comments'
+          }
           {
             'begin': '\\('
             'beginCaptures':
