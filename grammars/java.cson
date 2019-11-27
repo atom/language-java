@@ -203,18 +203,52 @@
         'include': '#all-types'
       }
       {
-        'begin': '(?<!\\])\\s*({)' # Don't match new int[]{1, 2, 3};
-        'beginCaptures':
-          '1':
-            'name': 'punctuation.section.inner-class.begin.bracket.curly.java'
-        'end': '}'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.inner-class.end.bracket.curly.java'
-        'name': 'meta.inner-class.java'
+        'begin': '(?<=\\))'
+        'end': '(?=;|\\)|\\]|\\.|,|\\?|:|}|\\+|\\-|\\*|\\/(?!\\/|\\*)|%|!|&|\\||\\^|=)'
         'patterns': [
           {
-            'include': '#class-body'
+            'include': '#comments'
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.inner-class.begin.bracket.curly.java'
+            'end': '}'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.section.inner-class.end.bracket.curly.java'
+            'name': 'meta.inner-class.java'
+            'patterns': [
+              {
+                'include': '#class-body'
+              }
+            ]
+          }
+        ]
+      }
+      {
+        'begin': '(?<=\\])'
+        'end': '(?=;|\\)|\\]|\\.|,|\\?|:|}|\\+|\\-|\\*|\\/(?!\\/|\\*)|%|!|&|\\||\\^|=)'
+        'patterns': [
+          {
+            'include': '#comments'
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.array-initializer.begin.bracket.curly.java'
+            'end': '}'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.section.array-initializer.end.bracket.curly.java'
+            'name': 'meta.array-initializer.java'
+            'patterns': [
+              {
+                'include': '#code'
+              }
+            ]
           }
         ]
       }
