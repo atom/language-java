@@ -1751,6 +1751,7 @@ describe 'Java grammar', ->
           long d = new Date().getTime() / start.getTime();
           long e = new Date().getTime() & start.getTime();
           long f = new Date().getTime() | start.getTime();
+          long g = new Date().getTime() ^ start.getTime();
           boolean g = new Date().getTime() == start.getTime();
           boolean h = new Date().getTime() != start.getTime();
         }
@@ -1767,6 +1768,7 @@ describe 'Java grammar', ->
     expect(lines[7][19]).toEqual value: 'start', scopes: expected
     expect(lines[8][19]).toEqual value: 'start', scopes: expected
     expect(lines[9][19]).toEqual value: 'start', scopes: expected
+    expect(lines[10][19]).toEqual value: 'start', scopes: expected
 
   # See issue https://github.com/atom/language-java/issues/180
     lines = grammar.tokenizeLines '''
