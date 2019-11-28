@@ -1834,7 +1834,7 @@ describe 'Java grammar', ->
     expect(lines[9][19]).toEqual value: 'start', scopes: expected
     expect(lines[10][19]).toEqual value: 'start', scopes: expected
 
-  it 'check that accessor + new operator do not introduce extra scopes', ->
+  it 'checks that accessor + new operator do not introduce extra scopes', ->
     # See issue https://github.com/atom/language-java/issues/180
     lines = grammar.tokenizeLines '''
       public class A {
