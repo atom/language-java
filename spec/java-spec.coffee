@@ -1834,25 +1834,26 @@ describe 'Java grammar', ->
     expect(lines[9][19]).toEqual value: 'start', scopes: expected
     expect(lines[10][19]).toEqual value: 'start', scopes: expected
 
+  it 'checks that accessor + new operator do not introduce extra scopes', ->
     # See issue https://github.com/atom/language-java/issues/180
     lines = grammar.tokenizeLines '''
       public class A {
-          void f() {
-              int a = 1;
-              g(education[new Random()]);
-              g(education[new Random()]);
-              g(education[new Random()]);
-              g(education[new Random()]);
-              g(education[new Random()]);
-              g(education[new Random()]);
-              g(education[new Random()]);
-              g(education[new Random()]);
-              int a = 1;
-          }
+        void f() {
+          int a = 1;
+          g(education[new Random()]);
+          g(education[new Random()]);
+          g(education[new Random()]);
+          g(education[new Random()]);
+          g(education[new Random()]);
+          g(education[new Random()]);
+          g(education[new Random()]);
+          g(education[new Random()]);
+          int a = 1;
+        }
 
-          void g(Object o) {
-              int a = 1;
-          }
+        void g(Object o) {
+          int a = 1;
+        }
       }
       '''
 
@@ -2079,6 +2080,7 @@ describe 'Java grammar', ->
         java.lang.String[] arr;
       }
     '''
+
     expect(lines[1][3]).toEqual value: 'Test', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
     expect(lines[1][4]).toEqual value: '.', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'punctuation.separator.period.java']
     expect(lines[1][5]).toEqual value: 'Double', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.definition.variable.java', 'storage.type.java']
