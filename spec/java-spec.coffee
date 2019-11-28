@@ -1705,9 +1705,10 @@ describe 'Java grammar', ->
 
     {tokens} = grammar.tokenizeLine 'String a = (valid ? new Date().toString() + " : " : "");'
 
-    expect(tokens[16]).toEqual value: 'toString', scopes: ['source.java', 'meta.function-call.java', 'entity.name.function.java']
-    expect(tokens[17]).toEqual value: '(', scopes: ['source.java', 'meta.function-call.java', 'punctuation.definition.parameters.begin.bracket.round.java']
-    expect(tokens[18]).toEqual value: ')', scopes: ['source.java', 'meta.function-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
+    expect(tokens[15]).toEqual value: '.', scopes: ['source.java', 'meta.method-call.java', 'punctuation.separator.period.java']
+    expect(tokens[16]).toEqual value: 'toString', scopes: ['source.java', 'meta.method-call.java', 'entity.name.function.java']
+    expect(tokens[17]).toEqual value: '(', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(tokens[18]).toEqual value: ')', scopes: ['source.java', 'meta.method-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
     expect(tokens[20]).toEqual value: '+', scopes: ['source.java', 'keyword.operator.arithmetic.java']
     expect(tokens[23]).toEqual value: ' : ', scopes: ['source.java', 'string.quoted.double.java']
     expect(tokens[26]).toEqual value: ':', scopes: ['source.java', 'keyword.control.ternary.java']
@@ -1736,6 +1737,17 @@ describe 'Java grammar', ->
     expect(tokens[20]).toEqual value: ':', scopes: ['source.java', 'keyword.control.ternary.java']
     expect(tokens[22]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
     expect(tokens[31]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
+
+    {tokens} = grammar.tokenizeLine 'Point point = new Random() ? new Point(1, 4) : new Point(0, 0);'
+
+    expect(tokens[12]).toEqual value: '?', scopes: ['source.java', 'keyword.control.ternary.java']
+    expect(tokens[14]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
+    expect(tokens[16]).toEqual value: 'Point', scopes: ['source.java', 'meta.function-call.java', 'entity.name.function.java']
+    expect(tokens[17]).toEqual value: '(', scopes: ['source.java', 'meta.function-call.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(tokens[22]).toEqual value: ')', scopes: ['source.java', 'meta.function-call.java', 'punctuation.definition.parameters.end.bracket.round.java']
+    expect(tokens[24]).toEqual value: ':', scopes: ['source.java', 'keyword.control.ternary.java']
+    expect(tokens[26]).toEqual value: 'new', scopes: ['source.java', 'keyword.control.new.java']
+    expect(tokens[35]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.java']
 
     {tokens} = grammar.tokenizeLine 'map.put(key, new Value(value), "extra");'
 
@@ -1803,6 +1815,7 @@ describe 'Java grammar', ->
           long d = new Date().getTime() / start.getTime();
           long e = new Date().getTime() & start.getTime();
           long f = new Date().getTime() | start.getTime();
+          long g = new Date().getTime() ^ start.getTime();
           boolean g = new Date().getTime() == start.getTime();
           boolean h = new Date().getTime() != start.getTime();
         }
@@ -1819,6 +1832,41 @@ describe 'Java grammar', ->
     expect(lines[7][19]).toEqual value: 'start', scopes: expected
     expect(lines[8][19]).toEqual value: 'start', scopes: expected
     expect(lines[9][19]).toEqual value: 'start', scopes: expected
+    expect(lines[10][19]).toEqual value: 'start', scopes: expected
+
+    # See issue https://github.com/atom/language-java/issues/180
+    lines = grammar.tokenizeLines '''
+      public class A {
+          void f() {
+              int a = 1;
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              g(education[new Random()]);
+              int a = 1;
+          }
+
+          void g(Object o) {
+              int a = 1;
+          }
+      }
+      '''
+
+    expected = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.function-call.java', 'entity.name.function.java']
+
+    expect(lines[3][1]).toEqual value: 'g', scopes: expected
+    expect(lines[4][1]).toEqual value: 'g', scopes: expected
+    expect(lines[5][1]).toEqual value: 'g', scopes: expected
+    expect(lines[6][1]).toEqual value: 'g', scopes: expected
+    expect(lines[7][1]).toEqual value: 'g', scopes: expected
+    expect(lines[8][1]).toEqual value: 'g', scopes: expected
+    expect(lines[9][1]).toEqual value: 'g', scopes: expected
+    expect(lines[10][1]).toEqual value: 'g', scopes: expected
+    expect(lines[15][3]).toEqual value: 'a', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.definition.variable.java', 'variable.other.definition.java']
 
   it 'tokenizes the `instanceof` operator', ->
     {tokens} = grammar.tokenizeLine 'instanceof'
