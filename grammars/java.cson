@@ -1367,16 +1367,25 @@
                 'include': '#storage-modifiers'
               }
               {
-                'match': '\\|'
-                'name': 'punctuation.catch.separator.java'
-              }
-              {
-                'match': '([a-zA-Z$_][\\.a-zA-Z0-9$_]*)\\s*(\\w+)?'
-                'captures':
-                  '1':
+                'begin': '[a-zA-Z$_][\\.a-zA-Z0-9$_]*'
+                'beginCaptures':
+                  '0':
                     'name': 'storage.type.java'
-                  '2':
-                    'name': 'variable.parameter.java'
+                'end': '(\\|)|(?=\\))'
+                'endCaptures':
+                  '1':
+                    'name': 'punctuation.catch.separator.java'
+                'patterns': [
+                  {
+                    'include': '#comments'
+                  }
+                  {
+                    'match': '\\w+'
+                    'captures':
+                      '0':
+                        'name': 'variable.parameter.java'
+                  }
+                ]
               }
             ]
           }
