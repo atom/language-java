@@ -2418,6 +2418,64 @@ describe 'Java grammar', ->
     expect(lines[8][5]).toEqual value: 'err', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'variable.parameter.java']
     expect(lines[8][6]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'punctuation.definition.parameters.end.bracket.round.java']
 
+  it 'tokenizes catch parameter in new line or with a comment in between', ->
+    lines = grammar.tokenizeLines '''
+      class Test
+      {
+        private void method() {
+          try {
+            // do something
+          } catch // this is a catch
+          (Exception1 /* exception 1 */ |
+            final Exception2 // exception 2
+            err // this is a error
+          /* end */) {
+            throw new Exception3();
+          }
+        }
+      }
+      '''
+
+    expect(lines[5][3]).toEqual value: 'catch', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'keyword.control.catch.java']
+    expect(lines[5][5]).toEqual value: '//', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'comment.line.double-slash.java', 'punctuation.definition.comment.java']
+    expect(lines[6][1]).toEqual value: '(', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(lines[6][2]).toEqual value: 'Exception1', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'storage.type.java']
+    expect(lines[6][4]).toEqual value: '/*', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(lines[6][8]).toEqual value: '|', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'punctuation.catch.separator.java']
+    expect(lines[7][1]).toEqual value: 'final', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'storage.modifier.java']
+    expect(lines[7][3]).toEqual value: 'Exception2', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'storage.type.java']
+    expect(lines[7][5]).toEqual value: '//', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'comment.line.double-slash.java', 'punctuation.definition.comment.java']
+    expect(lines[8][1]).toEqual value: 'err', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'variable.parameter.java']
+    expect(lines[8][3]).toEqual value: '//', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'comment.line.double-slash.java', 'punctuation.definition.comment.java']
+    expect(lines[9][1]).toEqual value: '/*', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(lines[9][4]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'punctuation.definition.parameters.end.bracket.round.java']
+
+    lines = grammar.tokenizeLines '''
+      class Test
+      {
+        private void method() {
+          try {
+            // do something
+          } catch (/* comment */ Exception1 /* comment */ | final Exception2 /* comment */ err /* comment */) {
+            throw new Exception3();
+          }
+        }
+      }
+      '''
+
+    expect(lines[5][3]).toEqual value: 'catch', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'keyword.control.catch.java']
+    expect(lines[5][5]).toEqual value: '(', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'punctuation.definition.parameters.begin.bracket.round.java']
+    expect(lines[5][6]).toEqual value: '/*', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(lines[5][10]).toEqual value: 'Exception1', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'storage.type.java']
+    expect(lines[5][12]).toEqual value: '/*', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(lines[5][16]).toEqual value: '|', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'punctuation.catch.separator.java']
+    expect(lines[5][18]).toEqual value: 'final', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'storage.modifier.java']
+    expect(lines[5][20]).toEqual value: 'Exception2', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'storage.type.java']
+    expect(lines[5][22]).toEqual value: '/*', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(lines[5][26]).toEqual value: 'err', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'variable.parameter.java']
+    expect(lines[5][28]).toEqual value: '/*', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'meta.catch.parameters.java', 'comment.block.java', 'punctuation.definition.comment.java']
+    expect(lines[5][31]).toEqual value: ')', scopes: ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'meta.catch.java', 'punctuation.definition.parameters.end.bracket.round.java']
+
   it 'tokenizes list of exceptions in method throws clause', ->
     lines = grammar.tokenizeLines '''
       class Test {
