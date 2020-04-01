@@ -1244,7 +1244,7 @@
           '1':
             'name': 'punctuation.separator.period.java'
           '2':
-            'name': 'variable.other.property.java'
+            'name': 'variable.other.object.property.java'
       }
       {
         # 123illegal in obj.123illegal, func().123illegal
