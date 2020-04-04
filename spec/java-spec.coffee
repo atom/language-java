@@ -2969,3 +2969,96 @@ describe 'Java grammar', ->
     expect(lines[1][4]).toEqual value: 'interface', scopes: scopes.concat(['meta.declaration.annotation.java', 'storage.modifier.java'])
     expect(lines[2][1]).toEqual value: '//', scopes: scopes.concat(['comment.line.double-slash.java', 'punctuation.definition.comment.java'])
     expect(lines[3][5]).toEqual value: 'func', scopes: scopes.concat(['meta.function-call.java', 'entity.name.function.java'])
+
+  it 'tokenizes Java 14 records', ->
+    lines = grammar.tokenizeLines '''
+      record Point() {}
+    '''
+    recordScopes = ['source.java', 'meta.record.java']
+    expect(lines[0][0]).toEqual value: 'record', scopes: recordScopes.concat(['meta.record.identifier.java', 'storage.modifier.java'])
+    expect(lines[0][2]).toEqual value: 'Point', scopes: recordScopes.concat(['meta.record.identifier.java', 'entity.name.type.record.java'])
+    expect(lines[0][3]).toEqual value: '(', scopes: recordScopes.concat(['meta.record.identifier.java', 'punctuation.definition.parameters.begin.bracket.round.java'])
+    expect(lines[0][4]).toEqual value: ')', scopes: recordScopes.concat(['meta.record.identifier.java', 'punctuation.definition.parameters.end.bracket.round.java'])
+    expect(lines[0][6]).toEqual value: '{', scopes: recordScopes.concat(['meta.record.body.java', 'punctuation.section.class.begin.bracket.curly.java'])
+    expect(lines[0][7]).toEqual value: '}', scopes: recordScopes.concat(['punctuation.section.class.end.bracket.curly.java'])
+
+  it 'tokenizes Java 14 record implementing other interfaces', ->
+    lines = grammar.tokenizeLines '''
+      public record Point(int x) implements IA, IB {}
+    '''
+    recordScopes = ['source.java', 'meta.record.java']
+    expect(lines[0][0]).toEqual value: 'public', scopes: recordScopes.concat(['storage.modifier.java'])
+    expect(lines[0][2]).toEqual value: 'record', scopes: recordScopes.concat(['meta.record.identifier.java', 'storage.modifier.java'])
+    expect(lines[0][4]).toEqual value: 'Point', scopes: recordScopes.concat(['meta.record.identifier.java', 'entity.name.type.record.java'])
+    expect(lines[0][5]).toEqual value: '(', scopes: recordScopes.concat(['meta.record.identifier.java', 'punctuation.definition.parameters.begin.bracket.round.java'])
+    expect(lines[0][6]).toEqual value: 'int', scopes: recordScopes.concat(['meta.record.identifier.java', 'storage.type.primitive.java'])
+    expect(lines[0][8]).toEqual value: ')', scopes: recordScopes.concat(['meta.record.identifier.java', 'punctuation.definition.parameters.end.bracket.round.java'])
+    expect(lines[0][10]).toEqual value: 'implements', scopes: recordScopes.concat(['meta.definition.class.implemented.interfaces.java', 'storage.modifier.implements.java'])
+    expect(lines[0][12]).toEqual value: 'IA', scopes: recordScopes.concat(['meta.definition.class.implemented.interfaces.java', 'entity.other.inherited-class.java'])
+    expect(lines[0][13]).toEqual value: ',', scopes: recordScopes.concat(['meta.definition.class.implemented.interfaces.java', 'punctuation.separator.delimiter.java'])
+    expect(lines[0][15]).toEqual value: 'IB', scopes: recordScopes.concat(['meta.definition.class.implemented.interfaces.java', 'entity.other.inherited-class.java'])
+    expect(lines[0][17]).toEqual value: '{', scopes: recordScopes.concat(['meta.record.body.java', 'punctuation.section.class.begin.bracket.curly.java'])
+    expect(lines[0][18]).toEqual value: '}', scopes: recordScopes.concat(['punctuation.section.class.end.bracket.curly.java'])
+
+  it 'tokenizes Java 14 record with generic types as parameters', ->
+    lines = grammar.tokenizeLines '''
+        public record Point<T>(T x) { }
+      '''
+    recordScopes = ['source.java', 'meta.record.java']
+    expect(lines[0][0]).toEqual value: 'public', scopes: recordScopes.concat(['storage.modifier.java'])
+    expect(lines[0][2]).toEqual value: 'record', scopes: recordScopes.concat(['meta.record.identifier.java', 'storage.modifier.java'])
+    expect(lines[0][4]).toEqual value: 'Point', scopes: recordScopes.concat(['meta.record.identifier.java', 'entity.name.type.record.java'])
+    expect(lines[0][5]).toEqual value: '<', scopes: recordScopes.concat(['meta.record.identifier.java', 'punctuation.bracket.angle.java'])
+    expect(lines[0][6]).toEqual value: 'T', scopes: recordScopes.concat(['meta.record.identifier.java', 'storage.type.generic.java'])
+    expect(lines[0][7]).toEqual value: '>', scopes: recordScopes.concat(['meta.record.identifier.java', 'punctuation.bracket.angle.java'])
+    expect(lines[0][8]).toEqual value: '(', scopes: recordScopes.concat(['meta.record.identifier.java', 'punctuation.definition.parameters.begin.bracket.round.java'])
+    expect(lines[0][9]).toEqual value: 'T', scopes: recordScopes.concat(['meta.record.identifier.java', 'storage.type.java'])
+    expect(lines[0][11]).toEqual value: ')', scopes: recordScopes.concat(['meta.record.identifier.java', 'punctuation.definition.parameters.end.bracket.round.java'])
+    expect(lines[0][13]).toEqual value: '{', scopes: recordScopes.concat(['meta.record.body.java', 'punctuation.section.class.begin.bracket.curly.java'])
+    expect(lines[0][15]).toEqual value: '}', scopes: recordScopes.concat(['punctuation.section.class.end.bracket.curly.java'])
+
+  it 'tokenizes Java 14 record construtor', ->
+    lines = grammar.tokenizeLines '''
+      public record Point(int x, int y) {
+        public Point {
+          // validation
+        }
+        private void foo() { }
+      }
+    '''
+    recordScopes = ['source.java', 'meta.record.java']
+    expect(lines[0][0]).toEqual value: 'public', scopes: recordScopes.concat(['storage.modifier.java'])
+    expect(lines[0][2]).toEqual value: 'record', scopes: recordScopes.concat(['meta.record.identifier.java', 'storage.modifier.java'])
+    expect(lines[0][4]).toEqual value: 'Point', scopes: recordScopes.concat(['meta.record.identifier.java', 'entity.name.type.record.java'])
+    expect(lines[0][5]).toEqual value: '(', scopes: recordScopes.concat(['meta.record.identifier.java', 'punctuation.definition.parameters.begin.bracket.round.java'])
+    expect(lines[0][6]).toEqual value: 'int', scopes: recordScopes.concat(['meta.record.identifier.java', 'storage.type.primitive.java'])
+    expect(lines[0][8]).toEqual value: ',', scopes: recordScopes.concat(['meta.record.identifier.java', 'punctuation.separator.delimiter.java'])
+    expect(lines[0][10]).toEqual value: 'int', scopes: recordScopes.concat(['meta.record.identifier.java', 'storage.type.primitive.java'])
+    expect(lines[0][12]).toEqual value: ')', scopes: recordScopes.concat(['meta.record.identifier.java', 'punctuation.definition.parameters.end.bracket.round.java'])
+    expect(lines[0][14]).toEqual value: '{', scopes: recordScopes.concat(['meta.record.body.java', 'punctuation.section.class.begin.bracket.curly.java'])
+    expect(lines[5][0]).toEqual value: '}', scopes: recordScopes.concat(['punctuation.section.class.end.bracket.curly.java'])
+
+    methodScopes = recordScopes.concat(['meta.record.body.java', 'meta.method.java'])
+    expect(lines[1][1]).toEqual value: 'public', scopes: methodScopes.concat(['storage.modifier.java'])
+    expect(lines[1][3]).toEqual value: 'Point', scopes: methodScopes.concat(['meta.method.identifier.java', 'entity.name.function.java'])
+    expect(lines[1][5]).toEqual value: '{', scopes: methodScopes.concat(['punctuation.section.method.begin.bracket.curly.java'])
+    expect(lines[2][1]).toEqual value: '//', scopes: methodScopes.concat(['meta.method.body.java', 'comment.line.double-slash.java', 'punctuation.definition.comment.java'])
+    expect(lines[3][1]).toEqual value: '}', scopes: methodScopes.concat(['punctuation.section.method.end.bracket.curly.java'])
+    expect(lines[4][1]).toEqual value: 'private', scopes: methodScopes.concat(['storage.modifier.java'])
+    expect(lines[4][3]).toEqual value: 'void', scopes: methodScopes.concat(['meta.method.return-type.java', 'storage.type.primitive.java'])
+    expect(lines[4][5]).toEqual value: 'foo', scopes: methodScopes.concat(['meta.method.identifier.java', 'entity.name.function.java'])
+
+  it 'tokenizes Java 14 record as an inner class', ->
+    lines = grammar.tokenizeLines '''
+      class A {
+        record Point() {}
+      }
+    '''
+
+    scopes = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.record.java']
+    expect(lines[1][1]).toEqual value: 'record', scopes: scopes.concat(['meta.record.identifier.java', 'storage.modifier.java'])
+    expect(lines[1][3]).toEqual value: 'Point', scopes: scopes.concat(['meta.record.identifier.java', 'entity.name.type.record.java'])
+    expect(lines[1][4]).toEqual value: '(', scopes: scopes.concat(['meta.record.identifier.java', 'punctuation.definition.parameters.begin.bracket.round.java'])
+    expect(lines[1][5]).toEqual value: ')', scopes: scopes.concat(['meta.record.identifier.java', 'punctuation.definition.parameters.end.bracket.round.java'])
+    expect(lines[1][7]).toEqual value: '{', scopes: scopes.concat(['meta.record.body.java', 'punctuation.section.class.begin.bracket.curly.java'])
+    expect(lines[1][8]).toEqual value: '}', scopes: scopes.concat(['punctuation.section.class.end.bracket.curly.java'])

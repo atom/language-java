@@ -418,6 +418,9 @@
         'include': '#class'
       }
       {
+        'include': '#record' # Java 14
+      }
+      {
         'include': '#anonymous-block-and-instance-initializer'
       }
       {
@@ -1254,6 +1257,127 @@
             'name': 'punctuation.separator.period.java'
           '2':
             'name': 'invalid.illegal.identifier.java'
+      }
+    ]
+  # Java 14 Record
+  # see spec http://openjdk.java.net/jeps/359
+  'record':
+    'begin': '(?=\\w?[\\w\\s]*\\b(?:record)\\s+[\\w$]+)'
+    'end': '}'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.class.end.bracket.curly.java'
+    'name': 'meta.record.java'
+    'patterns': [
+      {
+        'include': '#storage-modifiers'
+      }
+      {
+        'include': '#generics'
+      }
+      {
+        'include': '#comments'
+      }
+      {
+        'begin': '(record)\\s+([\\w$]+)(<[\\w$]+>)?(\\()'
+        'beginCaptures':
+          '1':
+            'name': 'storage.modifier.java'
+          '2':
+            'name': 'entity.name.type.record.java'
+          '3':
+            'patterns': [
+              {
+                'include': '#generics'
+              }
+            ]
+          '4':
+            'name': 'punctuation.definition.parameters.begin.bracket.round.java'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.parameters.end.bracket.round.java'
+        'name': 'meta.record.identifier.java'
+        'patterns': [
+          {
+            'include': '#code'
+          }
+        ]
+      }
+      {
+        'begin': '(implements)\\s'
+        'beginCaptures':
+          '1':
+            'name': 'storage.modifier.implements.java'
+        'end': '(?=\\s*\\{)' # by design, records cannot extend any other class
+        'name': 'meta.definition.class.implemented.interfaces.java'
+        'patterns': [
+          {
+            'include': '#object-types-inherited'
+          }
+          {
+            'include': '#comments'
+          }
+        ]
+      }
+      {
+        'include': '#record-body'
+      }
+    ]
+  'record-body':
+    'begin': '{'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.class.begin.bracket.curly.java'
+    'end': '(?=})'
+    'name': 'meta.record.body.java'
+    'patterns': [
+      {
+        'include': '#record-constructor'
+      }
+      {
+        'include': '#class-body'
+      }
+    ]
+  'record-constructor':
+    'begin': '(?!new)(?=[\\w<].*\\s+)(?=([^\\(=/]|/(?!/))+(?={))'
+    'end': '(})|(?=;)'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.section.method.end.bracket.curly.java'
+    'name': 'meta.method.java'
+    'patterns': [
+      {
+        'include': '#storage-modifiers'
+      }
+      {
+        'begin': '(\\w+)'
+        'beginCaptures':
+          '1':
+            'name': 'entity.name.function.java'
+        'end': '(?=\\s*{)'
+        'name': 'meta.method.identifier.java'
+        'patterns': [
+          {
+            'include': '#comments'
+          }
+        ]
+      }
+      {
+        'include': '#comments'
+      }
+      {
+        'begin': '{'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.section.method.begin.bracket.curly.java'
+        'end': '(?=})'
+        'contentName': 'meta.method.body.java'
+        'patterns': [
+          {
+            'include': '#code'
+          }
+        ]
       }
     ]
   'static-initializer':
