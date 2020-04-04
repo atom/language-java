@@ -1279,13 +1279,19 @@
         'include': '#comments'
       }
       {
-        'begin': '(record)\\s+([\\w$]+)(\\()'
+        'begin': '(record)\\s+([\\w$]+)(<[\\w$]+>)?(\\()'
         'beginCaptures':
           '1':
             'name': 'storage.modifier.java'
           '2':
             'name': 'entity.name.type.record.java'
           '3':
+            'patterns': [
+              {
+                'include': '#generics'
+              }
+            ]
+          '4':
             'name': 'punctuation.definition.parameters.begin.bracket.round.java'
         'end': '\\)'
         'endCaptures':
