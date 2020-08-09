@@ -191,7 +191,7 @@
     'beginCaptures':
       '0':
         'name': 'keyword.control.new.java'
-    'end': '(?=;|\\)|,|:|}|\\+|\\-|\\*|\\/|%|!|&|\\||=)'
+    'end': '(?=;|\\)|\\]|\\.|,|\\?|:|}|\\+|\\-|\\*|\\/(?!\\/|\\*)|%|!|&|\\||\\^|=)'
     'patterns': [
       {
         'include': '#comments'
@@ -203,18 +203,52 @@
         'include': '#all-types'
       }
       {
-        'begin': '(?<!\\])\\s*({)' # Don't match new int[]{1, 2, 3};
-        'beginCaptures':
-          '1':
-            'name': 'punctuation.section.inner-class.begin.bracket.curly.java'
-        'end': '}'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.inner-class.end.bracket.curly.java'
-        'name': 'meta.inner-class.java'
+        'begin': '(?<=\\))'
+        'end': '(?=;|\\)|\\]|\\.|,|\\?|:|}|\\+|\\-|\\*|\\/(?!\\/|\\*)|%|!|&|\\||\\^|=)'
         'patterns': [
           {
-            'include': '#class-body'
+            'include': '#comments'
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.inner-class.begin.bracket.curly.java'
+            'end': '}'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.section.inner-class.end.bracket.curly.java'
+            'name': 'meta.inner-class.java'
+            'patterns': [
+              {
+                'include': '#class-body'
+              }
+            ]
+          }
+        ]
+      }
+      {
+        'begin': '(?<=\\])'
+        'end': '(?=;|\\)|\\]|\\.|,|\\?|:|}|\\+|\\-|\\*|\\/(?!\\/|\\*)|%|!|&|\\||\\^|=)'
+        'patterns': [
+          {
+            'include': '#comments'
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.array-initializer.begin.bracket.curly.java'
+            'end': '}'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.section.array-initializer.end.bracket.curly.java'
+            'name': 'meta.array-initializer.java'
+            'patterns': [
+              {
+                'include': '#code'
+              }
+            ]
           }
         ]
       }
@@ -243,7 +277,7 @@
       }
     ]
   'class':
-    'begin': '(?=\\w?[\\w\\s]*\\b(?:class|(?<!@)interface|enum)\\s+\\w+)'
+    'begin': '(?=\\w?[\\w\\s]*\\b(?:class|(?<!@)interface|enum)\\s+[\\w$]+)'
     'end': '}'
     'endCaptures':
       '0':
@@ -265,7 +299,7 @@
             'name': 'storage.modifier.java'
           '2':
             'name': 'entity.name.type.class.java'
-        'match': '(class|(?<!@)interface|enum)\\s+(\\w+)'
+        'match': '(class|(?<!@)interface|enum)\\s+([\\w$]+)'
         'name': 'meta.class.identifier.java'
       }
       {
@@ -341,10 +375,10 @@
         'include': '#annotations'
       }
       {
-        'include': '#member-variables'
+        'include': '#storage-modifiers'
       }
       {
-        'include': '#storage-modifiers'
+        'include': '#member-variables'
       }
       {
         'include': '#code'
@@ -382,6 +416,9 @@
       }
       {
         'include': '#class'
+      }
+      {
+        'include': '#record' # Java 14
       }
       {
         'include': '#anonymous-block-and-instance-initializer'
@@ -525,7 +562,7 @@
               'name': 'entity.name.type.class.java'
         }
         {
-          'match': '{(@link)\\s+(\\S+)?#([\\w$]+\\s*\\([^\\(\\)]*\\)).*}'
+          'match': '{(@link)\\s+(\\S+)?#([\\w$]+\\s*\\([^\\(\\)]*\\)).*?}'
           'captures':
             '1':
               'name': 'keyword.other.documentation.javadoc.java'
@@ -619,48 +656,51 @@
               {
                 'include': '#comments'
               }
-              # Represents enum's constant field with the code overrides
-              {
-                'begin': '(\\w+)\\s*({)'
+              { # Represents enum's constant field entry
+                'begin': '\\b(\\w+)\\b'
                 'beginCaptures':
                   '1':
                     'name': 'constant.other.enum.java'
-                  '2':
-                    'name': 'punctuation.bracket.curly.java'
-                'end': '\\}'
+                'end': '(,)|(?=;|})'
                 'endCaptures':
-                  '0':
-                    'name': 'punctuation.bracket.curly.java'
-                'patterns': [
-                  {
-                    # Use #class-body, because the enum field overrides enum class body.
-                    # It is similar to inner class.
-                    'include': '#class-body'
-                  }
-                ]
-              }
-              # Represents enum's constant field with constructor, e.g. `Test(123)`
-              {
-                'begin': '(\\w+)\\s*(\\()'
-                'beginCaptures':
                   '1':
-                    'name': 'constant.other.enum.java'
-                  '2':
-                    'name': 'punctuation.bracket.round.java'
-                'end': '\\)'
-                'endCaptures':
-                  '0':
-                    'name': 'punctuation.bracket.round.java'
+                    'name': 'punctuation.separator.delimiter.java'
                 'patterns': [
                   {
-                    'include': '#code'
+                    'include': '#comments-javadoc'
+                  }
+                  {
+                    'include': '#comments'
+                  }
+                  { # Represents enum's constructor, e.g. `("1", 123)` in `Test("1", 123)`
+                    'begin': '\\(',
+                    'beginCaptures':
+                      '0':
+                        'name': 'punctuation.bracket.round.java'
+                    'end': '\\)'
+                    'endCaptures':
+                      '0':
+                        'name': 'punctuation.bracket.round.java'
+                    'patterns': [
+                      'include': '#code'
+                    ]
+                  }
+                  { # Represents enum's body with code overrides
+                    'begin': '{',
+                    'beginCaptures':
+                      '0':
+                        'name': 'punctuation.bracket.curly.java'
+                    'end': '}'
+                    'endCaptures':
+                      '0':
+                        'name': 'punctuation.bracket.curly.java'
+                    'patterns': [
+                      # Use #class-body, because the enum field overrides enum class body.
+                      # It is similar to inner class.
+                      'include': '#class-body'
+                    ]
                   }
                 ]
-              }
-              # Represents enum's constant field, e.g. `Test`
-              {
-                'match': '\\b\\w+\\b'
-                'name': 'constant.other.enum.java'
               }
             ]
           }
@@ -1207,7 +1247,7 @@
           '1':
             'name': 'punctuation.separator.period.java'
           '2':
-            'name': 'variable.other.property.java'
+            'name': 'variable.other.object.property.java'
       }
       {
         # 123illegal in obj.123illegal, func().123illegal
@@ -1217,6 +1257,127 @@
             'name': 'punctuation.separator.period.java'
           '2':
             'name': 'invalid.illegal.identifier.java'
+      }
+    ]
+  # Java 14 Record
+  # see spec http://openjdk.java.net/jeps/359
+  'record':
+    'begin': '(?=\\w?[\\w\\s]*\\b(?:record)\\s+[\\w$]+)'
+    'end': '}'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.class.end.bracket.curly.java'
+    'name': 'meta.record.java'
+    'patterns': [
+      {
+        'include': '#storage-modifiers'
+      }
+      {
+        'include': '#generics'
+      }
+      {
+        'include': '#comments'
+      }
+      {
+        'begin': '(record)\\s+([\\w$]+)(<[\\w$]+>)?(\\()'
+        'beginCaptures':
+          '1':
+            'name': 'storage.modifier.java'
+          '2':
+            'name': 'entity.name.type.record.java'
+          '3':
+            'patterns': [
+              {
+                'include': '#generics'
+              }
+            ]
+          '4':
+            'name': 'punctuation.definition.parameters.begin.bracket.round.java'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.parameters.end.bracket.round.java'
+        'name': 'meta.record.identifier.java'
+        'patterns': [
+          {
+            'include': '#code'
+          }
+        ]
+      }
+      {
+        'begin': '(implements)\\s'
+        'beginCaptures':
+          '1':
+            'name': 'storage.modifier.implements.java'
+        'end': '(?=\\s*\\{)' # by design, records cannot extend any other class
+        'name': 'meta.definition.class.implemented.interfaces.java'
+        'patterns': [
+          {
+            'include': '#object-types-inherited'
+          }
+          {
+            'include': '#comments'
+          }
+        ]
+      }
+      {
+        'include': '#record-body'
+      }
+    ]
+  'record-body':
+    'begin': '{'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.class.begin.bracket.curly.java'
+    'end': '(?=})'
+    'name': 'meta.record.body.java'
+    'patterns': [
+      {
+        'include': '#record-constructor'
+      }
+      {
+        'include': '#class-body'
+      }
+    ]
+  'record-constructor':
+    'begin': '(?!new)(?=[\\w<].*\\s+)(?=([^\\(=/]|/(?!/))+(?={))'
+    'end': '(})|(?=;)'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.section.method.end.bracket.curly.java'
+    'name': 'meta.method.java'
+    'patterns': [
+      {
+        'include': '#storage-modifiers'
+      }
+      {
+        'begin': '(\\w+)'
+        'beginCaptures':
+          '1':
+            'name': 'entity.name.function.java'
+        'end': '(?=\\s*{)'
+        'name': 'meta.method.identifier.java'
+        'patterns': [
+          {
+            'include': '#comments'
+          }
+        ]
+      }
+      {
+        'include': '#comments'
+      }
+      {
+        'begin': '{'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.section.method.begin.bracket.curly.java'
+        'end': '(?=})'
+        'contentName': 'meta.method.body.java'
+        'patterns': [
+          {
+            'include': '#code'
+          }
+        ]
       }
     ]
   'static-initializer':
@@ -1331,9 +1492,9 @@
           }
         ]
       }
-      # catch block (with "parameters")
+      # catch block
       {
-        'begin': '\\b(catch)\\b\\s*(?=\\(\\s*[^\\s]+\\s*[^)]+\\))'
+        'begin': '\\b(catch)\\b'
         'beginCaptures':
           '1':
             'name': 'keyword.control.catch.java'
@@ -1343,6 +1504,9 @@
             'name': 'punctuation.section.catch.end.bracket.curly.java'
         'name': 'meta.catch.java'
         'patterns': [
+          {
+            'include': '#comments'
+          }
           {
             'begin': '\\('
             'beginCaptures':
@@ -1361,16 +1525,25 @@
                 'include': '#storage-modifiers'
               }
               {
-                'match': '\\|'
-                'name': 'punctuation.catch.separator.java'
-              }
-              {
-                'match': '([a-zA-Z$_][\\.a-zA-Z0-9$_]*)\\s*(\\w+)?'
-                'captures':
-                  '1':
+                'begin': '[a-zA-Z$_][\\.a-zA-Z0-9$_]*'
+                'beginCaptures':
+                  '0':
                     'name': 'storage.type.java'
-                  '2':
-                    'name': 'variable.parameter.java'
+                'end': '(\\|)|(?=\\))'
+                'endCaptures':
+                  '1':
+                    'name': 'punctuation.catch.separator.java'
+                'patterns': [
+                  {
+                    'include': '#comments'
+                  }
+                  {
+                    'match': '\\w+'
+                    'captures':
+                      '0':
+                        'name': 'variable.parameter.java'
+                  }
+                ]
               }
             ]
           }
