@@ -1931,6 +1931,29 @@ describe 'Java grammar', ->
     expect(lines[3][5]).toEqual value: 'instanceof', scopes: scopeStack.concat ['keyword.operator.instanceof.java']
     expect(lines[6][4]).toEqual value: 'instanceof', scopes: scopeStack.concat ['meta.declaration.assertion.java', 'keyword.operator.instanceof.java']
 
+  it 'tokenizes the `instanceof` operator in return statements and variable definitions', ->
+    lines = grammar.tokenizeLines '''
+      class A {
+        boolean func1() {
+          return aa instanceof Test;
+        }
+
+        boolean func2() {
+          return aaBB instanceof Test;
+        }
+
+        void func3() {
+          boolean test = aB instanceof Test;
+        }
+      }
+      '''
+
+    expected = ['source.java', 'meta.class.java', 'meta.class.body.java', 'meta.method.java', 'meta.method.body.java', 'keyword.operator.instanceof.java']
+
+    expect(lines[2][3]).toEqual value: 'instanceof', scopes: expected
+    expect(lines[6][3]).toEqual value: 'instanceof', scopes: expected
+    expect(lines[10][7]).toEqual value: 'instanceof', scopes: expected
+
   it 'tokenizes class fields', ->
     lines = grammar.tokenizeLines '''
       class Test
