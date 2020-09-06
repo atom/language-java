@@ -1939,11 +1939,11 @@ describe 'Java grammar', ->
         }
 
         boolean func2() {
-          return aaBB instanceof Test;
+          return aaBbb instanceof Test;
         }
 
         void func3() {
-          boolean test = aB instanceof Test;
+          boolean test = aaBbb instanceof Test;
         }
       }
       '''
