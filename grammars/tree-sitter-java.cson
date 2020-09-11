@@ -7,19 +7,19 @@ fileTypes: [
   'java'
 ]
 
-folds: [
-  {
-    type: [
-      'comment',
-      'class_declaration',
-      'enum_declaration',
-      'normal_interface_declaration',
-      'constructor_declaration',
-      'switch_statement',
-      'block'
-    ]
-  }
-]
+# folds: [
+#   {
+#     type: [
+#       'comment',
+#       'class_declaration',
+#       'enum_declaration',
+#       'normal_interface_declaration',
+#       'constructor_declaration',
+#       'switch_statement',
+#       'block'
+#     ]
+#   }
+# ]
 
 comments:
   start: '// '
@@ -108,21 +108,41 @@ scopes:
   '"("': 'punctuation.bracket.round'
   '")"': 'punctuation.bracket.round'
 
-  'spread_parameter > "..."': 'punctuation.definition.parameters.varargs'
-
   '''
   this,
   super
   ''': 'variable.language'
 
+  ##############################################################
+  ### Literals
+  ##############################################################
+
   'null_literal': 'constant.language.null'
-  'boolean_literal': 'constant.boolean'
-  'integer_literal': 'constant.numeric'
-  'floating_point_literal': 'constant.numeric'
+
+  '''
+  true,
+  false
+  ''': 'constant.boolean'
+
+  '''
+  decimal_integer_literal,
+  hex_integer_literal,
+  octal_integer_literal,
+  binary_integer_literal
+  ''': 'constant.numeric'
+
+  '''
+  decimal_floating_point_literal,
+  hex_floating_point_literal
+  ''': 'constant.numeric'
+
   'character_literal': 'string.quoted.single'
   'string_literal': 'string.quoted.double'
 
-  # Type definitions
+  ##############################################################
+  ### Type definitions
+  ##############################################################
+
   '''
   void_type,
   integral_type,
@@ -134,105 +154,106 @@ scopes:
 
   # Generic types
   '''
+  type_arguments > "<",
+  type_arguments > ">",
   type_parameters > "<",
-  type_parameters > ">",
-  generic_type > "<",
-  generic_type > ">"
+  type_parameters > ">"
   ''': 'punctuation.bracket.angle'
 
-  '''
-  type_bound > "&",
-  additional_bound > "&"
-  ''': 'punctuation.separator.types'
+  'type_arguments > wildcard > "?"': 'storage.type.generic.wildcard'
+  'type_arguments > wildcard > "extends"': "storage.modifier.extends.java"
+  'type_arguments > wildcard > super': "storage.modifier.super.java"
 
-  'generic_type > "<>"': 'punctuation.bracket.diamond'
+  # generic bounds in classes
+  'type_bound > "extends"': "storage.modifier.extends.java"
+  'type_bound > "&"': 'punctuation.separator.types'
 
-  'wildcard > "?"': 'storage.type.generic.wildcard'
+  # # Language modifiers, e.g. public, private, static, ...
+  # '''
+  # modifier,
+  # throws > "throws",
+  # "extends",
+  # "implements",
+  # "synchronized"
+  # ''': 'storage.modifier'
+  #
+  # # Annotations
+  # '''
+  # marker_annotation > "@",
+  # single_element_annotation > "@",
+  # normal_annotation > "@"
+  # ''': 'punctuation.definition.annotation'
+  #
+  # '''
+  # marker_annotation > identifier,
+  # single_element_annotation > identifier,
+  # normal_annotation > identifier
+  # ''': 'storage.type.annotation'
+  #
+  # 'element_value_pair > identifier': 'variable.other.annotation.element'
+  #
+  # # Separately process ternary operators
+  # '''
+  # ternary_expression > "?",
+  # ternary_expression > ":"
+  # ''': 'keyword.control.ternary'
+  #
+  # # Field access
+  # 'scoped_identifier > identifier': 'variable.other.object.java' # for obj.property
+  # 'field_access > identifier': 'variable.other.object.java' # for super.property
+  #
+  # # Method access
+  # # TODO: handle separation between cases:
+  # # - "identifier(arguments)"
+  # # - "identifier.identifier(arguments)"
+  # 'method_invocation > identifier': 'entity.name.function'
+  #
+  # # Method reference
+  # 'method_reference > "::"': 'keyword.control.method'
+  # 'method_reference > "new"': 'entity.name.function'
+  # 'method_reference > identifier': 'entity.name.function'
+  #
+  # # Package declaration
+  # 'package_declaration': 'meta.package'
+  # 'package_declaration > "package"': 'keyword.other.package'
+  #
+  # # Import declaration
+  # 'import_declaration': 'meta.import'
+  # 'import_declaration > "import"': 'keyword.other.import'
+  # 'import_declaration > "static"': 'storage.modifier'
+  # 'import_declaration > identifier': 'storage.type'
+  # 'import_declaration > asterisk > "*"': 'storage.type'
+  #
+  # # Interface declaration
+  # 'normal_interface_declaration > "interface"': 'keyword.other.interface'
+  # 'normal_interface_declaration > identifier': 'entity.name.type.interface'
+  # 'interface_body': 'meta.interface.body'
+  #
+  # 'annotation_type_declaration > "@"': 'keyword.other.interface.annotated'
+  # 'annotation_type_declaration > "interface"': 'keyword.other.interface.annotated'
+  # 'annotation_type_declaration > identifier': 'entity.name.type.interface.annotated'
+  # 'annotation_type_body': 'meta.interface.annotated.body'
+  # 'annotation_type_element_declaration > identifier': 'entity.name.function'
+  #
+  # # Class declaration
+  # 'class_declaration > "class"': 'keyword.other.class'
+  # 'class_declaration > identifier': 'entity.name.type.class'
+  # 'class_body': 'meta.class.body'
+  # 'class_body > static_initializer > "static"': 'storage.modifier'
+  #
+  # # Enum declaration
+  # 'enum_declaration > "enum"': 'keyword.other.enum'
+  # 'enum_declaration > identifier': 'entity.name.type.enum'
+  # 'enum_declaration > enum_constant > identifier': 'constant.other.enum'
+  #
+  # # Constructor declaration
+  # 'constructor_declaration': 'meta.constructor'
+  # 'constructor_declarator > identifier': 'entity.name.function'
+  # 'constructor_body': 'meta.constructor.body'
+  #
+  # # Method declaration
+  # 'method_declaration': 'meta.method'
+  # 'method_header > method_declarator > identifier': 'entity.name.function'
+  # 'method_body': 'meta.method.body'
 
-  # Language modifiers, e.g. public, private, static, ...
-  '''
-  modifier,
-  throws > "throws",
-  "extends",
-  "implements",
-  "synchronized"
-  ''': 'storage.modifier'
-
-  # Annotations
-  '''
-  marker_annotation > "@",
-  single_element_annotation > "@",
-  normal_annotation > "@"
-  ''': 'punctuation.definition.annotation'
-
-  '''
-  marker_annotation > identifier,
-  single_element_annotation > identifier,
-  normal_annotation > identifier
-  ''': 'storage.type.annotation'
-
-  'element_value_pair > identifier': 'variable.other.annotation.element'
-
-  # Separately process ternary operators
-  '''
-  ternary_expression > "?",
-  ternary_expression > ":"
-  ''': 'keyword.control.ternary'
-
-  # Field access
-  'scoped_identifier > identifier': 'variable.other.object.java' # for obj.property
-  'field_access > identifier': 'variable.other.object.java' # for super.property
-
-  # Method access
-  # TODO: handle separation between cases:
-  # - "identifier(arguments)"
-  # - "identifier.identifier(arguments)"
-  'method_invocation > identifier': 'entity.name.function'
-
-  # Method reference
-  'method_reference > "::"': 'keyword.control.method'
-  'method_reference > "new"': 'entity.name.function'
-  'method_reference > identifier': 'entity.name.function'
-
-  # Package declaration
-  'package_declaration': 'meta.package'
-  'package_declaration > "package"': 'keyword.other.package'
-
-  # Import declaration
-  'import_declaration': 'meta.import'
-  'import_declaration > "import"': 'keyword.other.import'
-  'import_declaration > "static"': 'storage.modifier'
-  'import_declaration > identifier': 'storage.type'
-  'import_declaration > asterisk > "*"': 'storage.type'
-
-  # Interface declaration
-  'normal_interface_declaration > "interface"': 'keyword.other.interface'
-  'normal_interface_declaration > identifier': 'entity.name.type.interface'
-  'interface_body': 'meta.interface.body'
-
-  'annotation_type_declaration > "@"': 'keyword.other.interface.annotated'
-  'annotation_type_declaration > "interface"': 'keyword.other.interface.annotated'
-  'annotation_type_declaration > identifier': 'entity.name.type.interface.annotated'
-  'annotation_type_body': 'meta.interface.annotated.body'
-  'annotation_type_element_declaration > identifier': 'entity.name.function'
-
-  # Class declaration
-  'class_declaration > "class"': 'keyword.other.class'
-  'class_declaration > identifier': 'entity.name.type.class'
-  'class_body': 'meta.class.body'
-  'class_body > static_initializer > "static"': 'storage.modifier'
-
-  # Enum declaration
-  'enum_declaration > "enum"': 'keyword.other.enum'
-  'enum_declaration > identifier': 'entity.name.type.enum'
-  'enum_declaration > enum_constant > identifier': 'constant.other.enum'
-
-  # Constructor declaration
-  'constructor_declaration': 'meta.constructor'
-  'constructor_declarator > identifier': 'entity.name.function'
-  'constructor_body': 'meta.constructor.body'
-
-  # Method declaration
-  'method_declaration': 'meta.method'
-  'method_header > method_declarator > identifier': 'entity.name.function'
-  'method_body': 'meta.method.body'
+  # 'spread_parameter > "..."': 'punctuation.definition.parameters.varargs'
