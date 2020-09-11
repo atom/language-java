@@ -161,36 +161,89 @@ scopes:
   ''': 'punctuation.bracket.angle'
 
   'type_arguments > wildcard > "?"': 'storage.type.generic.wildcard'
-  'type_arguments > wildcard > "extends"': "storage.modifier.extends.java"
-  'type_arguments > wildcard > super': "storage.modifier.super.java"
+  'type_arguments > wildcard > "extends"': "storage.modifier.extends"
+  'type_arguments > wildcard > super': "storage.modifier.super"
 
   # generic bounds in classes
-  'type_bound > "extends"': "storage.modifier.extends.java"
+  'type_bound > "extends"': "storage.modifier.extends"
   'type_bound > "&"': 'punctuation.separator.types'
 
-  # # Language modifiers, e.g. public, private, static, ...
-  # '''
-  # modifier,
-  # throws > "throws",
-  # "extends",
-  # "implements",
-  # "synchronized"
-  # ''': 'storage.modifier'
-  #
-  # # Annotations
-  # '''
-  # marker_annotation > "@",
-  # single_element_annotation > "@",
-  # normal_annotation > "@"
-  # ''': 'punctuation.definition.annotation'
-  #
-  # '''
-  # marker_annotation > identifier,
-  # single_element_annotation > identifier,
-  # normal_annotation > identifier
-  # ''': 'storage.type.annotation'
-  #
-  # 'element_value_pair > identifier': 'variable.other.annotation.element'
+  ##############################################################
+  ### Modifiers
+  ##############################################################
+
+  'modifiers': 'storage.modifier'
+  # "extends" keyword for classes and enums
+  'superclass > "extends"': 'storage.modifier.extends'
+  # "extends" keyword for interfaces
+  'extends_interfaces > "extends"': 'storage.modifier.extends'
+  'super_interfaces > "implements"': 'storage.modifier.implements'
+  'static_initializer > "static"': 'storage.modifier'
+
+  ##############################################################
+  ### Package and imports
+  ##############################################################
+
+  'package_declaration': 'meta.package'
+  'package_declaration > "package"': 'keyword.other.package'
+
+  'import_declaration': 'meta.import'
+  'import_declaration > "import"': 'keyword.other.import'
+  'import_declaration > "static"': 'storage.modifier'
+  '''
+  import_declaration > identifier,
+  import_declaration > asterisk > "*"
+  ''': 'storage.type'
+
+  ##############################################################
+  ### Class declaration
+  ##############################################################
+
+  'class_declaration > "class"': 'keyword.other.class'
+  'class_declaration > identifier': 'entity.name.type.class'
+
+  'class_declaration > class_body': 'meta.class.body'
+
+  ##############################################################
+  ### Enum declaration
+  ##############################################################
+
+  'enum_declaration > "enum"': 'keyword.other.enum'
+  'enum_declaration > identifier': 'entity.name.type.enum'
+
+  'enum_declaration > enum_body': 'meta.enum.body'
+
+  'enum_constant > identifier': 'constant.other.enum'
+
+  ##############################################################
+  ### Interface declaration
+  ##############################################################
+
+  'interface_declaration > "interface"': 'keyword.other.interface'
+  'interface_declaration > identifier': 'entity.name.type.interface'
+
+  'interface_declaration > interface_body': 'meta.interface.body'
+
+  # annotated interface
+  'annotation_type_declaration > "@interface"': 'keyword.other.interface.annotated'
+  'annotation_type_declaration > identifier': 'entity.name.type.interface.annotated'
+
+  'annotation_type_declaration > annotation_type_body': 'meta.interface.annotated.body'
+
+  ##############################################################
+  ### Annotations
+  ##############################################################
+
+  'marker_annotation': 'meta.declaration.annotation'
+  'marker_annotation > "@"': 'punctuation.definition.annotation'
+  'marker_annotation > identifier': 'storage.type.annotation'
+
+  'annotation': 'meta.declaration.annotation'
+  'annotation > "@"': 'punctuation.definition.annotation'
+  'annotation > identifier': 'storage.type.annotation'
+
+  'element_value_pair > identifier': 'variable.other.annotation.element'
+
   #
   # # Separately process ternary operators
   # '''
@@ -212,39 +265,6 @@ scopes:
   # 'method_reference > "::"': 'keyword.control.method'
   # 'method_reference > "new"': 'entity.name.function'
   # 'method_reference > identifier': 'entity.name.function'
-  #
-  # # Package declaration
-  # 'package_declaration': 'meta.package'
-  # 'package_declaration > "package"': 'keyword.other.package'
-  #
-  # # Import declaration
-  # 'import_declaration': 'meta.import'
-  # 'import_declaration > "import"': 'keyword.other.import'
-  # 'import_declaration > "static"': 'storage.modifier'
-  # 'import_declaration > identifier': 'storage.type'
-  # 'import_declaration > asterisk > "*"': 'storage.type'
-  #
-  # # Interface declaration
-  # 'normal_interface_declaration > "interface"': 'keyword.other.interface'
-  # 'normal_interface_declaration > identifier': 'entity.name.type.interface'
-  # 'interface_body': 'meta.interface.body'
-  #
-  # 'annotation_type_declaration > "@"': 'keyword.other.interface.annotated'
-  # 'annotation_type_declaration > "interface"': 'keyword.other.interface.annotated'
-  # 'annotation_type_declaration > identifier': 'entity.name.type.interface.annotated'
-  # 'annotation_type_body': 'meta.interface.annotated.body'
-  # 'annotation_type_element_declaration > identifier': 'entity.name.function'
-  #
-  # # Class declaration
-  # 'class_declaration > "class"': 'keyword.other.class'
-  # 'class_declaration > identifier': 'entity.name.type.class'
-  # 'class_body': 'meta.class.body'
-  # 'class_body > static_initializer > "static"': 'storage.modifier'
-  #
-  # # Enum declaration
-  # 'enum_declaration > "enum"': 'keyword.other.enum'
-  # 'enum_declaration > identifier': 'entity.name.type.enum'
-  # 'enum_declaration > enum_constant > identifier': 'constant.other.enum'
   #
   # # Constructor declaration
   # 'constructor_declaration': 'meta.constructor'
