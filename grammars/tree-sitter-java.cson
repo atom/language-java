@@ -172,7 +172,21 @@ scopes:
   ### Modifiers
   ##############################################################
 
-  'modifiers': 'storage.modifier'
+  '''
+  "public",
+  "protected",
+  "private",
+  "abstract",
+  "static",
+  "final",
+  "strictfp",
+  "default",
+  "synchronized",
+  "native",
+  "transient",
+  "volatile",
+  "threadsafe"
+  ''': 'storage.modifier'
   # "extends" keyword for classes and enums
   'superclass > "extends"': 'storage.modifier.extends'
   # "extends" keyword for interfaces
