@@ -1593,11 +1593,13 @@
   'variables':
     'begin': '''(?x)
       (?=
+        \\b
         (
-          \\b(void|boolean|byte|char|short|int|float|long|double)\\b
+          (void|boolean|byte|char|short|int|float|long|double)
           |
           (?>(\\w+\\.)*[A-Z_]+\\w*) # e.g. `javax.ws.rs.Response`, or `String`
         )
+        \\b
         \\s*
         (
           <[\\w<>,\\.?\\s\\[\\]]*> # e.g. `HashMap<Integer, String>`, or `List<java.lang.String>`
