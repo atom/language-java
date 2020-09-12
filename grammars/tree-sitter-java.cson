@@ -285,21 +285,33 @@ scopes:
 
   'spread_parameter > "..."': 'punctuation.definition.parameters.varargs'
 
-  #
-  # # Field access
-  # 'scoped_identifier > identifier': 'variable.other.object.java' # for obj.property
-  # 'field_access > identifier': 'variable.other.object.java' # for super.property
-  #
-  # # Method access
-  # # TODO: handle separation between cases:
-  # # - "identifier(arguments)"
-  # # - "identifier.identifier(arguments)"
+  ##############################################################
+  ### Method access and reference
+  ##############################################################
+
+  # Method access
+  # TODO: handle separation between cases:
+  # - "identifier(arguments)"
+  # - "identifier.identifier(arguments)"
   # 'method_invocation > identifier': 'entity.name.function'
-  #
-  # # Method reference
-  # 'method_reference > "::"': 'keyword.control.method'
-  # 'method_reference > "new"': 'entity.name.function'
-  # 'method_reference > identifier': 'entity.name.function'
-  #
-  #
-  # # Method declaration
+  'method_invocation > identifier:nth-child(2)': 'entity.name.function'
+  'method_invocation > identifier:nth-child(4)': 'entity.name.function'
+  # 'method_invocation > identifier:nth-child(0)': 'entity.name.function'
+  # 'method_invocation > identifier': {'match': /^[a-zA-Z_]\w*(?=\()/, 'scopes': 'entity.name.function'}
+
+  # Method reference
+  '''
+  method_reference > identifier:nth-child(0),
+  method_reference > scoped_identifier > identifier
+  ''': 'storage.type'
+
+  'method_reference > "::"': 'keyword.control.method'
+
+  '''
+  method_reference > "new",
+  method_reference > identifier:nth-child(2)
+  ''': 'entity.name.function'
+
+  # Field access
+  # 'field_access > identifier': 'variable.other.object.java' # for super.property
+  # 'scoped_identifier > identifier': 'variable.other.object.java' # for obj.property
