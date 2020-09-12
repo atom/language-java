@@ -204,10 +204,8 @@ scopes:
   'import_declaration': 'meta.import'
   'import_declaration > "import"': 'keyword.other.import'
   'import_declaration > "static"': 'storage.modifier'
-  '''
-  import_declaration > identifier,
-  import_declaration > asterisk > "*"
-  ''': 'storage.type'
+  'import_declaration > identifier': 'storage.type'
+  'import_declaration > asterisk > "*"': 'variable.language.wildcard.java'
 
   ##############################################################
   ### Class declaration
@@ -243,6 +241,8 @@ scopes:
   'annotation_type_declaration > identifier': 'entity.name.type.interface.annotated'
 
   'annotation_type_declaration > annotation_type_body': 'meta.interface.annotated.body'
+
+  'annotation_type_element_declaration > identifier': 'entity.name.function'
 
   ##############################################################
   ### Annotations
