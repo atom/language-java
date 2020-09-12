@@ -49,6 +49,11 @@ scopes:
   "while"
   ''': 'keyword.control'
 
+  '''
+  ternary_expression > "?",
+  ternary_expression > ":"
+  ''': 'keyword.control.ternary'
+
   '"instanceof"': 'keyword.operator.instanceof'
   '"="': 'keyword.operator.assignment'
 
@@ -266,15 +271,14 @@ scopes:
   'method_declaration > identifier': 'entity.name.function'
   'method_declaration > block': 'meta.method.body'
 
+  'constructor_declaration': 'meta.constructor'
+  'constructor_declaration > identifier': 'entity.name.function'
+  'constructor_body': 'meta.constructor.body'
+
   'throws > "throws"': 'storage.modifier.throws'
 
   'spread_parameter > "..."': 'punctuation.definition.parameters.varargs'
 
-  # # Separately process ternary operators
-  # '''
-  # ternary_expression > "?",
-  # ternary_expression > ":"
-  # ''': 'keyword.control.ternary'
   #
   # # Field access
   # 'scoped_identifier > identifier': 'variable.other.object.java' # for obj.property
@@ -291,9 +295,5 @@ scopes:
   # 'method_reference > "new"': 'entity.name.function'
   # 'method_reference > identifier': 'entity.name.function'
   #
-  # # Constructor declaration
-  # 'constructor_declaration': 'meta.constructor'
-  # 'constructor_declarator > identifier': 'entity.name.function'
-  # 'constructor_body': 'meta.constructor.body'
   #
   # # Method declaration

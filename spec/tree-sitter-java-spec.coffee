@@ -313,6 +313,21 @@ describe 'Tree-sitter based Java grammar', ->
 
     expect(tokens[1][1]).toEqual value: 'synchronized', scopes: ['source.java', 'meta.class.body', 'storage.modifier']
 
+  fit 'tokenizes instanceof', ->
+    tokens = tokenizeLines '''
+      if (a instanceof B) { }
+      if (aaBb instanceof B) { }
+    '''
+
+    expect(tokens[0][4]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
+    expect(tokens[1][4]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
+
+  fit 'tokenizes ternary', ->
+    tokens = tokenizeLine '(a > b) ? a : b;'
+
+    expect(tokens[6]).toEqual value: '?', scopes: ['source.java', 'keyword.control.ternary']
+    expect(tokens[8]).toEqual value: ':', scopes: ['source.java', 'keyword.control.ternary']
+
   fit 'tokenizes comments', ->
     tokens = tokenizeLines '''
       // comment
@@ -354,6 +369,23 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[9][3]).toEqual value: 'util', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
     expect(tokens[9][5]).toEqual value: 'List', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
     expect(tokens[9][7]).toEqual value: 'T', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+
+  fit 'tokenizes type casting', ->
+    tokens = tokenizeLines '''
+      class A {
+        A<T> method() {
+          return (A<T>) a;
+        }
+      }
+    '''
+
+    expect(tokens[2][1]).toEqual value: 'return', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control']
+    expect(tokens[2][3]).toEqual value: '(', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.round']
+    expect(tokens[2][4]).toEqual value: 'A', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[2][5]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.angle']
+    expect(tokens[2][6]).toEqual value: 'T', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[2][7]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.angle']
+    expect(tokens[2][8]).toEqual value: ')', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.round']
 
   fit 'tokenizes class generic type definitions', ->
     tokens = tokenizeLines '''
@@ -497,17 +529,17 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[2][10]).toEqual value: 'ArrayList', scopes: ['source.java', 'meta.class.body', 'storage.type']
     expect(tokens[2][11]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'punctuation.bracket.angle']
 
-    expect(tokens[3][3]).toEqual value: 'Map', scopes: ['source.java', 'meta.class.body', 'storage.type']
-    expect(tokens[3][4]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'punctuation.bracket.angle']
-    expect(tokens[3][5]).toEqual value: '?', scopes: ['source.java', 'meta.class.body', 'storage.type.generic.wildcard']
-    expect(tokens[3][6]).toEqual value: ',', scopes: ['source.java', 'meta.class.body', 'punctuation.separator.delimiter']
-    expect(tokens[3][8]).toEqual value: '?', scopes: ['source.java', 'meta.class.body', 'storage.type.generic.wildcard']
-    expect(tokens[3][10]).toEqual value: 'extends', scopes: ['source.java', 'meta.class.body', 'storage.modifier.extends']
-    expect(tokens[3][12]).toEqual value: 'List', scopes: ['source.java', 'meta.class.body', 'storage.type']
-    expect(tokens[3][13]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'punctuation.bracket.angle']
-    expect(tokens[3][14]).toEqual value: '?', scopes: ['source.java', 'meta.class.body', 'storage.type.generic.wildcard']
-    expect(tokens[3][15]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'punctuation.bracket.angle']
-    expect(tokens[3][16]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'punctuation.bracket.angle']
+    expect(tokens[3][3]).toEqual value: 'Map', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'storage.type']
+    expect(tokens[3][4]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'punctuation.bracket.angle']
+    expect(tokens[3][5]).toEqual value: '?', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'storage.type.generic.wildcard']
+    expect(tokens[3][6]).toEqual value: ',', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'punctuation.separator.delimiter']
+    expect(tokens[3][8]).toEqual value: '?', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'storage.type.generic.wildcard']
+    expect(tokens[3][10]).toEqual value: 'extends', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'storage.modifier.extends']
+    expect(tokens[3][12]).toEqual value: 'List', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'storage.type']
+    expect(tokens[3][13]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'punctuation.bracket.angle']
+    expect(tokens[3][14]).toEqual value: '?', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'storage.type.generic.wildcard']
+    expect(tokens[3][15]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'punctuation.bracket.angle']
+    expect(tokens[3][16]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'punctuation.bracket.angle']
 
     expect(tokens[4][1]).toEqual value: 'Map', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
     expect(tokens[4][2]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.angle']
@@ -715,12 +747,52 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[3][7]).toEqual value: '\"value\"', scopes: ['source.java', 'meta.declaration.annotation', 'string.quoted.double']
     expect(tokens[3][8]).toEqual value: ')', scopes: ['source.java', 'meta.declaration.annotation', 'punctuation.bracket.round']
 
-  #
-  # fit 'tokenizes ternary', ->
-  #   tokens = tokenizeLine '(a > b) ? a : b;'
-  #
-  #   expect(tokens[6]).toEqual value: '?', scopes: ['source.java', 'keyword.control.ternary']
-  #   expect(tokens[8]).toEqual value: ':', scopes: ['source.java', 'keyword.control.ternary']
+  fit 'tokenizes constructor declarations', ->
+    tokens = tokenizeLines '''
+      class A {
+        public A() throws Exception {
+          super();
+        }
+      }
+    '''
+
+    expect(tokens[1][1]).toEqual value: 'public', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'storage.modifier']
+    expect(tokens[1][3]).toEqual value: 'A', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'entity.name.function']
+    expect(tokens[1][4]).toEqual value: '(', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'punctuation.bracket.round']
+    expect(tokens[1][5]).toEqual value: ')', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'punctuation.bracket.round']
+    expect(tokens[1][7]).toEqual value: 'throws', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'storage.modifier.throws']
+    expect(tokens[1][9]).toEqual value: 'Exception', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'storage.type']
+    expect(tokens[1][11]).toEqual value: '{', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'punctuation.bracket.curly']
+    expect(tokens[2][1]).toEqual value: 'super', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'variable.language']
+    expect(tokens[2][2]).toEqual value: '(', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'punctuation.bracket.round']
+    expect(tokens[2][3]).toEqual value: ')', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'punctuation.bracket.round']
+    expect(tokens[2][4]).toEqual value: ';', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'punctuation.terminator.statement']
+    expect(tokens[3][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'punctuation.bracket.curly']
+
+  fit 'tokenizes method declarations', ->
+    tokens = tokenizeLines '''
+      class A {
+        public int[] func(int size) throws Exception {
+          return null;
+        }
+      }
+    '''
+
+    expect(tokens[1][1]).toEqual value: 'public', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.modifier']
+    expect(tokens[1][3]).toEqual value: 'int', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[1][4]).toEqual value: '[', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.square']
+    expect(tokens[1][5]).toEqual value: ']', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.square']
+    expect(tokens[1][7]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'entity.name.function']
+    expect(tokens[1][8]).toEqual value: '(', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.round']
+    expect(tokens[1][9]).toEqual value: 'int', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[1][11]).toEqual value: ')', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.round']
+    expect(tokens[1][13]).toEqual value: 'throws', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.modifier.throws']
+    expect(tokens[1][15]).toEqual value: 'Exception', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[1][17]).toEqual value: '{', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.curly']
+    expect(tokens[2][1]).toEqual value: 'return', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control']
+    expect(tokens[2][3]).toEqual value: 'null', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'constant.language.null']
+    expect(tokens[2][4]).toEqual value: ';', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.terminator.statement']
+    expect(tokens[3][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.curly']
   #
   #
   # fit 'tokenizes field access', ->
@@ -756,24 +828,3 @@ describe 'Tree-sitter based Java grammar', ->
   #   expect(tokens[4][7]).toEqual value: 'method', scopes: ['source.java', 'entity.name.function']
   #
   #
-  # fit 'tokenizes method declarations', ->
-  #   tokens = tokenizeLines '''
-  #     class A {
-  #       public A() {
-  #         super();
-  #       }
-  #
-  #       public int method() {
-  #         return 1;
-  #       }
-  #     }
-  #   '''
-  #
-  #   expect(tokens[1][1]).toEqual value: 'public', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'storage.modifier']
-  #   expect(tokens[1][3]).toEqual value: 'A', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'entity.name.function']
-  #   expect(tokens[2][1]).toEqual value: 'super', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'variable.language']
-  #   expect(tokens[5][1]).toEqual value: 'public', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.modifier']
-  #   expect(tokens[5][3]).toEqual value: 'int', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
-  #   expect(tokens[5][5]).toEqual value: 'method', scopes: ['source.java', 'meta.class.body', 'meta.method', 'entity.name.function']
-  #   expect(tokens[6][1]).toEqual value: 'return', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control']
-  #   expect(tokens[6][3]).toEqual value: '1', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'constant.numeric']
