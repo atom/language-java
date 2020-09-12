@@ -258,7 +258,18 @@ scopes:
 
   'element_value_pair > identifier': 'variable.other.annotation.element'
 
-  #
+  ##############################################################
+  ### Methods
+  ##############################################################
+
+  'method_declaration': 'meta.method'
+  'method_declaration > identifier': 'entity.name.function'
+  'method_declaration > block': 'meta.method.body'
+
+  'throws > "throws"': 'storage.modifier.throws'
+
+  'spread_parameter > "..."': 'punctuation.definition.parameters.varargs'
+
   # # Separately process ternary operators
   # '''
   # ternary_expression > "?",
@@ -286,8 +297,3 @@ scopes:
   # 'constructor_body': 'meta.constructor.body'
   #
   # # Method declaration
-  # 'method_declaration': 'meta.method'
-  # 'method_header > method_declarator > identifier': 'entity.name.function'
-  # 'method_body': 'meta.method.body'
-
-  # 'spread_parameter > "..."': 'punctuation.definition.parameters.varargs'
