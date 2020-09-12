@@ -328,6 +328,11 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[6]).toEqual value: '?', scopes: ['source.java', 'keyword.control.ternary']
     expect(tokens[8]).toEqual value: ':', scopes: ['source.java', 'keyword.control.ternary']
 
+  fit 'tokenizes lambda expressions', ->
+    tokens = tokenizeLine '(String s1) -> s1.length() - outer.length();'
+
+    expect(tokens[5]).toEqual value: '->', scopes: ['source.java', 'storage.type.function.arrow.java']
+
   fit 'tokenizes comments', ->
     tokens = tokenizeLines '''
       // comment
