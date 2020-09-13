@@ -202,17 +202,6 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[12]).toEqual value: ']', scopes: ['source.java', 'punctuation.bracket.square']
     expect(tokens[14]).toEqual value: '}', scopes: ['source.java', 'punctuation.bracket.curly']
 
-  fit 'tokenizes spread parameters', ->
-    tokens = tokenizeLine 'public void method(String... args);'
-
-    expect(tokens[6]).toEqual value: '...', scopes: ['source.java', 'punctuation.definition.parameters.varargs']
-
-  fit 'tokenizes this and super', ->
-    tokens = tokenizeLine 'this.x + super.x;'
-
-    expect(tokens[0]).toEqual value: 'this', scopes: ['source.java', 'variable.language']
-    expect(tokens[5]).toEqual value: 'super', scopes: ['source.java', 'variable.language']
-
   fit 'tokenizes literals', ->
     tokens = tokenizeLines '''
       a = null;
@@ -319,6 +308,32 @@ describe 'Tree-sitter based Java grammar', ->
     tokens = tokenizeLine '(String s1) -> s1.length() - outer.length();'
 
     expect(tokens[5]).toEqual value: '->', scopes: ['source.java', 'storage.type.function.arrow']
+
+  fit 'tokenizes spread parameters', ->
+    tokens = tokenizeLine 'public void method(String... args);'
+
+    expect(tokens[6]).toEqual value: '...', scopes: ['source.java', 'punctuation.definition.parameters.varargs']
+
+  fit 'tokenizes this and super', ->
+    tokens = tokenizeLine 'this.x + super.x;'
+
+    expect(tokens[0]).toEqual value: 'this', scopes: ['source.java', 'variable.language']
+    expect(tokens[5]).toEqual value: 'super', scopes: ['source.java', 'variable.language']
+
+  fit 'tokenizes this and super in method invocations', ->
+    tokens = tokenizeLines '''
+      class A {
+        void func() {
+          super.debug("debug");
+          this.debug("debug");
+          property.super.func("arg");
+        }
+      }
+    '''
+
+    expect(tokens[2][1]).toEqual value: 'super', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'variable.language']
+    expect(tokens[3][1]).toEqual value: 'this', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'variable.language']
+    expect(tokens[4][3]).toEqual value: 'super', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'variable.language']
 
   fit 'tokenizes comments', ->
     tokens = tokenizeLines '''
@@ -787,38 +802,76 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[2][3]).toEqual value: 'null', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'constant.language.null']
     expect(tokens[2][4]).toEqual value: ';', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.terminator.statement']
     expect(tokens[3][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.curly']
-  #
-  #
-  # fit 'tokenizes field access', ->
-  #   tokens = tokenizeLines '''
-  #     a = b.c.d;
-  #     a = this.c.d;
-  #     a = super.c.d;
-  #   '''
-  #
-  #   expect(tokens[0][3]).toEqual value: 'b', scopes: ['source.java', 'variable.other.object.java']
-  #   expect(tokens[0][5]).toEqual value: 'c', scopes: ['source.java', 'variable.other.object.java']
-  #   expect(tokens[0][7]).toEqual value: 'd', scopes: ['source.java', 'variable.other.object.java']
-  #   expect(tokens[1][3]).toEqual value: 'this', scopes: ['source.java', 'variable.language']
-  #   expect(tokens[1][5]).toEqual value: 'c', scopes: ['source.java', 'variable.other.object.java']
-  #   expect(tokens[1][7]).toEqual value: 'd', scopes: ['source.java', 'variable.other.object.java']
-  #   expect(tokens[2][3]).toEqual value: 'super', scopes: ['source.java', 'variable.language']
-  #   expect(tokens[2][5]).toEqual value: 'c', scopes: ['source.java', 'variable.other.object.java']
-  #   expect(tokens[2][7]).toEqual value: 'd', scopes: ['source.java', 'variable.other.object.java']
-  #
-  # fit 'tokenizes method invocations', ->
-  #   tokens = tokenizeLines '''
-  #     a = method();
-  #     a = this.method();
-  #     a = super.method();
-  #     a = b.method();
-  #     a = b.c.method();
-  #   '''
-  #
-  #   expect(tokens[0][3]).toEqual value: 'method', scopes: ['source.java', 'entity.name.function']
-  #   expect(tokens[1][5]).toEqual value: 'method', scopes: ['source.java', 'entity.name.function']
-  #   expect(tokens[2][5]).toEqual value: 'method', scopes: ['source.java', 'entity.name.function']
-  #   expect(tokens[3][5]).toEqual value: 'method', scopes: ['source.java', 'entity.name.function']
-  #   expect(tokens[4][7]).toEqual value: 'method', scopes: ['source.java', 'entity.name.function']
-  #
-  #
+
+  fit 'tokenizes method invocations', ->
+    tokens = tokenizeLines '''
+      class A {
+        void func() {
+          func("arg");
+          obj.func("arg");
+          obj.prop1.prop2.func();
+          obj.prop1.func().prop2.func();
+          super.func("arg");
+          super.prop1.func("arg");
+          this.func("arg");
+          this.prop1.func("arg");
+          this.prop1.prop2.func("arg");
+          this.prop1.func().func("arg");
+          property.super.func("arg");
+        }
+      }
+    '''
+
+    expect(tokens[2][1]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[3][3]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[4][7]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[5][5]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[5][11]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[6][3]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[7][5]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[8][3]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[9][5]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[10][7]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[11][5]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[11][9]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[12][5]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+
+  fit 'tokenizes method references', ->
+    tokens = tokenizeLines '''
+      class A {
+        void func() {
+          Arrays.sort(rosterAsArray, Person::compareByAge);
+          call(Person::new);
+          call(java.util.ArrayList<String>::new);
+          call(com.test.Util::create);
+          call(super::new);
+          call(testObject::method);
+        }
+      }
+    '''
+
+    expect(tokens[2][8]).toEqual value: 'Person', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[2][9]).toEqual value: '::', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control.method']
+    expect(tokens[2][10]).toEqual value: 'compareByAge', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[3][3]).toEqual value: 'Person', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[3][4]).toEqual value: '::', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control.method']
+    expect(tokens[3][5]).toEqual value: 'new', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    expect(tokens[4][3]).toEqual value: 'java', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[4][5]).toEqual value: 'util', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[4][7]).toEqual value: 'ArrayList', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[4][9]).toEqual value: 'String', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[4][11]).toEqual value: '::', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control.method']
+    expect(tokens[4][12]).toEqual value: 'new', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    # We cannot parse "com.test.Util" correctly in this example
+    # TODO: fix parsing of "com.test.Util::create"
+    expect(tokens[5][8]).toEqual value: '::', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control.method']
+    expect(tokens[5][9]).toEqual value: 'create', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+
+    expect(tokens[6][3]).toEqual value: 'super', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'variable.language']
+    expect(tokens[6][4]).toEqual value: '::', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control.method']
+    expect(tokens[6][5]).toEqual value: 'new', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+    # We also cannot differentiate correctly between an object and a class, so everything is "storage.type"
+    # TODO: fix parsing of "containingObject::instanceMethodName"
+    expect(tokens[7][3]).toEqual value: 'testObject', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[7][4]).toEqual value: '::', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control.method']
+    expect(tokens[7][5]).toEqual value: 'method', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
