@@ -1,7 +1,7 @@
 name: 'Java'
 scopeName: 'source.java'
 type: 'tree-sitter'
-parser: 'tree-sitter-java'
+parser: 'tree-sitter-java-dev'
 
 fileTypes: [
   'java'
@@ -208,15 +208,14 @@ scopes:
 
   'import_declaration': 'meta.import'
   'import_declaration > "import"': 'keyword.other.import'
-  'import_declaration > "static"': 'storage.modifier'
-  'import_declaration > identifier': 'storage.type'
-  'import_declaration > asterisk > "*"': 'variable.language.wildcard.java'
+  'import_declaration > "static"': 'keyword.other.static'
+  'import_declaration > asterisk > "*"': 'variable.language.wildcard'
 
   ##############################################################
   ### Expressions
   ##############################################################
 
-  'lambda_expression > "->"': 'storage.type.function.arrow.java'
+  'lambda_expression > "->"': 'storage.type.function.arrow'
 
   ##############################################################
   ### Class declaration
@@ -289,21 +288,10 @@ scopes:
   ### Method access and reference
   ##############################################################
 
-  # Method access
-  # TODO: handle separation between cases:
-  # - "identifier(arguments)"
-  # - "identifier.identifier(arguments)"
-  # 'method_invocation > identifier': 'entity.name.function'
-  'method_invocation > identifier:nth-child(2)': 'entity.name.function'
-  'method_invocation > identifier:nth-child(4)': 'entity.name.function'
-  # 'method_invocation > identifier:nth-child(0)': 'entity.name.function'
-  # 'method_invocation > identifier': {'match': /^[a-zA-Z_]\w*(?=\()/, 'scopes': 'entity.name.function'}
+  'method_invocation > method_invocation_name > identifier': 'entity.name.function'
 
   # Method reference
-  '''
-  method_reference > identifier:nth-child(0),
-  method_reference > scoped_identifier > identifier
-  ''': 'storage.type'
+  'method_reference > identifier': 'storage.type'
 
   'method_reference > "::"': 'keyword.control.method'
 
@@ -313,5 +301,5 @@ scopes:
   ''': 'entity.name.function'
 
   # Field access
-  # 'field_access > identifier': 'variable.other.object.java' # for super.property
+  # 'field_access > identifier': 'variable.other.object' # for super.property
   # 'scoped_identifier > identifier': 'variable.other.object.java' # for obj.property

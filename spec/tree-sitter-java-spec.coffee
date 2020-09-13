@@ -261,32 +261,19 @@ describe 'Tree-sitter based Java grammar', ->
     tokens = tokenizeLine 'import com.package;'
 
     expect(tokens[0]).toEqual value: 'import', scopes: ['source.java', 'meta.import', 'keyword.other.import']
-    expect(tokens[2]).toEqual value: 'com', scopes: ['source.java', 'meta.import', 'storage.type']
-    expect(tokens[3]).toEqual value: '.', scopes: ['source.java', 'meta.import', 'punctuation.separator.period']
-    expect(tokens[4]).toEqual value: 'package', scopes: ['source.java', 'meta.import', 'storage.type']
-    expect(tokens[5]).toEqual value: ';', scopes: ['source.java', 'meta.import', 'punctuation.terminator.statement']
 
   fit 'tokenizes static imports', ->
     tokens = tokenizeLine 'import static com.package;'
 
     expect(tokens[0]).toEqual value: 'import', scopes: ['source.java', 'meta.import', 'keyword.other.import']
-    expect(tokens[2]).toEqual value: 'static', scopes: ['source.java', 'meta.import', 'storage.modifier']
-    expect(tokens[4]).toEqual value: 'com', scopes: ['source.java', 'meta.import', 'storage.type']
-    expect(tokens[5]).toEqual value: '.', scopes: ['source.java', 'meta.import', 'punctuation.separator.period']
-    expect(tokens[6]).toEqual value: 'package', scopes: ['source.java', 'meta.import', 'storage.type']
-    expect(tokens[7]).toEqual value: ';', scopes: ['source.java', 'meta.import', 'punctuation.terminator.statement']
+    expect(tokens[2]).toEqual value: 'static', scopes: ['source.java', 'meta.import', 'keyword.other.static']
 
   fit 'tokenizes imports with asterisk', ->
     tokens = tokenizeLine 'import static com.package.*;'
 
     expect(tokens[0]).toEqual value: 'import', scopes: ['source.java', 'meta.import', 'keyword.other.import']
-    expect(tokens[2]).toEqual value: 'static', scopes: ['source.java', 'meta.import', 'storage.modifier']
-    expect(tokens[4]).toEqual value: 'com', scopes: ['source.java', 'meta.import', 'storage.type']
-    expect(tokens[5]).toEqual value: '.', scopes: ['source.java', 'meta.import', 'punctuation.separator.period']
-    expect(tokens[6]).toEqual value: 'package', scopes: ['source.java', 'meta.import', 'storage.type']
-    expect(tokens[7]).toEqual value: '.', scopes: ['source.java', 'meta.import', 'punctuation.separator.period']
-    expect(tokens[8]).toEqual value: '*', scopes: ['source.java', 'meta.import', 'variable.language.wildcard.java']
-    expect(tokens[9]).toEqual value: ';', scopes: ['source.java', 'meta.import', 'punctuation.terminator.statement']
+    expect(tokens[2]).toEqual value: 'static', scopes: ['source.java', 'meta.import', 'keyword.other.static']
+    expect(tokens[7]).toEqual value: '*', scopes: ['source.java', 'meta.import', 'variable.language.wildcard']
 
   fit 'tokenizes static initializers', ->
     tokens = tokenizeLines '''
@@ -331,7 +318,7 @@ describe 'Tree-sitter based Java grammar', ->
   fit 'tokenizes lambda expressions', ->
     tokens = tokenizeLine '(String s1) -> s1.length() - outer.length();'
 
-    expect(tokens[5]).toEqual value: '->', scopes: ['source.java', 'storage.type.function.arrow.java']
+    expect(tokens[5]).toEqual value: '->', scopes: ['source.java', 'storage.type.function.arrow']
 
   fit 'tokenizes comments', ->
     tokens = tokenizeLines '''
@@ -757,6 +744,7 @@ describe 'Tree-sitter based Java grammar', ->
       class A {
         public A() throws Exception {
           super();
+          this.a = 1;
         }
       }
     '''
@@ -772,7 +760,8 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[2][2]).toEqual value: '(', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'punctuation.bracket.round']
     expect(tokens[2][3]).toEqual value: ')', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'punctuation.bracket.round']
     expect(tokens[2][4]).toEqual value: ';', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'punctuation.terminator.statement']
-    expect(tokens[3][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'punctuation.bracket.curly']
+    expect(tokens[3][1]).toEqual value: 'this', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'variable.language']
+    expect(tokens[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'punctuation.bracket.curly']
 
   fit 'tokenizes method declarations', ->
     tokens = tokenizeLines '''
