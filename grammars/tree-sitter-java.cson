@@ -291,8 +291,6 @@ scopes:
   'method_invocation > method_invocation_name > identifier': 'entity.name.function'
 
   # Method reference
-  'method_reference > identifier': 'storage.type'
-
   'method_reference > "::"': 'keyword.control.method'
 
   '''
@@ -303,3 +301,11 @@ scopes:
   # Field access
   # 'field_access > identifier': 'variable.other.object' # for super.property
   # 'scoped_identifier > identifier': 'variable.other.object.java' # for obj.property
+
+  '''
+  field_access > identifier,
+  method_reference > identifier,
+  method_invocation > identifier
+  ''': [
+    {match: '^[A-Z]', scopes: 'storage.type'}
+  ]

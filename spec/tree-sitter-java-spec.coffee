@@ -864,14 +864,36 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[4][12]).toEqual value: 'new', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
     # We cannot parse "com.test.Util" correctly in this example
     # TODO: fix parsing of "com.test.Util::create"
+    expect(tokens[5][7]).toEqual value: 'Util', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
     expect(tokens[5][8]).toEqual value: '::', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control.method']
     expect(tokens[5][9]).toEqual value: 'create', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
 
     expect(tokens[6][3]).toEqual value: 'super', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'variable.language']
     expect(tokens[6][4]).toEqual value: '::', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control.method']
     expect(tokens[6][5]).toEqual value: 'new', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
-    # We also cannot differentiate correctly between an object and a class, so everything is "storage.type"
-    # TODO: fix parsing of "containingObject::instanceMethodName"
-    expect(tokens[7][3]).toEqual value: 'testObject', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    # testObject is not scoped as "storage.type"
+    expect(tokens[7][3]).toEqual value: 'testObject', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body']
     expect(tokens[7][4]).toEqual value: '::', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control.method']
     expect(tokens[7][5]).toEqual value: 'method', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+
+  fit 'tokenizes field access', ->
+    tokens = tokenizeLines '''
+      class A {
+        void func() {
+          var1 = Test.class;
+          var2 = com.test.Test.class;
+          var5 = Test.staticProperty;
+          System.out.println("test");
+          Arrays.sort(array);
+        }
+      }
+    '''
+
+    expect(tokens[2][4]).toEqual value: 'Test', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    # TODO: it would be good to fix the scope for "com.test" component of the class name
+    expect(tokens[3][3]).toEqual value: ' com', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body']
+    expect(tokens[3][5]).toEqual value: 'test', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body']
+    expect(tokens[3][7]).toEqual value: 'Test', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[4][4]).toEqual value: 'Test', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[5][1]).toEqual value: 'System', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[6][1]).toEqual value: 'Arrays', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
