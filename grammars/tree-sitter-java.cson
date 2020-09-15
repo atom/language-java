@@ -7,19 +7,21 @@ fileTypes: [
   'java'
 ]
 
-# folds: [
-#   {
-#     type: [
-#       'comment',
-#       'class_declaration',
-#       'enum_declaration',
-#       'normal_interface_declaration',
-#       'constructor_declaration',
-#       'switch_statement',
-#       'block'
-#     ]
-#   }
-# ]
+folds: [
+  {
+    type: [
+      'comment',
+      'class_body',
+      'enum_body',
+      'interface_body'
+      'annotation_type_body',
+      'module_body',
+      'constructor_body',
+      'block',
+      'switch_block'
+    ]
+  }
+]
 
 comments:
   start: '// '
