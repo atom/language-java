@@ -76,11 +76,11 @@ describe 'Tree-sitter based Java grammar', ->
 
   # Unit tests
 
-  fit 'parses the grammar', ->
+  it 'parses the grammar', ->
     expect(grammar).toBeTruthy()
     expect(grammar.scopeName).toBe 'source.java'
 
-  fit 'tokenizes punctuation', ->
+  it 'tokenizes punctuation', ->
     tokens = tokenizeLine 'int a, b, c;'
 
     expect(tokens[2]).toEqual value: ',', scopes: ['source.java', 'punctuation.separator.delimiter']
@@ -99,7 +99,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[5]).toEqual value: '.', scopes: ['source.java', 'punctuation.separator.period']
     expect(tokens[9]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.statement']
 
-  fit 'tokenizes comparison', ->
+  it 'tokenizes comparison', ->
     tokens = tokenizeLines '''
       a > b;
       a < b;
@@ -116,7 +116,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[4][1]).toEqual value: '<=', scopes: ['source.java', 'keyword.operator.comparison']
     expect(tokens[5][1]).toEqual value: '!=', scopes: ['source.java', 'keyword.operator.comparison']
 
-  fit 'tokenizes logical', ->
+  it 'tokenizes logical', ->
     tokens = tokenizeLines '''
       a && b;
       a || b;
@@ -127,7 +127,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[1][1]).toEqual value: '||', scopes: ['source.java', 'keyword.operator.logical']
     expect(tokens[2][0]).toEqual value: '!', scopes: ['source.java', 'keyword.operator.logical']
 
-  fit 'tokenizes arithmetic', ->
+  it 'tokenizes arithmetic', ->
     tokens = tokenizeLines '''
       a + b;
       a - b;
@@ -156,7 +156,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[10][1]).toEqual value: '++', scopes: ['source.java', 'keyword.operator.arithmetic']
     expect(tokens[11][0]).toEqual value: '--', scopes: ['source.java', 'keyword.operator.arithmetic']
 
-  fit 'tokenizes bitwise', ->
+  it 'tokenizes bitwise', ->
     tokens = tokenizeLines '''
       a & b;
       a | b;
@@ -187,7 +187,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[11][1]).toEqual value: '>>>=', scopes: ['source.java', 'keyword.operator.bitwise']
     expect(tokens[12][0]).toEqual value: '~', scopes: ['source.java', 'keyword.operator.bitwise']
 
-  fit 'tokenizes brackets', ->
+  it 'tokenizes brackets', ->
     tokens = tokenizeLine '{ (a + b) + c[d] }'
 
     expect(tokens[0]).toEqual value: '{', scopes: ['source.java', 'punctuation.bracket.curly']
@@ -197,7 +197,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[12]).toEqual value: ']', scopes: ['source.java', 'punctuation.bracket.square']
     expect(tokens[14]).toEqual value: '}', scopes: ['source.java', 'punctuation.bracket.curly']
 
-  fit 'tokenizes literals', ->
+  it 'tokenizes literals', ->
     tokens = tokenizeLines '''
       a = null;
       a = true;
@@ -232,7 +232,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[13][3]).toEqual value: '\'\u0108\'', scopes: ['source.java', 'string.quoted.single']
     expect(tokens[14][3]).toEqual value: '\"abc\"', scopes: ['source.java', 'string.quoted.double']
 
-  fit 'tokenizes constants', ->
+  it 'tokenizes constants', ->
     tokens = tokenizeLines '''
       String CONSTANT_STR = "abc";
       a = CONSTANT + obj.func();
@@ -245,7 +245,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[2][6]).toEqual value: 'CONSTANT_ANOTHER', scopes: ['source.java', 'constant.other']
     expect(tokens[3][5]).toEqual value: 'MAX_VALUE', scopes: ['source.java', 'constant.other']
 
-  fit 'tokenizes packages', ->
+  it 'tokenizes packages', ->
     tokens = tokenizeLine 'package com.test;'
 
     expect(tokens[0]).toEqual value: 'package', scopes: ['source.java', 'meta.package', 'keyword.other.package']
@@ -254,25 +254,25 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[3]).toEqual value: 'test', scopes: ['source.java', 'meta.package']
     expect(tokens[4]).toEqual value: ';', scopes: ['source.java', 'meta.package', 'punctuation.terminator.statement']
 
-  fit 'tokenizes imports', ->
+  it 'tokenizes imports', ->
     tokens = tokenizeLine 'import com.package;'
 
     expect(tokens[0]).toEqual value: 'import', scopes: ['source.java', 'meta.import', 'keyword.other.import']
 
-  fit 'tokenizes static imports', ->
+  it 'tokenizes static imports', ->
     tokens = tokenizeLine 'import static com.package;'
 
     expect(tokens[0]).toEqual value: 'import', scopes: ['source.java', 'meta.import', 'keyword.other.import']
     expect(tokens[2]).toEqual value: 'static', scopes: ['source.java', 'meta.import', 'keyword.other.static']
 
-  fit 'tokenizes imports with asterisk', ->
+  it 'tokenizes imports with asterisk', ->
     tokens = tokenizeLine 'import static com.package.*;'
 
     expect(tokens[0]).toEqual value: 'import', scopes: ['source.java', 'meta.import', 'keyword.other.import']
     expect(tokens[2]).toEqual value: 'static', scopes: ['source.java', 'meta.import', 'keyword.other.static']
     expect(tokens[7]).toEqual value: '*', scopes: ['source.java', 'meta.import', 'variable.language.wildcard']
 
-  fit 'tokenizes static initializers', ->
+  it 'tokenizes static initializers', ->
     tokens = tokenizeLines '''
       class A {
         private static int a = 0;
@@ -286,7 +286,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[1][3]).toEqual value: 'static', scopes: ['source.java', 'meta.class.body', 'storage.modifier']
     expect(tokens[3][1]).toEqual value: 'static', scopes: ['source.java', 'meta.class.body', 'storage.modifier']
 
-  fit 'tokenizes synchronized blocks', ->
+  it 'tokenizes synchronized blocks', ->
     tokens = tokenizeLines '''
       class A {
         synchronized {
@@ -297,7 +297,7 @@ describe 'Tree-sitter based Java grammar', ->
 
     expect(tokens[1][1]).toEqual value: 'synchronized', scopes: ['source.java', 'meta.class.body', 'storage.modifier']
 
-  fit 'tokenizes instanceof', ->
+  it 'tokenizes instanceof', ->
     tokens = tokenizeLines '''
       (a instanceof Tpe);
       (a instanceof tpe);
@@ -319,29 +319,29 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[4][4]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
     expect(tokens[5][4]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
 
-  fit 'tokenizes ternary', ->
+  it 'tokenizes ternary', ->
     tokens = tokenizeLine '(a > b) ? a : b;'
 
     expect(tokens[6]).toEqual value: '?', scopes: ['source.java', 'keyword.control.ternary']
     expect(tokens[8]).toEqual value: ':', scopes: ['source.java', 'keyword.control.ternary']
 
-  fit 'tokenizes lambda expressions', ->
+  it 'tokenizes lambda expressions', ->
     tokens = tokenizeLine '(String s1) -> s1.length() - outer.length();'
 
     expect(tokens[5]).toEqual value: '->', scopes: ['source.java', 'storage.type.function.arrow']
 
-  fit 'tokenizes spread parameters', ->
+  it 'tokenizes spread parameters', ->
     tokens = tokenizeLine 'public void method(String... args);'
 
     expect(tokens[6]).toEqual value: '...', scopes: ['source.java', 'punctuation.definition.parameters.varargs']
 
-  fit 'tokenizes this and super', ->
+  it 'tokenizes this and super', ->
     tokens = tokenizeLine 'this.x + super.x;'
 
     expect(tokens[0]).toEqual value: 'this', scopes: ['source.java', 'variable.language']
     expect(tokens[5]).toEqual value: 'super', scopes: ['source.java', 'variable.language']
 
-  fit 'tokenizes this and super in method invocations', ->
+  it 'tokenizes this and super in method invocations', ->
     tokens = tokenizeLines '''
       class A {
         void func() {
@@ -356,7 +356,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[3][1]).toEqual value: 'this', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'variable.language']
     expect(tokens[4][3]).toEqual value: 'super', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'variable.language']
 
-  fit 'tokenizes comments', ->
+  it 'tokenizes comments', ->
     tokens = tokenizeLines '''
       // comment
 
@@ -370,7 +370,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[3][0]).toEqual value: ' comment', scopes: ['source.java', 'comment.block']
     expect(tokens[4][0]).toEqual value: ' */', scopes: ['source.java', 'comment.block']
 
-  fit 'tokenizes type definitions', ->
+  it 'tokenizes type definitions', ->
     tokens = tokenizeLines '''
       class A {
         void method() { }
@@ -398,7 +398,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[9][5]).toEqual value: 'List', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
     expect(tokens[9][7]).toEqual value: 'T', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
 
-  fit 'tokenizes type casting', ->
+  it 'tokenizes type casting', ->
     tokens = tokenizeLines '''
       class A {
         A<T> method() {
@@ -415,7 +415,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[2][7]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.angle']
     expect(tokens[2][8]).toEqual value: ')', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.round']
 
-  fit 'tokenizes class generic type definitions', ->
+  it 'tokenizes class generic type definitions', ->
     tokens = tokenizeLines '''
       class Test<K, V> {}
       class Test<A extends java.util.List<T>> {}
@@ -518,7 +518,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[7][21]).toEqual value: '>', scopes: ['source.java', 'punctuation.bracket.angle']
     expect(tokens[7][22]).toEqual value: '>', scopes: ['source.java', 'punctuation.bracket.angle']
 
-  fit 'tokenizes generic type definitions', ->
+  it 'tokenizes generic type definitions', ->
     tokens = tokenizeLines '''
       abstract class Generics {
         HashMap<Integer, String> map = new HashMap<>();
@@ -679,7 +679,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[14][15]).toEqual value: 'T', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
     expect(tokens[14][16]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.angle']
 
-  fit 'tokenizes classes', ->
+  it 'tokenizes classes', ->
     tokens = tokenizeLine 'public abstract static class A { }'
 
     expect(tokens[0]).toEqual value: 'public', scopes: ['source.java', 'storage.modifier']
@@ -700,7 +700,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[10]).toEqual value: 'C', scopes: ['source.java', 'storage.type']
     expect(tokens[13]).toEqual value: 'D', scopes: ['source.java', 'storage.type']
 
-  fit 'tokenizes interfaces', ->
+  it 'tokenizes interfaces', ->
     tokens = tokenizeLine 'public interface A { }'
 
     expect(tokens[0]).toEqual value: 'public', scopes: ['source.java', 'storage.modifier']
@@ -709,7 +709,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[6]).toEqual value: '{', scopes: ['source.java', 'meta.interface.body', 'punctuation.bracket.curly']
     expect(tokens[8]).toEqual value: '}', scopes: ['source.java', 'meta.interface.body', 'punctuation.bracket.curly']
 
-  fit 'tokenizes annotated interfaces', ->
+  it 'tokenizes annotated interfaces', ->
     tokens = tokenizeLines '''
       public @interface A {
         String method() default "abc";
@@ -726,7 +726,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[1][9]).toEqual value: '\"abc\"', scopes: ['source.java', 'meta.interface.annotated.body', 'string.quoted.double']
     expect(tokens[2][0]).toEqual value: '}', scopes: ['source.java', 'meta.interface.annotated.body', 'punctuation.bracket.curly']
 
-  fit 'tokenizes enums', ->
+  it 'tokenizes enums', ->
     tokens = tokenizeLines '''
       public enum A implements B {
         CONSTANT1,
@@ -748,7 +748,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[4][1]).toEqual value: 'constant4', scopes: ['source.java', 'meta.enum.body', 'constant.other.enum']
     expect(tokens[5][0]).toEqual value: '}', scopes: ['source.java', 'meta.enum.body', 'punctuation.bracket.curly']
 
-  fit 'tokenizes annotations', ->
+  it 'tokenizes annotations', ->
     tokens = tokenizeLines '''
       @Annotation1
       @Annotation2()
@@ -779,7 +779,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[3][7]).toEqual value: '\"value\"', scopes: ['source.java', 'meta.declaration.annotation', 'string.quoted.double']
     expect(tokens[3][8]).toEqual value: ')', scopes: ['source.java', 'meta.declaration.annotation', 'punctuation.bracket.round']
 
-  fit 'tokenizes constructor declarations', ->
+  it 'tokenizes constructor declarations', ->
     tokens = tokenizeLines '''
       class A {
         public A() throws Exception {
@@ -803,7 +803,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[3][1]).toEqual value: 'this', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'variable.language']
     expect(tokens[4][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.body', 'meta.constructor', 'meta.constructor.body', 'punctuation.bracket.curly']
 
-  fit 'tokenizes method declarations', ->
+  it 'tokenizes method declarations', ->
     tokens = tokenizeLines '''
       class A {
         public int[] func(int size) throws Exception {
@@ -840,7 +840,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[5][9]).toEqual value: '{', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.curly']
     expect(tokens[7][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.curly']
 
-  fit 'tokenizes method invocations', ->
+  it 'tokenizes method invocations', ->
     tokens = tokenizeLines '''
       class A {
         void func() {
@@ -873,7 +873,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[11][9]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
     expect(tokens[12][5]).toEqual value: 'func', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
 
-  fit 'tokenizes method references', ->
+  it 'tokenizes method references', ->
     tokens = tokenizeLines '''
       class A {
         void func() {
@@ -913,7 +913,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[7][4]).toEqual value: '::', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control.method']
     expect(tokens[7][5]).toEqual value: 'method', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
 
-  fit 'tokenizes field access', ->
+  it 'tokenizes field access', ->
     tokens = tokenizeLines '''
       class A {
         void func() {
