@@ -120,9 +120,7 @@ scopes:
   super
   ''': 'variable.language'
 
-  ##############################################################
-  ### Literals
-  ##############################################################
+  # Literals and constants
 
   'null_literal': 'constant.language.null'
 
@@ -146,9 +144,7 @@ scopes:
   'character_literal': 'string.quoted.single'
   'string_literal': 'string.quoted.double'
 
-  ##############################################################
-  ### Type definitions
-  ##############################################################
+  # Primitive and simple types
 
   '''
   void_type,
@@ -160,6 +156,7 @@ scopes:
   ''': 'storage.type'
 
   # Generic types
+
   '''
   type_arguments > "<",
   type_arguments > ">",
@@ -170,14 +167,11 @@ scopes:
   'type_arguments > wildcard > "?"': 'storage.type.generic.wildcard'
   'type_arguments > wildcard > "extends"': "storage.modifier.extends"
   'type_arguments > wildcard > super': "storage.modifier.super"
-
   # generic bounds in classes
   'type_bound > "extends"': "storage.modifier.extends"
   'type_bound > "&"': 'punctuation.separator.types'
 
-  ##############################################################
-  ### Modifiers
-  ##############################################################
+  # Modifiers and keywords
 
   '''
   "public",
@@ -201,9 +195,7 @@ scopes:
   'super_interfaces > "implements"': 'storage.modifier.implements'
   'static_initializer > "static"': 'storage.modifier'
 
-  ##############################################################
-  ### Package and imports
-  ##############################################################
+  # Package and imports
 
   'package_declaration': 'meta.package'
   'package_declaration > "package"': 'keyword.other.package'
@@ -213,24 +205,18 @@ scopes:
   'import_declaration > "static"': 'keyword.other.static'
   'import_declaration > asterisk > "*"': 'variable.language.wildcard'
 
-  ##############################################################
-  ### Expressions
-  ##############################################################
+  # Expressions
 
   'lambda_expression > "->"': 'storage.type.function.arrow'
 
-  ##############################################################
-  ### Class declaration
-  ##############################################################
+  # Class declaration
 
   'class_declaration > "class"': 'keyword.other.class'
   'class_declaration > identifier': 'entity.name.type.class'
 
   'class_declaration > class_body': 'meta.class.body'
 
-  ##############################################################
-  ### Enum declaration
-  ##############################################################
+  # Enum declaration
 
   'enum_declaration > "enum"': 'keyword.other.enum'
   'enum_declaration > identifier': 'entity.name.type.enum'
@@ -239,9 +225,7 @@ scopes:
 
   'enum_constant > identifier': 'constant.other.enum'
 
-  ##############################################################
-  ### Interface declaration
-  ##############################################################
+  # Interface declaration
 
   'interface_declaration > "interface"': 'keyword.other.interface'
   'interface_declaration > identifier': 'entity.name.type.interface'
@@ -256,9 +240,7 @@ scopes:
 
   'annotation_type_element_declaration > identifier': 'entity.name.function'
 
-  ##############################################################
-  ### Annotations
-  ##############################################################
+  # Annotations
 
   'marker_annotation': 'meta.declaration.annotation'
   'marker_annotation > "@"': 'punctuation.definition.annotation'
@@ -270,9 +252,7 @@ scopes:
 
   'element_value_pair > identifier': 'variable.other.annotation.element'
 
-  ##############################################################
-  ### Methods
-  ##############################################################
+  # Methods
 
   'method_declaration': 'meta.method'
   'method_declaration > identifier': 'entity.name.function'
@@ -286,9 +266,7 @@ scopes:
 
   'spread_parameter > "..."': 'punctuation.definition.parameters.varargs'
 
-  ##############################################################
-  ### Method access and reference
-  ##############################################################
+  # Method access and reference
 
   'method_invocation > method_invocation_name > identifier': 'entity.name.function'
 
