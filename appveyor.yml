@@ -1,7 +1,5 @@
 version: "{build}"
 
-image: Visual Studio 2015
-
 platform: x64
 
 branches:
