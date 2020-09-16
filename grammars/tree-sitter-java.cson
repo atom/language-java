@@ -300,14 +300,14 @@ scopes:
   method_reference > identifier:nth-child(2)
   ''': 'entity.name.function'
 
-  # Field access
-  # 'field_access > identifier': 'variable.other.object' # for super.property
-  # 'scoped_identifier > identifier': 'variable.other.object.java' # for obj.property
-
   '''
   field_access > identifier,
   method_reference > identifier,
   method_invocation > identifier
   ''': [
+    {match: '^[A-Z][A-Z_]+$', scopes: 'constant.other'},
     {match: '^[A-Z]', scopes: 'storage.type'}
+  ]
+  'identifier': [
+    {match: '^[A-Z][A-Z_]+$', scopes: 'constant.other'}
   ]

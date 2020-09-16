@@ -99,11 +99,6 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[5]).toEqual value: '.', scopes: ['source.java', 'punctuation.separator.period']
     expect(tokens[9]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.statement']
 
-  fit 'tokenizes instanceof', ->
-    tokens = tokenizeLine 'a instanceof A'
-
-    expect(tokens[1]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
-
   fit 'tokenizes comparison', ->
     tokens = tokenizeLines '''
       a > b;
@@ -237,6 +232,19 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[13][3]).toEqual value: '\'\u0108\'', scopes: ['source.java', 'string.quoted.single']
     expect(tokens[14][3]).toEqual value: '\"abc\"', scopes: ['source.java', 'string.quoted.double']
 
+  fit 'tokenizes constants', ->
+    tokens = tokenizeLines '''
+      String CONSTANT_STR = "abc";
+      a = CONSTANT + obj.func();
+      b = conf.get(CONSTANT_ANOTHER);
+      c = Integer.MAX_VALUE;
+    '''
+
+    expect(tokens[0][2]).toEqual value: 'CONSTANT_STR', scopes: ['source.java', 'constant.other']
+    expect(tokens[1][3]).toEqual value: 'CONSTANT', scopes: ['source.java', 'constant.other']
+    expect(tokens[2][6]).toEqual value: 'CONSTANT_ANOTHER', scopes: ['source.java', 'constant.other']
+    expect(tokens[3][5]).toEqual value: 'MAX_VALUE', scopes: ['source.java', 'constant.other']
+
   fit 'tokenizes packages', ->
     tokens = tokenizeLine 'package com.test;'
 
@@ -291,12 +299,25 @@ describe 'Tree-sitter based Java grammar', ->
 
   fit 'tokenizes instanceof', ->
     tokens = tokenizeLines '''
+      (a instanceof Tpe);
+      (a instanceof tpe);
+      (a instanceof tpTpe);
+      (a instanceof tp.Tpe);
       if (a instanceof B) { }
       if (aaBb instanceof B) { }
     '''
 
-    expect(tokens[0][4]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
-    expect(tokens[1][4]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
+    expect(tokens[0][2]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
+    expect(tokens[0][4]).toEqual value: 'Tpe', scopes: ['source.java', 'storage.type']
+    expect(tokens[1][2]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
+    expect(tokens[1][4]).toEqual value: 'tpe', scopes: ['source.java', 'storage.type']
+    expect(tokens[2][2]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
+    expect(tokens[2][4]).toEqual value: 'tpTpe', scopes: ['source.java', 'storage.type']
+    expect(tokens[3][2]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
+    expect(tokens[3][4]).toEqual value: 'tp', scopes: ['source.java', 'storage.type']
+    expect(tokens[3][6]).toEqual value: 'Tpe', scopes: ['source.java', 'storage.type']
+    expect(tokens[4][4]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
+    expect(tokens[5][4]).toEqual value: 'instanceof', scopes: ['source.java', 'keyword.operator.instanceof']
 
   fit 'tokenizes ternary', ->
     tokens = tokenizeLine '(a > b) ? a : b;'
