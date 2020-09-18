@@ -3085,3 +3085,17 @@ describe 'Java grammar', ->
     expect(lines[1][5]).toEqual value: ')', scopes: scopes.concat(['meta.record.identifier.java', 'punctuation.definition.parameters.end.bracket.round.java'])
     expect(lines[1][7]).toEqual value: '{', scopes: scopes.concat(['meta.record.body.java', 'punctuation.section.class.begin.bracket.curly.java'])
     expect(lines[1][8]).toEqual value: '}', scopes: scopes.concat(['punctuation.section.class.end.bracket.curly.java'])
+
+  it 'tokenizes yield keyword', ->
+    lines = grammar.tokenizeLines '''
+      public static int calculate(int d) {
+        return switch (d) {
+          default -> {
+            int l = d.toString().length();
+            yield l*l;
+          }
+        };
+      }
+      '''
+
+    expect(lines[4][1]).toEqual value: 'yield', scopes: ['source.java', 'keyword.control.java']
