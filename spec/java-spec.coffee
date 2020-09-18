@@ -3099,3 +3099,23 @@ describe 'Java grammar', ->
       '''
 
     expect(lines[4][1]).toEqual value: 'yield', scopes: ['source.java', 'keyword.control.java']
+
+  it 'tokenizes sealed and permits keywords', ->
+    lines = grammar.tokenizeLines '''
+      public sealed class X extends A implements B permits C { }
+      public sealed class X permits A extends B implements C { }
+      public sealed class X implements A permits B extends C { }
+      public sealed class Shape permits Circle, Rectangle, Square { }
+      public sealed interface ConstantDesc permits String, Integer { }
+      '''
+
+    expect(lines[0][2]).toEqual value: 'sealed', scopes: ['source.java', 'meta.class.java', 'storage.modifier.java']
+    expect(lines[0][16]).toEqual value: 'permits', scopes: ['source.java', 'meta.class.java', 'meta.definition.class.permits.classes.java', 'storage.modifier.permits.java']
+    expect(lines[1][2]).toEqual value: 'sealed', scopes: ['source.java', 'meta.class.java', 'storage.modifier.java']
+    expect(lines[1][8]).toEqual value: 'permits', scopes: ['source.java', 'meta.class.java', 'meta.definition.class.permits.classes.java', 'storage.modifier.permits.java']
+    expect(lines[2][2]).toEqual value: 'sealed', scopes: ['source.java', 'meta.class.java', 'storage.modifier.java']
+    expect(lines[2][12]).toEqual value: 'permits', scopes: ['source.java', 'meta.class.java', 'meta.definition.class.permits.classes.java', 'storage.modifier.permits.java']
+    expect(lines[3][2]).toEqual value: 'sealed', scopes: ['source.java', 'meta.class.java', 'storage.modifier.java']
+    expect(lines[3][8]).toEqual value: 'permits', scopes: ['source.java', 'meta.class.java', 'meta.definition.class.permits.classes.java', 'storage.modifier.permits.java']
+    expect(lines[4][2]).toEqual value: 'sealed', scopes: ['source.java', 'meta.class.java', 'storage.modifier.java']
+    expect(lines[4][8]).toEqual value: 'permits', scopes: ['source.java', 'meta.class.java', 'meta.definition.class.permits.classes.java', 'storage.modifier.permits.java']
