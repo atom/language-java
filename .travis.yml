@@ -12,9 +12,9 @@ env:
 
 ### Generic setup follows ###
 script:
-  # - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
-  # - chmod u+x build-package.sh
-  - ./build-package.sh
+  - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
+  - chmod u+x build-package.sh
+  # - ./build-package.sh
 
 notifications:
   email:
@@ -30,7 +30,7 @@ git:
 
 sudo: false
 
-dist: trusty
+dist: xenial
 
 addons:
   apt:
