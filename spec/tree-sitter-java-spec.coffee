@@ -260,7 +260,7 @@ describe 'Tree-sitter based Java grammar', ->
 
     tokens = tokenizeLine 'int a = 1; goto;'
 
-    expect(tokens[9]).toEqual value: 'goto', scopes: ['source.java', 'keyword.reserved']
+    expect(tokens[7]).toEqual value: 'goto', scopes: ['source.java', 'keyword.reserved']
 
   it 'tokenizes packages', ->
     tokens = tokenizeLine 'package com.test;'
@@ -722,6 +722,48 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[14][14]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.angle']
     expect(tokens[14][15]).toEqual value: 'T', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
     expect(tokens[14][16]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.angle']
+
+  it 'tokenizes generics without mixing with bitwise or comparison operators', ->
+    tokens = tokenizeLines '''
+      class A {
+        void func1() {
+          t = M << 12;
+        }
+
+        void func2() {
+          if (A < a) {
+            a = A;
+          }
+          ArrayList<A> list;
+          list = new ArrayList<A>();
+
+          if (A < a) { }
+
+          if (A < a && b < a) {
+            b = a;
+          }
+        }
+      }
+    '''
+
+    expect(tokens[2][4]).toEqual value: '<<', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.operator.bitwise']
+    expect(tokens[6][1]).toEqual value: 'if', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control']
+    expect(tokens[6][5]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.operator.comparison']
+    expect(tokens[9][1]).toEqual value: 'ArrayList', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[9][2]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.angle']
+    expect(tokens[9][3]).toEqual value: 'A', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[9][4]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.angle']
+    expect(tokens[10][4]).toEqual value: 'new', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control']
+    expect(tokens[10][6]).toEqual value: 'ArrayList', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[10][7]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.angle']
+    expect(tokens[10][8]).toEqual value: 'A', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'storage.type']
+    expect(tokens[10][9]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.angle']
+    expect(tokens[12][1]).toEqual value: 'if', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control']
+    expect(tokens[12][5]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.operator.comparison']
+    expect(tokens[14][1]).toEqual value: 'if', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.control']
+    expect(tokens[14][5]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.operator.comparison']
+    expect(tokens[14][7]).toEqual value: '&&', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.operator.logical']
+    expect(tokens[14][9]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'keyword.operator.comparison']
 
   it 'tokenizes types and class names with underscore', ->
     tokens = tokenizeLines '''

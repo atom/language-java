@@ -52,6 +52,11 @@ scopes:
   ''': 'keyword.control'
 
   '''
+  "const",
+  "goto"
+  ''': 'keyword.reserved'
+
+  '''
   ternary_expression > "?",
   ternary_expression > ":"
   ''': 'keyword.control.ternary'
