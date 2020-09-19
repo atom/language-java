@@ -93,11 +93,19 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[3]).toEqual value: '.', scopes: ['source.java', 'punctuation.separator.period']
     expect(tokens[7]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.statement']
 
+    tokens = tokenizeLine 'a . b'
+
+    expect(tokens[2]).toEqual value: '.', scopes: ['source.java', 'punctuation.separator.period']
+
     tokens = tokenizeLine 'new com.package.Clazz();'
 
     expect(tokens[3]).toEqual value: '.', scopes: ['source.java', 'punctuation.separator.period']
     expect(tokens[5]).toEqual value: '.', scopes: ['source.java', 'punctuation.separator.period']
     expect(tokens[9]).toEqual value: ';', scopes: ['source.java', 'punctuation.terminator.statement']
+
+    tokens = tokenizeLine 'class A implements B, C {}'
+
+    expect(tokens[7]).toEqual value: ',', scopes: ['source.java', 'punctuation.separator.delimiter']
 
   it 'tokenizes comparison', ->
     tokens = tokenizeLines '''
@@ -245,6 +253,15 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[2][6]).toEqual value: 'CONSTANT_ANOTHER', scopes: ['source.java', 'constant.other']
     expect(tokens[3][5]).toEqual value: 'MAX_VALUE', scopes: ['source.java', 'constant.other']
 
+  it 'tokenizes reserved keywords', ->
+    tokens = tokenizeLine 'const value;'
+
+    expect(tokens[0]).toEqual value: 'const', scopes: ['source.java', 'keyword.reserved']
+
+    tokens = tokenizeLine 'int a = 1; goto;'
+
+    expect(tokens[9]).toEqual value: 'goto', scopes: ['source.java', 'keyword.reserved']
+
   it 'tokenizes packages', ->
     tokens = tokenizeLine 'package com.test;'
 
@@ -325,6 +342,28 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[6]).toEqual value: '?', scopes: ['source.java', 'keyword.control.ternary']
     expect(tokens[8]).toEqual value: ':', scopes: ['source.java', 'keyword.control.ternary']
 
+  it 'tokenizes try-catch block with multiple exceptions', ->
+    tokens = tokenizeLines '''
+      private void method() {
+        try {
+          // do something
+        } catch (Exception1 | Exception2 err) {
+          throw new Exception3();
+        }
+      }
+    '''
+
+    expect(tokens[1][1]).toEqual value: 'try', scopes: ['source.java', 'keyword.control']
+    expect(tokens[3][3]).toEqual value: 'catch', scopes: ['source.java', 'keyword.control']
+    expect(tokens[3][5]).toEqual value: '(', scopes: ['source.java', 'punctuation.bracket.round']
+    expect(tokens[3][6]).toEqual value: 'Exception1', scopes: ['source.java', 'storage.type']
+    expect(tokens[3][8]).toEqual value: '|', scopes: ['source.java', 'punctuation.catch.separator']
+    expect(tokens[3][10]).toEqual value: 'Exception2', scopes: ['source.java', 'storage.type']
+    expect(tokens[3][12]).toEqual value: ')', scopes: ['source.java', 'punctuation.bracket.round']
+    expect(tokens[4][1]).toEqual value: 'throw', scopes: ['source.java', 'keyword.control']
+    expect(tokens[4][3]).toEqual value: 'new', scopes: ['source.java', 'keyword.control']
+    expect(tokens[4][5]).toEqual value: 'Exception3', scopes: ['source.java', 'storage.type']
+
   it 'tokenizes lambda expressions', ->
     tokens = tokenizeLine '(String s1) -> s1.length() - outer.length();'
 
@@ -334,6 +373,11 @@ describe 'Tree-sitter based Java grammar', ->
     tokens = tokenizeLine 'public void method(String... args);'
 
     expect(tokens[6]).toEqual value: '...', scopes: ['source.java', 'punctuation.definition.parameters.varargs']
+
+    tokens = tokenizeLine 'void func(int /* ... */ arg, int ... args);'
+
+    expect(tokens[5]).toEqual value: '/* ... */', scopes: ['source.java', 'comment.block']
+    expect(tokens[11]).toEqual value: '...', scopes: ['source.java', 'punctuation.definition.parameters.varargs']
 
   it 'tokenizes this and super', ->
     tokens = tokenizeLine 'this.x + super.x;'
@@ -679,6 +723,31 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[14][15]).toEqual value: 'T', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
     expect(tokens[14][16]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.angle']
 
+  it 'tokenizes types and class names with underscore', ->
+    tokens = tokenizeLines '''
+      class _Class {
+        static _String var1;
+        static _abc._abc._Class var2;
+        static _abc._abc._Generic<_String> var3;
+      }
+    '''
+
+    expect(tokens[0][2]).toEqual value: '_Class', scopes: ['source.java', 'entity.name.type.class']
+    expect(tokens[1][3]).toEqual value: '_String', scopes: ['source.java', 'meta.class.body', 'storage.type']
+    expect(tokens[2][3]).toEqual value: '_abc', scopes: ['source.java', 'meta.class.body', 'storage.type']
+    expect(tokens[2][4]).toEqual value: '.', scopes: ['source.java', 'meta.class.body', 'punctuation.separator.period']
+    expect(tokens[2][5]).toEqual value: '_abc', scopes: ['source.java', 'meta.class.body', 'storage.type']
+    expect(tokens[2][6]).toEqual value: '.', scopes: ['source.java', 'meta.class.body', 'punctuation.separator.period']
+    expect(tokens[2][7]).toEqual value: '_Class', scopes: ['source.java', 'meta.class.body', 'storage.type']
+    expect(tokens[3][3]).toEqual value: '_abc', scopes: ['source.java', 'meta.class.body', 'storage.type']
+    expect(tokens[3][4]).toEqual value: '.', scopes: ['source.java', 'meta.class.body', 'punctuation.separator.period']
+    expect(tokens[3][5]).toEqual value: '_abc', scopes: ['source.java', 'meta.class.body', 'storage.type']
+    expect(tokens[3][6]).toEqual value: '.', scopes: ['source.java', 'meta.class.body', 'punctuation.separator.period']
+    expect(tokens[3][7]).toEqual value: '_Generic', scopes: ['source.java', 'meta.class.body', 'storage.type']
+    expect(tokens[3][8]).toEqual value: '<', scopes: ['source.java', 'meta.class.body', 'punctuation.bracket.angle']
+    expect(tokens[3][9]).toEqual value: '_String', scopes: ['source.java', 'meta.class.body', 'storage.type']
+    expect(tokens[3][10]).toEqual value: '>', scopes: ['source.java', 'meta.class.body', 'punctuation.bracket.angle']
+
   it 'tokenizes classes', ->
     tokens = tokenizeLine 'public abstract static class A { }'
 
@@ -748,6 +817,23 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[4][1]).toEqual value: 'constant4', scopes: ['source.java', 'meta.enum.body', 'constant.other.enum']
     expect(tokens[5][0]).toEqual value: '}', scopes: ['source.java', 'meta.enum.body', 'punctuation.bracket.curly']
 
+  it 'tokenizes enums with modifiers', ->
+    tokens = tokenizeLines '''
+      public enum Test { }
+      private enum Test { }
+      protected enum Test { }
+    '''
+
+    expect(tokens[0][0]).toEqual value: 'public', scopes: ['source.java', 'storage.modifier']
+    expect(tokens[0][2]).toEqual value: 'enum', scopes: ['source.java', 'keyword.other.enum']
+    expect(tokens[0][4]).toEqual value: 'Test', scopes: ['source.java', 'entity.name.type.enum']
+    expect(tokens[1][0]).toEqual value: 'private', scopes: ['source.java', 'storage.modifier']
+    expect(tokens[1][2]).toEqual value: 'enum', scopes: ['source.java', 'keyword.other.enum']
+    expect(tokens[1][4]).toEqual value: 'Test', scopes: ['source.java', 'entity.name.type.enum']
+    expect(tokens[2][0]).toEqual value: 'protected', scopes: ['source.java', 'storage.modifier']
+    expect(tokens[2][2]).toEqual value: 'enum', scopes: ['source.java', 'keyword.other.enum']
+    expect(tokens[2][4]).toEqual value: 'Test', scopes: ['source.java', 'entity.name.type.enum']
+
   it 'tokenizes annotations', ->
     tokens = tokenizeLines '''
       @Annotation1
@@ -813,6 +899,10 @@ describe 'Tree-sitter based Java grammar', ->
         public int FUNC() {
           return 1;
         }
+
+        public int func2(final int finalScore, final int scorefinal) {
+          return finalScore;
+        }
       }
     '''
 
@@ -839,6 +929,19 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[5][7]).toEqual value: ')', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.round']
     expect(tokens[5][9]).toEqual value: '{', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.curly']
     expect(tokens[7][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.curly']
+
+    expect(tokens[9][1]).toEqual value: 'public', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.modifier']
+    expect(tokens[9][3]).toEqual value: 'int', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[9][5]).toEqual value: 'func2', scopes: ['source.java', 'meta.class.body', 'meta.method', 'entity.name.function']
+    expect(tokens[9][6]).toEqual value: '(', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.round']
+    expect(tokens[9][7]).toEqual value: 'final', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.modifier']
+    expect(tokens[9][9]).toEqual value: 'int', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[9][11]).toEqual value: ',', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.separator.delimiter']
+    expect(tokens[9][13]).toEqual value: 'final', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.modifier']
+    expect(tokens[9][15]).toEqual value: 'int', scopes: ['source.java', 'meta.class.body', 'meta.method', 'storage.type']
+    expect(tokens[9][17]).toEqual value: ')', scopes: ['source.java', 'meta.class.body', 'meta.method', 'punctuation.bracket.round']
+    expect(tokens[9][19]).toEqual value: '{', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.curly']
+    expect(tokens[11][1]).toEqual value: '}', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'punctuation.bracket.curly']
 
   it 'tokenizes method invocations', ->
     tokens = tokenizeLines '''
