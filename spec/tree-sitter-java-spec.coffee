@@ -379,6 +379,24 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[5]).toEqual value: '/* ... */', scopes: ['source.java', 'comment.block']
     expect(tokens[11]).toEqual value: '...', scopes: ['source.java', 'punctuation.definition.parameters.varargs']
 
+  it 'tokenizes identifiers with `$`', ->
+    tokens = tokenizeLines '''
+      class A$B {
+        void func$() {
+          $object.$property;
+          $hello();
+        }
+      }
+    '''
+
+    expect(tokens[0][2]).toEqual value: 'A$B', scopes: ['source.java', 'entity.name.type.class']
+    expect(tokens[0][3]).toEqual value: ' ', scopes: ['source.java']
+    expect(tokens[0][4]).toEqual value: '{', scopes: ['source.java', 'meta.class.body', 'punctuation.bracket.curly']
+    expect(tokens[1][3]).toEqual value: 'func$', scopes: ['source.java', 'meta.class.body', 'meta.method', 'entity.name.function']
+    expect(tokens[2][1]).toEqual value: '$object', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body']
+    expect(tokens[2][3]).toEqual value: '$property', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body']
+    expect(tokens[3][1]).toEqual value: '$hello', scopes: ['source.java', 'meta.class.body', 'meta.method', 'meta.method.body', 'entity.name.function']
+
   it 'tokenizes this and super', ->
     tokens = tokenizeLine 'this.x + super.x;'
 
