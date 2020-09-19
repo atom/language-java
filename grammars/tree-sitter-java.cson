@@ -209,6 +209,10 @@ scopes:
 
   'lambda_expression > "->"': 'storage.type.function.arrow'
 
+  # Statements
+
+  'catch_type > "|"': 'punctuation.catch.separator'
+
   # Class declaration
 
   'class_declaration > "class"': 'keyword.other.class'
