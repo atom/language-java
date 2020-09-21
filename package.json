@@ -15,6 +15,9 @@
   "bugs": {
     "url": "https://github.com/atom/language-java/issues"
   },
+  "dependencies": {
+    "tree-sitter-java-dev": "^0.16.0-dev2"
+  },
   "devDependencies": {
     "coffeelint": "^1.10.1"
   }
