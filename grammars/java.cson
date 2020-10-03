@@ -38,7 +38,7 @@
                     (abstract|assert|boolean|break|byte|case|catch|char|class|
                     const|continue|default|do|double|else|enum|extends|final|
                     finally|float|for|goto|if|implements|import|instanceof|int|
-                    interface|long|native|new|package|permits|private|protected|public|
+                    interface|long|native|new|non-sealed|package|permits|private|protected|public|
                     return|sealed|short|static|strictfp|super|switch|syncronized|this|
                     throw|throws|transient|try|void|volatile|while|yield|
                     true|false|null)\\b
@@ -86,7 +86,7 @@
                     (abstract|assert|boolean|break|byte|case|catch|char|class|
                     const|continue|default|do|double|else|enum|extends|final|
                     finally|float|for|goto|if|implements|import|instanceof|int|
-                    interface|long|native|new|package|permits|private|protected|public|
+                    interface|long|native|new|non-sealed|package|permits|private|protected|public|
                     return|sealed|short|static|strictfp|super|switch|syncronized|this|
                     throw|throws|transient|try|void|volatile|while|yield|
                     true|false|null)\\b
@@ -277,7 +277,7 @@
       }
     ]
   'class':
-    'begin': '(?=\\w?[\\w\\s]*\\b(?:class|(?<!@)interface|enum)\\s+[\\w$]+)'
+    'begin': '(?=\\w?[\\w\\s-]*\\b(?:class|(?<!@)interface|enum)\\s+[\\w$]+)'
     'end': '}'
     'endCaptures':
       '0':
@@ -1407,7 +1407,7 @@
       }
     ]
   'storage-modifiers':
-    'match': '\\b(public|private|protected|static|final|native|synchronized|abstract|threadsafe|transient|volatile|default|strictfp|sealed)\\b'
+    'match': '\\b(public|private|protected|static|final|native|synchronized|abstract|threadsafe|transient|volatile|default|strictfp|sealed|non-sealed)\\b'
     'name': 'storage.modifier.java'
   'strings':
     'patterns': [
