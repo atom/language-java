@@ -253,11 +253,17 @@ scopes:
 
   'marker_annotation': 'meta.declaration.annotation'
   'marker_annotation > "@"': 'punctuation.definition.annotation'
-  'marker_annotation > identifier': 'storage.type.annotation'
+  '''
+  marker_annotation > identifier,
+  marker_annotation > scoped_identifier > identifier
+  ''': 'storage.type.annotation'
 
   'annotation': 'meta.declaration.annotation'
   'annotation > "@"': 'punctuation.definition.annotation'
-  'annotation > identifier': 'storage.type.annotation'
+  '''
+  annotation > identifier,
+  annotation > scoped_identifier > identifier
+  ''': 'storage.type.annotation'
 
   'element_value_pair > identifier': 'variable.other.annotation.element'
 

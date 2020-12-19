@@ -900,6 +900,8 @@ describe 'Tree-sitter based Java grammar', ->
       @Annotation2()
       @Annotation3("value")
       @Annotation4(key = "value")
+      @Test.Annotation5
+      @Test.Annotation6()
       class A { }
     '''
 
@@ -924,6 +926,18 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[3][5]).toEqual value: '=', scopes: ['source.java', 'meta.declaration.annotation', 'keyword.operator.assignment']
     expect(tokens[3][7]).toEqual value: '\"value\"', scopes: ['source.java', 'meta.declaration.annotation', 'string.quoted.double']
     expect(tokens[3][8]).toEqual value: ')', scopes: ['source.java', 'meta.declaration.annotation', 'punctuation.bracket.round']
+
+    expect(tokens[4][0]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation', 'punctuation.definition.annotation']
+    expect(tokens[4][1]).toEqual value: 'Test', scopes: ['source.java', 'meta.declaration.annotation', 'storage.type.annotation']
+    expect(tokens[4][2]).toEqual value: '.', scopes: ['source.java', 'meta.declaration.annotation', 'punctuation.separator.period']
+    expect(tokens[4][3]).toEqual value: 'Annotation5', scopes: ['source.java', 'meta.declaration.annotation', 'storage.type.annotation']
+
+    expect(tokens[5][0]).toEqual value: '@', scopes: ['source.java', 'meta.declaration.annotation', 'punctuation.definition.annotation']
+    expect(tokens[5][1]).toEqual value: 'Test', scopes: ['source.java', 'meta.declaration.annotation', 'storage.type.annotation']
+    expect(tokens[5][2]).toEqual value: '.', scopes: ['source.java', 'meta.declaration.annotation', 'punctuation.separator.period']
+    expect(tokens[5][3]).toEqual value: 'Annotation6', scopes: ['source.java', 'meta.declaration.annotation', 'storage.type.annotation']
+    expect(tokens[5][4]).toEqual value: '(', scopes: ['source.java', 'meta.declaration.annotation', 'punctuation.bracket.round']
+    expect(tokens[5][5]).toEqual value: ')', scopes: ['source.java', 'meta.declaration.annotation', 'punctuation.bracket.round']
 
   it 'tokenizes constructor declarations', ->
     tokens = tokenizeLines '''
