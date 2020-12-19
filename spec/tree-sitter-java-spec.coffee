@@ -246,12 +246,18 @@ describe 'Tree-sitter based Java grammar', ->
       a = CONSTANT + obj.func();
       b = conf.get(CONSTANT_ANOTHER);
       c = Integer.MAX_VALUE;
+      d = A1_B2_C3;
+      e = A1_B2_C$;
+      f = Test.A1_B2_C3;
     '''
 
     expect(tokens[0][2]).toEqual value: 'CONSTANT_STR', scopes: ['source.java', 'constant.other']
     expect(tokens[1][3]).toEqual value: 'CONSTANT', scopes: ['source.java', 'constant.other']
     expect(tokens[2][6]).toEqual value: 'CONSTANT_ANOTHER', scopes: ['source.java', 'constant.other']
     expect(tokens[3][5]).toEqual value: 'MAX_VALUE', scopes: ['source.java', 'constant.other']
+    expect(tokens[4][3]).toEqual value: 'A1_B2_C3', scopes: ['source.java', 'constant.other']
+    expect(tokens[5][3]).toEqual value: 'A1_B2_C$', scopes: ['source.java', 'constant.other']
+    expect(tokens[6][5]).toEqual value: 'A1_B2_C3', scopes: ['source.java', 'constant.other']
 
   it 'tokenizes reserved keywords', ->
     tokens = tokenizeLine 'const value;'
