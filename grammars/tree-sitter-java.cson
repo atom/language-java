@@ -298,9 +298,9 @@ scopes:
   method_reference > identifier,
   method_invocation > identifier
   ''': [
-    {match: '^[A-Z][A-Z_]+$', scopes: 'constant.other'},
+    {match: '^[A-Z][A-Z0-9_\\$]+$', scopes: 'constant.other'},
     {match: '^[A-Z]', scopes: 'storage.type'}
   ]
   'identifier': [
-    {match: '^[A-Z][A-Z_]+$', scopes: 'constant.other'}
+    {match: '^[A-Z][A-Z0-9_\\$]+$', scopes: 'constant.other'}
   ]
