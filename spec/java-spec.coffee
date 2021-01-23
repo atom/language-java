@@ -209,6 +209,24 @@ describe 'Java grammar', ->
     expect(lines[2][3]).toEqual value: 'with', scopes: ['source.java', 'meta.module.java', 'meta.module.body.java', 'keyword.module.java']
     expect(lines[3][0]).toEqual value: '}', scopes: ['source.java', 'meta.module.java', 'punctuation.section.module.end.bracket.curly.java']
 
+  it 'tokenizes comments inside module', ->
+    lines = grammar.tokenizeLines '''
+      module com.foo.bar {
+        // comments
+        /* comments */
+        /** javadoc */
+        requires java.base;
+      }
+    '''
+
+    expect(lines[0][0]).toEqual value: 'module', scopes: ['source.java', 'meta.module.java', 'storage.modifier.java']
+    expect(lines[0][4]).toEqual value: '{', scopes: ['source.java', 'meta.module.java', 'punctuation.section.module.begin.bracket.curly.java']
+    expect(lines[1][2]).toEqual value: ' comments', scopes: ['source.java', 'meta.module.java', 'meta.module.body.java', 'comment.line.double-slash.java']
+    expect(lines[2][2]).toEqual value: ' comments ', scopes: ['source.java', 'meta.module.java', 'meta.module.body.java', 'comment.block.java']
+    expect(lines[3][2]).toEqual value: ' javadoc ', scopes: ['source.java', 'meta.module.java', 'meta.module.body.java', 'comment.block.javadoc.java']
+    expect(lines[4][1]).toEqual value: 'requires', scopes: ['source.java', 'meta.module.java', 'meta.module.body.java', 'keyword.module.java']
+    expect(lines[5][0]).toEqual value: '}', scopes: ['source.java', 'meta.module.java', 'punctuation.section.module.end.bracket.curly.java']
+
   it 'tokenizes classes', ->
     lines = grammar.tokenizeLines '''
       class Thing {

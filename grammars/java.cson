@@ -999,6 +999,12 @@
         'patterns': [
           # TODO: Write more rules for module grammar
           {
+            'include': '#comments'
+          }
+          {
+            'include': '#comments-javadoc'
+          }
+          {
             'match': '\\b(requires|transitive|exports|opens|to|uses|provides|with)\\b'
             'name': 'keyword.module.java'
           }
