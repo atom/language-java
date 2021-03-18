@@ -246,6 +246,7 @@ describe 'Tree-sitter based Java grammar', ->
       int CONST0 = 0;
       int CONST_1 = 1;
       String A1_B2_C3 = "abc";
+      String A$_B$_C$ = "abc";
       a = CONSTANT + obj.func();
       b = conf.get(CONSTANT_ANOTHER);
       c = Integer.MAX_VALUE;
@@ -258,12 +259,13 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[1][2]).toEqual value: 'CONST0', scopes: ['source.java', 'constant.other']
     expect(tokens[2][2]).toEqual value: 'CONST_1', scopes: ['source.java', 'constant.other']
     expect(tokens[3][2]).toEqual value: 'A1_B2_C3', scopes: ['source.java', 'constant.other']
-    expect(tokens[4][3]).toEqual value: 'CONSTANT', scopes: ['source.java', 'constant.other']
-    expect(tokens[5][6]).toEqual value: 'CONSTANT_ANOTHER', scopes: ['source.java', 'constant.other']
-    expect(tokens[6][5]).toEqual value: 'MAX_VALUE', scopes: ['source.java', 'constant.other']
-    expect(tokens[7][3]).toEqual value: 'A1_B2_C3', scopes: ['source.java', 'constant.other']
-    expect(tokens[8][3]).toEqual value: 'A1_B2_C$', scopes: ['source.java', 'constant.other']
-    expect(tokens[9][5]).toEqual value: 'A1_B2_C3', scopes: ['source.java', 'constant.other']
+    expect(tokens[4][2]).toEqual value: 'A$_B$_C$', scopes: ['source.java', 'constant.other']
+    expect(tokens[5][3]).toEqual value: 'CONSTANT', scopes: ['source.java', 'constant.other']
+    expect(tokens[6][6]).toEqual value: 'CONSTANT_ANOTHER', scopes: ['source.java', 'constant.other']
+    expect(tokens[7][5]).toEqual value: 'MAX_VALUE', scopes: ['source.java', 'constant.other']
+    expect(tokens[8][3]).toEqual value: 'A1_B2_C3', scopes: ['source.java', 'constant.other']
+    expect(tokens[9][3]).toEqual value: 'A1_B2_C$', scopes: ['source.java', 'constant.other']
+    expect(tokens[10][5]).toEqual value: 'A1_B2_C3', scopes: ['source.java', 'constant.other']
 
   it 'tokenizes constants in switch statement', ->
     tokens = tokenizeLines '''
@@ -273,6 +275,7 @@ describe 'Tree-sitter based Java grammar', ->
         case CONST0: break;
         case CONST_1: break;
         case C0_STR1_DEF2: break;
+        case C$_STR$_DEF$: break;
         default: break;
       }
     '''
@@ -282,6 +285,7 @@ describe 'Tree-sitter based Java grammar', ->
     expect(tokens[3][3]).toEqual value: 'CONST0', scopes: ['source.java', 'constant.other']
     expect(tokens[4][3]).toEqual value: 'CONST_1', scopes: ['source.java', 'constant.other']
     expect(tokens[5][3]).toEqual value: 'C0_STR1_DEF2', scopes: ['source.java', 'constant.other']
+    expect(tokens[6][3]).toEqual value: 'C$_STR$_DEF$', scopes: ['source.java', 'constant.other']
 
   it 'tokenizes reserved keywords', ->
     tokens = tokenizeLine 'const value;'
