@@ -16,7 +16,7 @@
     "url": "https://github.com/atom/language-java/issues"
   },
   "dependencies": {
-    "tree-sitter-java-dev": "^0.16.0-dev2"
+    "tree-sitter-java-dev": "git+https://github.com/icecream17/tree-sitter-java.git#97035a3aeeff1af5af07e072c28c43b7f69321a3"
   },
   "devDependencies": {
     "coffeelint": "^1.10.1"
