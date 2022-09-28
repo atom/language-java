@@ -1,4 +1,5 @@
-# Java language support in Atom
+##### Atom and all repositories under Atom will be archived on December 15, 2022. Learn more in our [official announcement](https://github.blog/2022-06-08-sunsetting-atom/)
+ # Java language support in Atom
 ![build](https://github.com/atom/language-java/workflows/build/badge.svg)
 [![Dependency Status](https://david-dm.org/atom/language-java.svg)](https://david-dm.org/atom/language-java)
 
