@@ -132,3 +132,260 @@
   'while':
     'prefix': 'wh'
     'body': 'while ($1) {\n\t$0\n}'
+'.text.html.jsp':
+  'el':
+    'prefix': '$'
+    'body': '\\${$1}'
+  'scriptlet':
+    'prefix': '%'
+    'body': """
+    <%
+    \t$1
+    %>
+    """
+  'declaration':
+    'prefix': '%!'
+    'body': """
+    <%!
+    \t$1
+    %>
+    """
+  'expression':
+    'prefix': '%='
+    'body': """
+    <%=
+    \t$1
+    %>
+    """
+  'comment':
+    'prefix': '%--'
+    'body': """
+    <%--
+    \t$1
+    --%>
+    """
+  'declaration (xml)':
+    'prefix': 'declaration'
+    'body': """
+    <jsp:declaration>
+    \t$1
+    </jsp:declaration>
+    """
+  'expression (xml)':
+    'prefix': 'expression'
+    'body': """
+    <jsp:expression>
+    \t$1
+    </jsp:expression>
+    """
+  'scriptlet (xml)':
+    'prefix': 'scriptlet'
+    'body': """
+    <jsp:scriptlet>
+    \t$1
+    </jsp:scriptlet>
+    """
+  'c:out':
+    'prefix': 'out'
+    'body': """
+    <c:out value="\\${$1}"/>
+    """
+  'c:set':
+    'prefix': 'set'
+    'body': """
+    <c:set var="${1:name}" value="\\${$2}"/>
+    """
+  'c:remove':
+    'prefix': 'rm'
+    'body': """
+    <c:remove var="${1:name}"/>
+    """
+  'c:catch':
+    'prefix': 'catch'
+    'body': """
+    <c:catch var="${1:ex}">
+    \t$2
+    </c:catch>
+    """
+  'c:if':
+    'prefix': 'if'
+    'body': """
+    <c:if test="\\${${1:true}}">
+    \t$0
+    </c:if>
+    """
+  'c:choose':
+    'prefix': 'choose'
+    'body': """
+    <c:choose>
+    \t<c:when test="\\${${1:true}}">
+    \t\t$2
+    \t</c:when>$3
+    \t<c:otherwise>
+    \t\t$4
+    \t</c:otherwise>
+    </c:choose>
+    """
+  'c:when':
+    'prefix': 'when'
+    'body': """
+    <c:when test="\\${${1:true}}">
+    \t$2
+    </c:when>
+    """
+  'c:otherwise':
+    'prefix': 'other'
+    'body': """
+    <c:otherwise>
+    \t$1
+    </c:otherwise>
+    """
+  'c:forEach':
+    'prefix': 'forEach'
+    'body': """
+    <c:forEach var="${1:i}" begin="$2" end="$3">
+    \t$4
+    </c:forEach>
+    """
+  'c:forEach':
+    'prefix': 'forEachIn'
+    'body': """
+    <c:forEach var="${1:item}" items="$2">
+    \t$3
+    </c:forEach>
+    """
+  'c:forTokens':
+    'prefix': 'forTokens'
+    'body': """
+    <c:forTokens var="${1:item}" items="$2" delims="${3:,}">
+    \t$4
+    </c:forTokens>
+    """
+'.text.html.jsp .entity.name.tag':
+  'declaration (xml)':
+    'prefix': '<jsp:declaration'
+    'body': """
+    <jsp:declaration>
+    \t$1
+    </jsp:declaration>
+    """
+  'expression (xml)':
+    'prefix': '<jsp:expression'
+    'body': """
+    <jsp:expression>
+    \t$1
+    </jsp:expression>
+    """
+  'scriptlet (xml)':
+    'prefix': '<jsp:scriptlet'
+    'body': """
+    <jsp:scriptlet>
+    \t$1
+    </jsp:scriptlet>
+    """
+  'c:out':
+    'prefix': '<c:out'
+    'body': """
+    <c:out value="\\${$1}"/>
+    """
+  'c:set':
+    'prefix': '<c:set'
+    'body': """
+    <c:set var="${1:name}" value="\\${$2}"/>
+    """
+  'c:remove':
+    'prefix': '<c:rm'
+    'body': """
+    <c:remove var="${1:name}"/>
+    """
+  'c:catch':
+    'prefix': '<c:catch'
+    'body': """
+    <c:catch var="${1:ex}">
+    \t$2
+    </c:catch>
+    """
+  'c:if':
+    'prefix': '<c:if'
+    'body': """
+    <c:if test="\\${${1:true}}">
+    \t$0
+    </c:if>
+    """
+  'c:choose':
+    'prefix': '<c:choose'
+    'body': """
+    <c:choose>
+    \t<c:when test="\\${${1:true}}">
+    \t\t$2
+    \t</c:when>$3
+    \t<c:otherwise>
+    \t\t$4
+    \t</c:otherwise>
+    </c:choose>
+    """
+  'c:when':
+    'prefix': '<c:when'
+    'body': """
+    <c:when test="\\${${1:true}}">
+    \t$2
+    </c:when>
+    """
+  'c:otherwise':
+    'prefix': '<c:other'
+    'body': """
+    <c:otherwise>
+    \t$1
+    </c:otherwise>
+    """
+  'c:forEach':
+    'prefix': '<c:forEach'
+    'body': """
+    <c:forEach var="${1:i}" begin="$2" end="$3">
+    \t$4
+    </c:forEach>
+    """
+  'c:forEach':
+    'prefix': '<c:forEachIn'
+    'body': """
+    <c:forEach var="${1:item}" items="$2">
+    \t$3
+    </c:forEach>
+    """
+  'c:forTokens':
+    'prefix': '<c:forTokens'
+    'body': """
+    <c:forTokens var="${1:item}" items="$2" delims="${3:,}">
+    \t$4
+    </c:forTokens>
+    """
+'.text.html.jsp .punctuation.begin':
+  'scriptlet':
+    'prefix': '<%'
+    'body': """
+    <%
+    \t$1
+    %>
+    """
+  'declaration':
+    'prefix': '<%!'
+    'body': """
+    <%!
+    \t$1
+    %>
+    """
+  'expression':
+    'prefix': '<%='
+    'body': """
+    <%=
+    \t$1
+    %>
+    """
+'.text.html.jsp .punctuation.comment':
+  'comment':
+    'prefix': '<%--'
+    'body': """
+    <%--
+    \t$1
+    --%>
+    """
