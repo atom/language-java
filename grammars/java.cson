@@ -1418,6 +1418,23 @@
   'strings':
     'patterns': [
       {
+        'begin': '"""(?=\\s*$)'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.string.begin.java'
+        'end': '"""'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.string.end.java'
+        'name': 'string.quoted.triple.java'
+        'patterns': [
+          {
+            'match': '\\\\(?>"""|.)?'
+            'name': 'constant.character.escape.java'
+          }
+        ]
+      }
+      {
         'begin': '"'
         'beginCaptures':
           '0':
